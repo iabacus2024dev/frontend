@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
+import TableTestPage from '@/views/TableTestPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -9,11 +10,13 @@ const router = createRouter({
       name: 'home',
       component: HomeView,
     },
-    // {
-    //   path: '/about',
-    //   name: 'about',
-    //   component: () => import('../views/AboutView.vue'),
-    // },
+
+    /* [추후 삭제 예정] 테이블 컴포넌트 테스트용으로 만든 페이지입니다. */
+    {
+      path: '/table',
+      name: 'table',
+      component: TableTestPage,
+    },
   ],
 })
 
