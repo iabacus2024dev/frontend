@@ -6,8 +6,20 @@
 
 <!-- 테이블 컴포넌트 -->
 <v-container class="box">
-  <!-- props: 테이블 컬럼명, 테이블 데이터 -->
-  <TableComponent :tableTitle="tableTitleResponse" :tableData="tableDataResponse"/>
+  <TableEventComponent
+    :tableDataEvent="tableDataEventCondition"
+    @create-data-button-click="fnCreateData"
+  />
+
+  <TableComponent
+    :tableTitle="tableTitleResponse"
+    :tableData="tableDataResponse"
+  />
+
+  <TableEventComponent
+    :tableExcelEvent="tableExcelEventCondition"
+    @excel-upload-button-click="fnExcelUpload"
+  />
 </v-container>
 </template>
 
@@ -15,6 +27,7 @@
 import { ref } from 'vue';
 
 import TableComponent from '@/components/table/TableComponent.vue';
+import TableEventComponent from '@/components/table/TableEventComponent.vue';
 
 /* todo: api 통신으로 실제 데이터를 가져오기 */
 const tableTitleResponse = ref([
@@ -108,7 +121,26 @@ const tableDataResponse = ref([
   }
 ]);
 
+/* desc: 필요한 테이블 이벤트만 true로 명시 */
+// 테이블 데이터 관련 이벤트
+const tableDataEventCondition = ref({
+  createData: true,
+});
 
+// 테이블 엑셀 관련 이벤트
+const tableExcelEventCondition = ref({
+  excelUpload: true,
+  excelDownload: true,
+});
+
+
+const fnCreateData = () => {
+  console.log('fnCreateData >>>', 'todo: 데이터 등록 팝업창 뜨기');
+};
+
+const fnExcelUpload = () => {
+  console.log('fnExcelUpload >>>', 'todo: 엑셀 업로드 실행');
+}
 </script>
 
 <style scoped></style>
