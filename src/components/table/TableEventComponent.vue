@@ -1,25 +1,33 @@
 <template>
-  <v-btn
-      v-if="props.tableDataEvent.createData"
-      color="primary"
-      @click="handleCreateDataButtonClick"
-  >
-    등록하기
-  </v-btn>
-  <v-btn
-    v-if="props.tableExcelEvent.excelUpload"
-    color="primary"
-    @click="handleExcelUploadButtonClick"
-  >
-    엑셀 업로드
-  </v-btn>
-  <v-btn
-    v-if="props.tableExcelEvent.excelDownload"
-    color="primary"
-    @click="handleExcelDownloadButtonClick"
-  >
-    엑셀 다운로드
-  </v-btn>
+  <v-container>
+    <v-row justify="end">
+      <v-btn
+          v-if="props.tableDataEvent.createData"
+          variant="tonal"
+          density="comfortable"
+          prepend-icon="mdi-plus-circle"
+          @click="handleCreateDataButtonClick"
+      >
+        등록
+      </v-btn>
+      <v-btn
+        v-if="props.tableExcelEvent.excelUpload"
+        variant="tonal"
+        density="comfortable"
+        @click="handleExcelUploadButtonClick"
+      >
+        엑셀 업로드
+      </v-btn>
+      <v-btn
+        v-if="props.tableExcelEvent.excelDownload"
+        variant="tonal"
+        density="comfortable"
+        @click="handleExcelDownloadButtonClick"
+      >
+        엑셀 다운로드
+      </v-btn>
+    </v-row>
+  </v-container>
 </template>
 
 <script setup>
@@ -60,4 +68,10 @@ const handleExcelDownloadButtonClick = () => {
 
 </script>
 
-<style scoped></style>
+<style scoped>
+.v-btn {
+  margin-left: 10px;
+  background-color: #EB6129; /* todo: 공통적으로 쓰는 색 같은 것은 상수화 */
+  color: white;
+}
+</style>
