@@ -1,9 +1,11 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterView } from 'vue-router'
 </script>
 
 <template>
-  <RouterView />
+  <component :is="$route.meta.layout || 'div'">
+    <RouterView />
+  </component>
 </template>
 
 <style scoped></style>
