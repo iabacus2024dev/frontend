@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
 import TableTestPage from '@/views/TableTestPage.vue'
+import TransferListTestPage from '@/views/TransferListTestPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,6 +17,12 @@ const router = createRouter({
       path: '/table',
       name: 'table',
       component: TableTestPage,
+    },
+    /* [추후 삭제 예정] 트랜스퍼 리스트 테스트용으로 만든 페이지입니다. */
+    {
+      path: '/transferList',
+      name: 'transferList',
+      component: TransferListTestPage,
     },
   ],
 })
