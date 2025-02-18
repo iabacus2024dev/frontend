@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import HomeView from '@/views/HomePage.vue'
 import TableTestPage from '@/views/TableTestPage.vue'
+import SearchBarTestPage from '@/views/SearchBarTestPage.vue'
 import ProjectPage from '@/views/ProjectPage.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import MemberPage from '@/views/MemberPage.vue'
@@ -62,12 +63,16 @@ const routes = [
     component: TableTestPage,
     meta: { layout: DefaultLayout },
   },
-
   {
     path: '/tooltip',
     name: 'tooltip',
     component: ToolTipComponent,
   },
+  {
+    path: '/searchbar',
+    name: 'searchbar',
+    component: SearchBarTestPage
+  }
 ]
 
 const router = createRouter({
