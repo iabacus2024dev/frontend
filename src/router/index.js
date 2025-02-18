@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
 import TableTestPage from '@/views/TableTestPage.vue'
+import SearchBarTestPage from '@/views/SearchBarTestPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -17,6 +18,11 @@ const router = createRouter({
       name: 'table',
       component: TableTestPage,
     },
+    {
+      path: '/searchbar',
+      name: 'searchbar',
+      component: SearchBarTestPage
+    }
   ],
 })
 
