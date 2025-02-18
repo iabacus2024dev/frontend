@@ -9,6 +9,8 @@ import PartnersPage from '@/views/PartnersPage.vue'
 import PermissionPage from '@/views/PermissionPage.vue'
 import SalesPage from '@/views/SalesPage.vue'
 import ProfilePage from '@/views/ProfilePage.vue'
+import ToolTipComponent from '@/components/common/ToolTipComponent.vue'
+
 
 const routes = [
   {
@@ -59,6 +61,12 @@ const routes = [
     name: 'table',
     component: TableTestPage,
     meta: { layout: DefaultLayout },
+  },
+
+  {
+    path: '/tooltip',
+    name: 'tooltip',
+    component: ToolTipComponent,
   },
 ]
 
