@@ -1,4 +1,4 @@
-<!--        간단한 데이터 바인딩
+<!--     간단한 데이터 바인딩
 <template>
     <v-app>
       <v-container>
@@ -26,7 +26,7 @@ export default {
 
 
 
-<!--  computed 사용용
+<!--  computed 사용
 <template>
   <v-app>
     <v-container>
@@ -70,6 +70,8 @@ export default {
 </template>
 
 <script>
+import axios from "axios"; // axios 가져오기
+
 export default {
   data() {
     return {
@@ -79,10 +81,9 @@ export default {
   methods: {
     async fetchTooltipData() {
       try {
-        // 예제 API 요청 (실제 API URL로 변경)
-        const response = await fetch("https://jsonplaceholder.typicode.com/posts/1");
-        const data = await response.json();
-        this.tooltipText = data.title; // 받아온 데이터를 툴팁에 적용
+        // axios를 사용한 API 요청
+        const response = await axios.get("https://jsonplaceholder.typicode.com/posts/1");
+        this.tooltipText = response.data.title; // 받아온 데이터를 툴팁에 적용
       } catch (error) {
         console.error("API 요청 실패:", error);
         this.tooltipText = "데이터 불러오기 실패";
@@ -91,7 +92,6 @@ export default {
   },
 };
 </script>
-
 
 <style scoped>
 .v-btn {
