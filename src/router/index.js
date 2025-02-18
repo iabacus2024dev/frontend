@@ -10,6 +10,7 @@ import PermissionPage from '@/views/PermissionPage.vue'
 import SalesPage from '@/views/SalesPage.vue'
 import ProfilePage from '@/views/ProfilePage.vue'
 import ToolTipComponent from '@/components/common/ToolTipComponent.vue'
+import ProgressBarComponent from '@/components/common/ProgressBarComponent.vue'
 
 
 const routes = [
@@ -67,6 +68,15 @@ const routes = [
     path: '/tooltip',
     name: 'tooltip',
     component: ToolTipComponent,
+    meta: { layout: DefaultLayout },
+  },
+
+
+  {
+    path: '/progressbar',
+    name: 'progressbar',
+    component: ProgressBarComponent,
+    meta: { layout: DefaultLayout },
   },
 ]
 
