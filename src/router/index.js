@@ -11,8 +11,8 @@ import PermissionPage from '@/views/PermissionPage.vue'
 import SalesPage from '@/views/SalesPage.vue'
 import ProfilePage from '@/views/ProfilePage.vue'
 import ToolTipComponent from '@/components/common/ToolTipComponent.vue'
-import ProgressBarComponent from '@/components/common/ProgressBarComponent.vue'
 import TreeTestPage from '@/views/TreeTestPage.vue'
+import ProgressBarTestPage from '@/views/ProgressBarTestPage.vue'
 
 
 const routes = [
@@ -76,7 +76,7 @@ const routes = [
   {
     path: '/progressbar',
     name: 'progressbar',
-    component: ProgressBarComponent,
+    component: ProgressBarTestPage,
     meta: { layout: DefaultLayout },
   },
 
