@@ -6,15 +6,14 @@
       </template>
     </v-toolbar>
 
-    <v-text-field
-      v-model="search"
-      clear-icon="mdi-close-circle-outline"
-      label="조직원을 검색하세요."
-      variant="solo-filled">
-    </v-text-field>
-
     <v-row>
       <v-col>
+        <v-text-field
+          v-model="search"
+          clear-icon="mdi-close-circle-outline"
+          label="조직원을 검색하세요."
+          variant="solo-filled">
+        </v-text-field>
         <v-card-text>
           <v-treeview
             v-model:selected="tree"
@@ -79,299 +78,67 @@
 </template>
 
 <script setup>
-import { ref, watch, computed } from 'vue'
+import { ref, watch, computed, onMounted } from 'vue'
 
 const tree = ref([])
 const search = ref(null)
 
-// 하드코딩된 items 데이터
-const items = ref([
-  {
-    id: 1,
-    name: '통신사업본부',
-    children: [
-      {
-        id: 2,
-        name: '통신이행담당',
-        children: [
-          {
-            id: 2,
-            name: '가입정보팀',
-            children: [
-              {
-                id: 3,
-                name: '양정호 팀장',
-              },
-              {
-                id: 4,
-                name: '김봉진 수석',
-              },
-              {
-                id: 3,
-                name: '김범석 책임',
-              },
-              {
-                id: 4,
-                name: '이한림 책임',
-              }
-            ]
-          },
-          {
-            id: 3,
-            name: '고객정보팀',
-            children: [
-              {
-                id: 3,
-                name: '김정옥 팀장',
-              },
-              {
-                id: 4,
-                name: '김은미 책임',
-              },
-              {
-                id: 3,
-                name: '김학희 책임',
-              },
-              {
-                id: 4,
-                name: '류광열 책임',
-              },
-              {
-                id: 4,
-                name: '박상철 사원',
-              },
-              {
-                id: 4,
-                name: '임세인 사원',
-              }
-            ]
-          },
-          {
-            id: 4,
-            name: '빌링시스템팀',
-            children: [
-              {
-                id: 3,
-                name: '최경묵 팀장',
-              },
-              {
-                id: 4,
-                name: '김현우 수석',
-              },
-              {
-                id: 3,
-                name: '박준성 수석',
-              },
-              {
-                id: 4,
-                name: '김경혜 사원',
-              }
-            ]
-          },
-          {
-            id: 5,
-            name: '영업정보팀',
-            children: [
-              {
-                id: 3,
-                name: '조용성 팀장',
-              },
-              {
-                id: 4,
-                name: '박상백 수석',
-              },
-              {
-                id: 3,
-                name: '김미라 책임',
-              },
-              {
-                id: 4,
-                name: '김승현 책임',
-              }
-            ]
-          },
-          {
-            id: 6,
-            name: '기반기술팀',
-            children: [
-              {
-                id: 3,
-                name: '김서호 팀장',
-              },
-              {
-                id: 4,
-                name: '이진욱 책임',
-              },
-              {
-                id: 3,
-                name: '최원석 책임',
-              },
-              {
-                id: 4,
-                name: '송수현 선임',
-              }
-            ]
-          }
-        ],
-      },
-      {
-        id: 3,
-        name: '경영빌링담당',
-        children: [
-          {
-            id: 0,
-            name: '경영플랫폼팀',
-            children: [
-              {
-                id: 0,
-                name: '이용설 팀장'
-              },
-              {
-                id: 0,
-                name: '지정현 책임'
-              },
-              {
-                id: 0,
-                name: '서효원 선임'
-              }
-            ]
-          },
-          {
-            id: 0,
-            name: 'CRM팀',
-            children: [
-              {
-                id: 0,
-                name: '김태종 팀장'
-              },
-              {
-                id: 0,
-                name: '김도연 책임'
-              },
-              {
-                id: 0,
-                name: '최아연 선임'
-              }
-            ]
-          },
-          {
-            id: 0,
-            name: '경영정보팀',
-            children: [
-              {
-                id: 0,
-                name: '허준영 이사'
-              },
-              {
-                id: 0,
-                name: '강국구 책임'
-              },
-              {
-                id: 0,
-                name: '김상구 선임'
-              }
-            ]
-          },
-          {
-            id: 0,
-            name: 'NMS사업팀',
-            children: [
-              {
-                id: 0,
-                name: '박준규 팀장'
-              },
-              {
-                id: 0,
-                name: '노재덕 책임'
-              },
-              {
-                id: 0,
-                name: '김종대 선임'
-              }
-            ]
-          },
-          {
-            id: 0,
-            name: '융합데이터분석팀',
-            children: [
-              {
-                id: 0,
-                name: '최봉준 팀장'
-              },
-              {
-                id: 0,
-                name: '이동욱 사원'
-              },
-              {
-                id: 0,
-                name: '이지수 사원'
-              }
-            ]
-          }
-        ]
-      }
-    ]
+/* 실제로는 조직원들 데이터 가져오는 api 통신해야됨 */
+const rawData = ref(
+{
+  "통신사업본부": {
+    "통신이행담당":  {
+      "가입정보팀": ["양정호 팀장", "김봉진 수석"],
+      "고갹정보팀": ["김정옥 팀장", "김은미 책임"],
+      "빌링시스템팀": ["최경묵 팀장", "김현우 수석"],
+    },
+    "경영빌림당당":{
+      "경영플랫폼팀": ["이용설 팀장", "지정현 책임"],
+      "CRM팀": ["김태종 팀장", "김도연 책임"],
+    }
   },
-  {
-    id: 1,
-    name: '미래사업본부',
-    children: [
-      {
-        id: 1,
-        name: '전략사업담당',
-        children: [
-          {
-            id: 1,
-            name: '컨버저스사업팀',
-            children: [
-              {
-                id: 1,
-                name: '채은희 팀장',
-              }
-            ]
-          }
-        ]
-      },
-      {
-        id: 1,
-        name: 'AI/Data 사업담당',
-        children: [
-          {
-            id: 1,
-            name: '핀테크사업팀',
-            children: [
-              {
-                id: 1,
-                name: '고영석 팀장',
-              }
-            ]
-          }
-        ]
-      },
-      {
-        id: 1,
-        name: 'UX STUDIO TF',
-        children: [
-          {
-            id: 1,
-            name: 'IOT 융합사업팀',
-            children: [
-              {
-                id: 1,
-                name: '권영호 팀장',
-              }
-            ]
-          }
-        ]
+  "미래사업본부": {
+    "전략사업담당":  {
+      "컨버저스사업팀": ["채은희 팀장", "나성연 책임"],
+      "핀테크사업팀": ["고영석 팀장", "김동수 책임"],
+    },
+    "AI/DATA사업담당":{
+      "Data플랫폼사업팀": ["조창원 팀장", "최정웅 수석"],
+      "지능플랫폼사업팀": ["금정우 팀장", "김도연 책임"],
+    }
+  },
+}
+);
+
+/* 리스트를 트리뷰 구조로 바꾸는 함수 */
+const transformToTree = (data, parentId = 1) => {
+  let idCounter = parentId;
+  function traverse(obj, name) {
+    const node = { id: idCounter++, name, children: [] };
+    if (Array.isArray(obj)) {
+      node.children = obj.map(item =>
+        typeof item === "string" ? { id: idCounter++, name: item } : traverse(item, Object.keys(item)[0])
+      );
+    } else if (typeof obj === "object") {
+      for (const key in obj) {
+        node.children.push(traverse(obj[key], key));
       }
-    ]
+    }
+    return node;
   }
-])
+  return Object.keys(data).map(key => traverse(data[key], key));
+}
+
+onMounted(() => {
+  items.value = transformToTree(rawData.value);
+});
+
+
+const items = ref([]);
 
 const selectedCount = computed(() => tree.value.length);
 const totalCount = 200;
 
-// load 함수를 호출하면 하드코딩된 데이터를 반환합니다.
 function load() {
   return items.value[0]
 }
