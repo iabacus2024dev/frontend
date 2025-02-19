@@ -12,6 +12,7 @@ import SalesPage from '@/views/SalesPage.vue'
 import ProfilePage from '@/views/ProfilePage.vue'
 import ToolTipComponent from '@/components/common/ToolTipComponent.vue'
 import ProgressBarComponent from '@/components/common/ProgressBarComponent.vue'
+import TreeTestPage from '@/views/TreeTestPage.vue'
 
 
 const routes = [
@@ -78,10 +79,18 @@ const routes = [
     component: ProgressBarComponent,
     meta: { layout: DefaultLayout },
   },
+
   {
     path: '/searchbar',
     name: 'searchbar',
     component: SearchBarTestPage
+  },
+
+  {
+    path: '/tree',
+    name: 'tree',
+    component: TreeTestPage,
+    meta: { layout: DefaultLayout }
   }
 ]
 
