@@ -10,12 +10,12 @@ import RestApiAdapter from '@/adapters/restApiAdapter'
 import { registerLayouts } from './layouts/register';
 
 
-const app = createApp(App)
+const app = createApp(App);
 
 registerLayouts(app);
-app.use(pinia)
-app.use(router)
-app.use(vuetify)
+app.use(pinia);
+app.use(router);
+app.use(vuetify);
 
 // app.config.errorHandler = async (err, vm, info) => {
 //     openErrorPopUp(err, vm, info)

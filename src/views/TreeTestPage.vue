@@ -1,53 +1,40 @@
 <template>
-    <div>
-      <h1>트리 컴포넌트 테스트</h1>
-      <TreeView
-        class="tree"
-        :model="treeData"
-        :addChild="addChildToTreeData"
-      />
-    </div>
-  </template>
-  
-  <script setup>
-  import { ref } from 'vue';
-  import TreeView from '@/components/tree/TreeView.vue';
-  
-  // 트리 데이터를 설정
-  const treeData = ref({
-    name: "트리",
-    children: [
-      { name: "hello" },
-      { name: "world" },
-      {
-        name: "자식 폴더",
-        children: [
-          {
-            name: "child folder",
-            children: [{ name: "hello" }, { name: "world" }],
-          },
-          { name: "hello" },
-          { name: "world" },
-          {
-            name: "child folder",
-            children: [{ name: "hello" }, { name: "world" }],
-          },
-        ],
-      },
-    ],
-  });
-  
+  <!-- 페이지 헤더 -->
+  <v-container class="page-header">
+    <h1>트리뷰 컴포넌트를 테스트하는 페이지</h1>
+  </v-container>
+ 
+  <v-container class="box">
+    <TreeView
+      :treeDataResponse="treeDataResponse"
+    />
+  </v-container>
+</template>
 
-  </script>
-  
-  <style scoped>
-  .tree {
-    margin-left: 20px;
+
+<script setup>
+
+import { ref } from 'vue';
+import TreeView from '@/components/tree/TreeView.vue';
+
+const treeDataResponse = ref([
+  {
+    id: '1',
+    name: '가',
+    children: [
+      { id: 2, name: '가로수길'},
+      { id: 3, name: '가로등'},
+      { id: 4, name: '가위'}
+    ]
+  },
+
+  {
+    id: '5',
+    name: '나',
+    children: [
+      { id: 6, name: '나의 아저씨'},
+      { id: 7, name: '나나'},
+    ]
   }
-  
-  h1 {
-    text-align: center;
-    font-size: 24px;
-  }
-  </style>
-  
+]);
+</script>
