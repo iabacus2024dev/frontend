@@ -1,8 +1,8 @@
 import { createVuetify } from 'vuetify'
+import { VTreeview } from 'vuetify/labs/VTreeview'
 
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
-import { VTreeview } from 'vuetify/labs/VTreeview'
 
 export default createVuetify({
   theme: {
@@ -11,4 +11,4 @@ export default createVuetify({
   components: {
     VTreeview,
   }
-})
+});

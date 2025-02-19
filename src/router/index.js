@@ -11,6 +11,7 @@ import PermissionPage from '@/views/PermissionPage.vue'
 import SalesPage from '@/views/SalesPage.vue'
 import ProfilePage from '@/views/ProfilePage.vue'
 import ToolTipComponent from '@/components/common/ToolTipComponent.vue'
+import TransferListTestPage from '@/views/TransferListTestPage.vue'
 import ProgressBarComponent from '@/components/common/ProgressBarComponent.vue'
 import TreeTestPage from '@/views/TreeTestPage.vue'
 
@@ -58,7 +59,8 @@ const routes = [
     component: ProfilePage,
     meta: { layout: DefaultLayout, activeIndex: 5 },
   },
-  /* [추후 삭제 예정] 테이블 컴포넌트 테스트용으로 만든 페이지입니다. */
+
+  /* [추후 삭제 예정] 컴포넌트 테스트용으로 만든 페이지들입니다. */
   {
     path: '/table',
     name: 'table',
@@ -71,21 +73,25 @@ const routes = [
     component: ToolTipComponent,
     meta: { layout: DefaultLayout },
   },
-
-
   {
     path: '/progressbar',
     name: 'progressbar',
     component: ProgressBarComponent,
     meta: { layout: DefaultLayout },
   },
-
   {
     path: '/searchbar',
     name: 'searchbar',
+    component: SearchBarTestPage,
+    meta: { layout: DefaultLayout },
+  },
+  {
+    path: '/transferList',
+    name: 'transferList',
+    component: TransferListTestPage,
+    meta: { layout: DefaultLayout },
     component: SearchBarTestPage
   },
-
   {
     path: '/tree',
     name: 'tree',
