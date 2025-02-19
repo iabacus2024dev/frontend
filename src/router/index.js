@@ -90,7 +90,6 @@ const routes = [
     name: 'transferList',
     component: TransferListTestPage,
     meta: { layout: DefaultLayout },
-    component: SearchBarTestPage
   },
   {
     path: '/tree',
