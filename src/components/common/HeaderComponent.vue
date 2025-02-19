@@ -20,7 +20,7 @@
         @click="goTo(item.path)"
         class="me-2 text-none"
         slim
-        v-bind="i === activeIndex && { color: '#db693b' }"
+        v-bind="i === activeIndex && { color: '#EB6129' }"
         :text="item.text"
       />
     </template>
@@ -28,11 +28,12 @@
     <v-spacer />
 
     <template #append>
+      <span>이동욱님</span>
       <v-btn class="ms-1" icon>
         <v-avatar icon="mdi-account-circle" />
         <v-menu activator="parent" origin="top">
           <v-list>
-            <v-list-item link title="마이페이지" @click="goTo('/profiles')" />
+            <v-list-item link title="마이페이지" @click="goTo('/profiles')" :active="activeIndex === 5"/>
             <v-list-item link title="로그아웃" @click="logout" />
           </v-list>
         </v-menu>
@@ -61,13 +62,12 @@
 </template>
 
 <script setup>
-import { shallowRef } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed, shallowRef } from 'vue';
+import { useRouter } from 'vue-router';
 
 const router = useRouter()
 
 const drawer = shallowRef(false)
-defineProps(['activeIndex'])
 
 const items = [
   {
@@ -99,4 +99,8 @@ const goTo = (path) => {
 const logout = () => {
   console.log('logout')
 }
+
+const activeIndex = computed(() => {
+  return router.currentRoute.value.meta.activeIndex
+})
 </script>

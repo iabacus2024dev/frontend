@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <HeaderComponent :activeIndex="activeIndex" />
+    <HeaderComponent />
     <v-main>
       <slot></slot>
     </v-main>
@@ -9,17 +9,8 @@
 </template>
 
 <script setup>
-import HeaderComponent from '@/components/common/HeaderComponent.vue'
-import FooterComponent from '@/components/common/FooterComponent.vue'
-
-import { computed } from 'vue'
-import { useRouter } from 'vue-router'
-
-const router = useRouter()
-
-const activeIndex = computed(() => {
-  return router.currentRoute.value.meta.activeIndex
-})
+import HeaderComponent from '@/components/common/HeaderComponent.vue';
+import FooterComponent from '@/components/common/FooterComponent.vue';
 </script>
 
 <style scoped></style>
