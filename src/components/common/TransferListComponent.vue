@@ -22,7 +22,7 @@
       <v-treeview
         v-model:selected="tree"
         :items="items"
-        :load-children="load"
+        :load-children="loadItems"
         item-title="name"
         item-value="id"
         select-strategy="classic"
@@ -71,7 +71,7 @@
     <v-btn
       text="초기화"
       variant="text"
-      @click="tree = []"
+      @click="resetChips"
       class="reset-btn">
     </v-btn>
     <v-btn
@@ -84,47 +84,28 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { defineProps } from 'vue';
+import { rawData } from './memberData';
 
-const props = defineProps({
-  rawDataProps: Object,
-  test: Array,
-})
 
-const tree = ref([])
-const search = ref(null)
+const search = ref(null);
+const tree = ref([]);
+const items = ref([]);
 
-/* 실제로는 조직원들 데이터 가져오는 api 통신해야됨 */
-const rawData = ref(
-{
-  "통신사업본부": {
-    "통신이행담당":  {
-      "가입정보팀": ["양정호 팀장", "김봉진 수석"],
-      "고갹정보팀": ["김정옥 팀장", "김은미 책임"],
-      "빌링시스템팀": ["최경묵 팀장", "김현우 수석"],
-    },
-    "경영빌림당당":{
-      "경영플랫폼팀": ["이용설 팀장", "지정현 책임"],
-      "CRM팀": ["김태종 팀장", "김도연 책임"],
-    }
-  },
-  "미래사업본부": {
-    "전략사업담당":  {
-      "컨버저스사업팀": ["채은희 팀장", "나성연 책임"],
-      "핀테크사업팀": ["고영석 팀장", "김동수 책임"],
-    },
-    "AI/DATA사업담당":{
-      "Data플랫폼사업팀": ["조창원 팀장", "최정웅 수석"],
-      "지능플랫폼사업팀": ["금정우 팀장", "김도연 책임"],
-    }
-  },
-});
+const selectedCount = computed(() => tree.value.length);
+const totalCount = 200;
+
 
 /* 리스트를 트리뷰 구조로 바꾸는 함수 */
 const transformToTree = (data, parentId = 1) => {
   let idCounter = parentId;
+
   function traverse(obj, name) {
-    const node = { id: idCounter++, name, children: [] };
+    const node = {
+      id: idCounter++,
+      name,
+      children: []
+    };
+
     if (Array.isArray(obj)) {
       node.children = obj.map(item =>
         typeof item === "string" ? { id: idCounter++, name: item } : traverse(item, Object.keys(item)[0])
@@ -134,25 +115,24 @@ const transformToTree = (data, parentId = 1) => {
         node.children.push(traverse(obj[key], key));
       }
     }
+
     return node;
   }
+
   return Object.keys(data).map(key => traverse(data[key], key));
 }
 
 onMounted(() => {
-  items.value = transformToTree(rawData.value);
-  console.log(props.test);
+  items.value = transformToTree(rawData);
 });
 
+const resetChips= () => {
+  tree.value = [];
+};
 
-const items = ref([]);
-
-const selectedCount = computed(() => tree.value.length);
-const totalCount = 200;
-
-function load() {
-  return items.value[0]
-}
+const loadItems = () => {
+  return items.value[0];
+};
 </script>
 
 <style scoped>
@@ -240,5 +220,4 @@ function load() {
 .reset-btn {
   background-color: lightgrey;
 }
-
 </style>
