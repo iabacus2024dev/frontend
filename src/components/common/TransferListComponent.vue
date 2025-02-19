@@ -194,7 +194,9 @@ const loadItems = () => {
 }
 
 .chip-wrapper {
-  padding: 10px 20px;
+  padding: 10px 18px;
+  height: 402px;
+  overflow-y: auto;
 }
 
 .chip-wrapper span {
