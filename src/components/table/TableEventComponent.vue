@@ -5,7 +5,7 @@
           v-if="props.tableDataEvent.createData"
           variant="tonal"
           density="comfortable"
-          prepend-icon="mdi-plus-circle"
+          prepend-icon="mdi-plus"
           @click="handleCreateDataButtonClick"
       >
         등록

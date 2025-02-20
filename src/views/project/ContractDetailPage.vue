@@ -15,6 +15,23 @@
     </VCol>
   </VRow>
 </VContainer>
+<VContainer class="btns-container">
+  <VBtn
+    variant="tonal"
+    density="comfortable"
+    class="delete-btn"
+  >
+    계약 삭제
+  </VBtn>
+  <VBtn
+    variant="tonal"
+    density="comfortable"
+    class="update-btn ml-2"
+  >
+    계약 수정
+  </VBtn>
+</VContainer>
+
 
 <!-- 테이블 -->
 <VContainer class="mt-8">
@@ -71,7 +88,17 @@ const tableDataEventCondition = ref({
 </script>
 
 <style scoped>
+.btns-container {
+  display: flex;
+  justify-content: end;
+}
+
 .v-card {
   border-color: lightgray;
+}
+
+.update-btn {
+  background-color: #EB6129;
+  color: white;
 }
 </style>
