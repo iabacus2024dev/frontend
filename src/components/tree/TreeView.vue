@@ -1,5 +1,9 @@
 <template>
-    <v-treeview :items="items" item-title="name" item-children="children"></v-treeview>
+    <v-app>
+        <v-container>
+            <v-treeview :items="items" item-title="name" item-children="children"></v-treeview>
+        </v-container>
+    </v-app>
 </template>
 
 
