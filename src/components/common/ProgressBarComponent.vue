@@ -1,34 +1,25 @@
-<!-- 페이지 로딩이 완료될 때 까지만 프로그레스바 표시 -->
-<!-- indeterminate : 무한 회전, 진행률을 표시하려면 value 사용  -->
 <template>
-    <div v-if="isLoading" class="loading-container">
-      <v-progress-circular
-        :width="3"
-        color="#EB6129"
-        indeterminate      
-      ></v-progress-circular>
-    </div>
-  </template>
+  <div v-if="isLoading" class="loading-container">
+    <v-progress-circular
+      color="#EB6129"
+      indeterminate
+    ></v-progress-circular>
+  </div>
+</template>
+
+<script setup>
+  import { defineProps } from 'vue';
   
-  <script>
-  export default {
-    data() {
-      return {
-        isLoading: true, // 처음에는 로딩 상태
-      };
-    },
-    /*
-    mounted() {
-      // 2초 후 로딩 종료 (실제 환경에서는 데이터 요청 완료 후 false로 변경)
-      setTimeout(() => {
-        this.isLoading = false;
-      }, 2000);
+  const props = defineProps({
+    isLoading: {
+      type: Boolean,
+      required: true
     }
-    */
-  };
-  </script>
+  });
+</script>
+
   
-  <style scoped>
+<style scoped>
   /* 전체 화면을 차지하면서 정중앙 배치 */
   .loading-container {
     display: flex;
@@ -42,6 +33,6 @@
     background: rgba(255, 255, 255, 0.8); /* 배경을 반투명하게 */
     z-index: 9999; /* 다른 요소 위에 표시 */
   }
-  </style>
+</style>
   
 
