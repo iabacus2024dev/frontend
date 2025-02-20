@@ -11,6 +11,8 @@
 </template>
 
 <script setup>
+import { defineEmits, defineProps } from 'vue';
+
 defineProps(['page', 'length']);
 let emits = defineEmits(['change-page']);
 
