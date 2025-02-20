@@ -3,7 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomePage.vue'
 import TableTestPage from '@/views/TableTestPage.vue'
 import SearchBarTestPage from '@/views/SearchBarTestPage.vue'
-import ProjectPage from '@/views/ProjectPage.vue'
+import ProjectPage from '@/views/project/ProjectPage.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import MemberPage from '@/views/MemberPage.vue'
 import PartnersPage from '@/views/PartnersPage.vue'
@@ -14,6 +14,7 @@ import ToolTipComponent from '@/components/common/ToolTipComponent.vue'
 import TransferListTestPage from '@/views/TransferListTestPage.vue'
 import ProgressBarComponent from '@/components/common/ProgressBarComponent.vue'
 import TreeTestPage from '@/views/TreeTestPage.vue'
+import ContractDetailPage from '@/views/project/ContractDetailPage.vue'
 
 
 const routes = [
@@ -59,7 +60,12 @@ const routes = [
     component: ProfilePage,
     meta: { layout: DefaultLayout, activeIndex: 5 },
   },
-
+  {
+    path: '/projects/detail/contracts/detail', // '/contracts/:id',
+    name: 'contracts',
+    component: ContractDetailPage,
+    meta: { layout: DefaultLayout, activeIndex: 0 },
+  },
   /* [추후 삭제 예정] 컴포넌트 테스트용으로 만든 페이지들입니다. */
   {
     path: '/table',
