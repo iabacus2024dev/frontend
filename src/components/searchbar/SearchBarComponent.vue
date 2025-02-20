@@ -1,166 +1,141 @@
 <template>
-  <div class="search-bar">
-    <div class="search-container">
-      <div v-for="(row, rowIndex) in rows" :key="rowIndex" class="search-row">
-        <div
-          v-for="(field, index) in row.fields"
-          :key="index"
-          class="search-field"
-          :style="{ width: field.width ? field.width : (field.columnCount ? `calc((100% - ${buttonWidth}) / ${field.columnCount})` : '200px') }"
-        >
-          <label :for="field.key">{{ field.label }}</label>
+  <v-card class="pa-4">
+    <v-row v-for="(row, rowIndex) in rows" :key="rowIndex">
+      <v-col
+        v-for="(field, index) in row.fields"
+        :key="index"
+        cols = "12"
+        class="search-field "
+        md="3"
+        sm="5"
+      >
+        <div class="field-wrapper">
+          <!-- 레이블 (왼쪽 정렬) -->
+          <label class="search-label" :for="field.key">{{ field.label }}</label>
 
           <!-- 텍스트 입력 -->
-          <input
+          <v-text-field
             v-if="field.type === 'text'"
             v-model="searchData[field.key]"
-            type="text"
-            class="input"
-            :placeholder="field.placeholder || ''"
-          />
+            variant="outlined"
+            density="compact"
+            hide-details="auto"
+            class="search-input"
+          ></v-text-field>
 
           <!-- 날짜 입력 -->
-          <input
+          <v-date-input
             v-else-if="field.type === 'date'"
             v-model="searchData[field.key]"
-            type="date"
-            class="input"
-          />
+            prepend-icon=""
+            variant="outlined"
+            density="compact"
+            :config="{ format: 'yyyy-MM-dd' }"
+            hide-details="auto"
+            class="search-input"
+          ></v-date-input>
 
           <!-- 드롭다운 -->
-          <select
+          <v-select
             v-else-if="field.type === 'select'"
+            label="전체"
             v-model="searchData[field.key]"
-            class="input"
-          >
-            <option value="" disabled selected>선택하세요</option>
-            <option v-for="option in field.options" :key="option.value" :value="option.value">
-              {{ option.label }}
-            </option>
-          </select>
+            :items="field.options"
+            item-title="label"
+            item-value="value"
+            variant="outlined"
+            density="compact"
+            hide-details="auto"
+            class="search-input"
+          ></v-select>
         </div>
+      </v-col>
+    </v-row>
 
-        <!-- 마지막 행일 때 버튼 포함 -->
-        <div v-if="rowIndex === rows.length - 1" class="button-group" :style="{ width: buttonWidth-0.001 }">
-          <button @click="onReset" class="btn reset">초기화</button>
-          <button @click="onSearch" class="btn search">검색</button>
-        </div>
-      </div>
-    </div>
-  </div>
+    <!-- 마지막 행에 버튼 포함 -->
+    <v-row class="button-group pa-0">
+      <v-col class="d-flex justify-end">
+        <v-btn @click="onReset" class="btn reset mr-3" color="grey" variant="flat">초기화</v-btn>
+        <v-btn @click="onSearch" class="btn search" color="red" variant="flat">검색</v-btn>
+      </v-col>
+    </v-row>
+  </v-card>
 </template>
 
-<script>
-export default {
-  props: {
-    rows: {
-      type: Array,
-      required: true
-    },
-    columnCount: {
-      type: Number,
-      default: 3 // 기본 한 줄에 3개 배치
-    },
-    buttonWidth: {
-      type: String,
-      default: "250px" // 버튼 그룹의 너비 (초기화+검색 버튼 크기 합)
-    }
+<script setup>
+import { reactive, defineProps, defineEmits } from "vue";
+import { VDateInput } from "vuetify/labs/VDateInput";
+
+// Props 정의
+const props = defineProps({
+  rows: {
+    type: Array,
+    required: true
   },
-  data() {
-    return {
-      searchData: {}
-    };
-  },
-  methods: {
-    onSearch() {
-      this.$emit("search", this.searchData);
-    },
-    onReset() {
-      this.searchData = {};
-      this.$emit("reset");
-    }
+  buttonWidth: {
+    type: String,
+    default: "250px", // 버튼 그룹 너비
   }
+});
+
+// Emits 정의
+const emit = defineEmits(["search", "reset"]);
+
+// 검색 데이터 상태
+const searchData = reactive({});
+
+// 검색 실행
+const onSearch = () => {
+  emit("search", searchData);
+};
+
+// 검색 조건 초기화
+const onReset = () => {
+  Object.keys(searchData).forEach(key => {
+    searchData[key] = "";
+  });
+  emit("reset");
 };
 </script>
 
 <style scoped>
-/* 검색 바 전체 스타일 */
-.search-bar {
-  display: flex;
-  flex-direction: column;
-  padding: 15px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background: #fff;
-  margin-left: 20px;
-  margin-right: 20px;
-}
-
-/* 검색 필드 컨테이너 */
-.search-container {
-  display: flex;
-  flex-direction: column;
-}
-
-/* 검색 행 */
-.search-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px 20px;
-  align-items: center;
-  justify-content: flex-start;
-  margin-bottom: 10px;
-}
-
-/* 검색 필드 개별 스타일 */
-.search-field {
+/* 레이블과 입력 필드를 가로 정렬 */
+.field-wrapper {
   display: flex;
   align-items: center;
+  gap: 8px; /* 레이블과 입력 필드 사이 간격 */
 }
 
 /* 레이블 스타일 */
-.search-field label {
-  font-size: 14px;
-  color: #333;
-  min-width: 100px;
-  text-align: right;
-  margin-right: 8px;
+.search-label {
+  min-width: 100px; /* 레이블 최소 너비 */
+  text-align: right; /* 텍스트를 오른쪽 정렬 */
+  font-weight: bold;
+  font-size: clamp(11px, 1.3vw, 14px); /* 최소 12px, 기본 1.2vw, 최대 14px */
 }
 
 /* 입력 필드 스타일 */
-.input {
-  flex: 1;
-  padding: 6px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  width: 100%;
-  min-width: 120px;
+.search-input {
+  flex: 1; /* 남은 공간을 모두 차지하도록 설정 */
 }
 
-/* 버튼 컨테이너 (마지막 행에 포함) */
-.button-group {
-  display: flex;
-  justify-content: flex-end;
-  margin-left: auto;
+/* v-select 전체 크기 조절 */
+:deep(.v-field) {
+  min-height: 20px !important;  /* 높이 줄이기 */
+  font-size: clamp(11px, 1.3vw, 14px); /* 최소 12px, 기본 1.2vw, 최대 14px */
+  padding: 2px 8px !important;  /* 내부 여백 줄이기 */
 }
 
-/* 버튼 스타일 */
-.btn {
-  padding: 8px 12px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+/* 입력 필드 크기 조절 */
+:deep(.v-field__input) {
+  min-height: 28px !important;
+  font-size: clamp(11px, 1.3vw, 14px); /* 최소 12px, 기본 1.2vw, 최대 14px */
+  padding: 2px 4px !important;
 }
 
-.btn.reset {
-  background-color: #ccc;
-  color: white;
-  margin-right: 5px;
+/* 드롭다운 아이콘 크기 줄이기 */
+:deep(.v-select__menu-icon) {
+  font-size: 18px !important;
 }
 
-.btn.search {
-  background-color: #e76f51;
-  color: white;
-}
 </style>
