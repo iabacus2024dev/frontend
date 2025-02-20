@@ -15,6 +15,7 @@ import ProgressBarTestPage from '@/views/ProgressBarTestPage.vue'
 import TransferListTestPage from '@/views/TransferListTestPage.vue';
 import TreeTestPage from '@/views/TreeTestPage.vue';
 import ToolTipTestPage from '@/views/ToolTipTestPage.vue'
+import ContractDetailPage from '@/views/project/ContractDetailPage.vue';
 
 const routes = [
   {
@@ -174,6 +175,12 @@ const routes = [
         },
       ],
     },
+  },
+  {
+    path: '/projects/detail/contracts/detail', // '/contracts/:id',
+    name: 'contracts',
+    component: ContractDetailPage,
+    meta: { layout: DefaultLayout, activeIndex: 0 },
   },
   /* [추후 삭제 예정] 테이블 컴포넌트 테스트용으로 만든 페이지입니다. */
   {
