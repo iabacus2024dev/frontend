@@ -32,6 +32,7 @@
     variant="tonal"
     density="comfortable"
     class="delete-btn"
+    @click="fnDeleteBtn"
   >
     계약 삭제
   </VBtn>
@@ -123,6 +124,10 @@ const fnUpdateBtn = () => {
   console.log('프로젝트 정보:', projectInfoData.value);
   console.log('계약 정보:', contractInfoData.value);
   console.log('계약 정보:', progressInfoData.value);
+}
+
+const fnDeleteBtn = () => {
+  console.log("Todo >>> 계약 삭제 의사 확인 팝업 띄우기");
 }
 
 </script>
