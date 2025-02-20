@@ -36,6 +36,12 @@
 </template>
 
 <script setup>
+import { defineModel } from 'vue';
+
+const projectName = defineModel('projectName');
+const projectCode = defineModel('projectCode');
+
+
 </script>
 
 <style scoped>

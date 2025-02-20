@@ -7,11 +7,23 @@
 <VContainer>
   <VRow>
     <VCol cols="12" md="6">
-      <ProjectInfoComponent class="mb-6"/>
-      <ContractInfoComponent />
+      <ProjectInfoComponent
+        class="mb-6"
+        v-model:project-name="projectInfoData.projectName" v-model:project-code="projectInfoData.projectCode"
+      />
+      <ContractInfoComponent
+        v-model:contract-code="contractInfoData.contractCode"
+        v-model:start-date="contractInfoData.startDate"
+        v-model:end-date="contractInfoData.endDate"
+      />
     </VCol>
     <VCol cols="12" md="6" >
-      <ProgressInfoComponent style="height: 100%;"/>
+      <ProgressInfoComponent
+        style="height: 100%;"
+        v-model:status="progressInfoData.status"
+        v-model:start-date="progressInfoData.startDate"
+        v-model:end-date="progressInfoData.endDate"
+      />
     </VCol>
   </VRow>
 </VContainer>
@@ -27,6 +39,7 @@
     variant="tonal"
     density="comfortable"
     class="update-btn ml-2"
+    @click="fnUpdateBtn"
   >
     계약 수정
   </VBtn>
@@ -84,6 +97,33 @@ const tableDataResponse = ref([
 const tableDataEventCondition = ref({
   createData: true,
 });
+
+
+/* 추후에 api로 상세 조회한 정보를 가져와야함 */
+const projectInfoData = ref({
+  projectName: "커피 프로젝트",
+  projectCode: "coffeepj-01",
+})
+
+const contractInfoData = ref({
+  contractCode: "coffeepj-01-ctr-01",
+  startDate: "2025-02-04",
+  endDate: "2025-03-06",
+})
+
+const progressInfoData = ref({
+  status: "예약",
+  startDate: "2025-02-06",
+  endDate: "2025-03-06",
+})
+
+// 계약 수정 버튼 클릭시 콘솔 출력
+const fnUpdateBtn = () => {
+  console.log("Todo >>> 계약 수정 의사 확인 팝업 띄우기");
+  console.log('프로젝트 정보:', projectInfoData.value);
+  console.log('계약 정보:', contractInfoData.value);
+  console.log('계약 정보:', progressInfoData.value);
+}
 
 </script>
 

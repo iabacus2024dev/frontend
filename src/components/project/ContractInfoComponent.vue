@@ -23,22 +23,26 @@
         md="6"
         class="pr-2"
       >
-        <VDateInput
+        <VTextField
+          v-model="startDate"
           label="계약시작일자"
+          type="date"
           variant="outlined"
           density="compact">
-        </VDateInput>
+        </VTextField>
       </VCol>
       <VCol
         cols="12"
         md="6"
         class="pl-2"
       >
-        <VDateInput
+        <VTextField
+          v-model="endDate"
           label="계약종료일자"
+          type="date"
           variant="outlined"
           density="compact">
-        </VDateInput>
+        </VTextField>
       </VCol>
   </VRow>
   </VCardText>
@@ -46,6 +50,11 @@
 </template>
 
 <script setup>
+import { defineModel } from 'vue';
+
+const contractCode = defineModel('contractCode');
+const startDate = defineModel('startDate');
+const endDate = defineModel('endDate');
 
 </script>
 
