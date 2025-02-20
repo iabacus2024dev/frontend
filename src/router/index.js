@@ -1,19 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-import HomeView from '@/views/HomePage.vue'
-import TableTestPage from '@/views/TableTestPage.vue'
-import SearchBarTestPage from '@/views/SearchBarTestPage.vue'
-import ProjectPage from '@/views/ProjectPage.vue'
-import DefaultLayout from '@/layouts/DefaultLayout.vue'
-import MemberPage from '@/views/MemberPage.vue'
-import PartnersPage from '@/views/PartnersPage.vue'
-import PermissionPage from '@/views/PermissionPage.vue'
-import SalesPage from '@/views/SalesPage.vue'
-import ProfilePage from '@/views/ProfilePage.vue'
-import ProgressBarComponent from '@/components/common/ProgressBarComponent.vue'
-import TreeTestPage from '@/views/TreeTestPage.vue'
-import ToolTipTestPage from '@/views/ToolTipTestPage.vue'
-
 import HomePage from '@/views/HomePage.vue';
 import TableTestPage from '@/views/TableTestPage.vue';
 import SearchBarTestPage from '@/views/SearchBarTestPage.vue';
@@ -25,9 +11,10 @@ import PermissionPage from '@/views/PermissionPage.vue';
 import SalesPage from '@/views/SalesPage.vue';
 import ProfilePage from '@/views/ProfilePage.vue';
 import ToolTipComponent from '@/components/common/ToolTipComponent.vue';
-import ProgressBarComponent from '@/components/common/ProgressBarComponent.vue';
+import ProgressBarTestPage from '@/views/ProgressBarTestPage.vue'
 import TransferListTestPage from '@/views/TransferListTestPage.vue';
 import TreeTestPage from '@/views/TreeTestPage.vue';
+import ToolTipTestPage from '@/views/ToolTipTestPage.vue'
 
 const routes = [
   {
