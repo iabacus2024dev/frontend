@@ -1,13 +1,13 @@
 <template>
 <VCard
   variant="outlined"
-  class="pt-3 px-3"
+  class="pt-2 px-2"
 >
   <VCardItem>
     <VCardTitle>진행 정보</VCardTitle>
   </VCardItem>
   <VCardText>
-    <VRow>
+    <VRow no-gutters="0">
     <VCol
       cols="12"
       md="12"
@@ -22,6 +22,7 @@
     <VCol
       cols="12"
       md="6"
+      class="pr-2"
     >
       <VDateInput
         label="투입시작일자"
@@ -32,6 +33,7 @@
     <VCol
       cols="12"
       md="6"
+      class="pl-2"
     >
       <VDateInput
         label="투입종료일자"

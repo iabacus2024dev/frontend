@@ -6,7 +6,7 @@
 <!-- 상세 정보 폼 -->
 <VContainer>
   <VRow>
-    <VCol cols="12" md="6" >
+    <VCol cols="12" md="6">
       <ProjectInfoComponent class="mb-6"/>
       <ContractInfoComponent />
     </VCol>
