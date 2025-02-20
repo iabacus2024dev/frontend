@@ -204,7 +204,7 @@ const routes = [
   {
     path: '/progressbar',
     name: 'progressbar',
-    component: ProgressBarComponent,
+    component: ProgressBarTestPage,
     meta: { layout: DefaultLayout },
   },
   {
