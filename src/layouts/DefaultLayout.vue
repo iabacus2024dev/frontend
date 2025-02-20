@@ -1,25 +1,20 @@
 <template>
   <v-app>
-    <HeaderComponent :activeIndex="activeIndex" />
+    <HeaderComponent />
     <v-main>
-      <slot></slot>
+      <v-container class="ml-10 mr-10">
+        <MainHeaderComponent />
+        <slot></slot>
+      </v-container>
     </v-main>
     <FooterComponent />
   </v-app>
 </template>
 
 <script setup>
-import HeaderComponent from '@/components/common/HeaderComponent.vue'
-import FooterComponent from '@/components/common/FooterComponent.vue'
-
-import { computed } from 'vue'
-import { useRouter } from 'vue-router'
-
-const router = useRouter()
-
-const activeIndex = computed(() => {
-  return router.currentRoute.value.meta.activeIndex
-})
+import HeaderComponent from '@/components/common/HeaderComponent.vue';
+import FooterComponent from '@/components/common/FooterComponent.vue';
+import MainHeaderComponent from '@/components/common/MainHeaderComponent.vue';
 </script>
 
 <style scoped></style>

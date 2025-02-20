@@ -20,7 +20,7 @@
         @click="goTo(item.path)"
         class="me-2 text-none"
         slim
-        v-bind="i === activeIndex && { color: '#db693b' }"
+        v-bind="i === activeIndex && { color: '#EB6129' }"
         :text="item.text"
       />
     </template>
@@ -28,11 +28,13 @@
     <v-spacer />
 
     <template #append>
+      <span>이동욱님</span>
       <v-btn class="ms-1" icon>
         <v-avatar icon="mdi-account-circle" />
         <v-menu activator="parent" origin="top">
           <v-list>
-            <v-list-item link title="마이페이지" @click="goTo('/profiles')" />
+            <v-list-item link title="마이페이지" @click="goTo('/profiles')"
+                         :active="activeIndex === 5" />
             <v-list-item link title="로그아웃" @click="logout" />
           </v-list>
         </v-menu>
@@ -61,42 +63,30 @@
 </template>
 
 <script setup>
-import { shallowRef } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed, shallowRef } from 'vue';
+import { useRouter } from 'vue-router';
 
-const router = useRouter()
+const router = useRouter();
 
-const drawer = shallowRef(false)
-defineProps(['activeIndex'])
-
-const items = [
-  {
-    text: '프로젝트 관리',
-    path: '/projects',
-  },
-  {
-    text: '구성원 관리',
-    path: '/members',
-  },
-  {
-    text: '협력사 관리',
-    path: '/partners',
-  },
-  {
-    text: '매출 관리',
-    path: '/sales',
-  },
-  {
-    text: '권한 관리',
-    path: '/permissions',
-  },
-]
+const drawer = shallowRef(false);
+const items = router.getRoutes()
+  .filter((route) => route.meta.menu === true)
+  .map((route) => {
+    return {
+      text: route.meta.title,
+      path: route.path,
+    };
+});
 
 const goTo = (path) => {
-  router.push(path)
-}
+  router.push(path);
+};
 
 const logout = () => {
-  console.log('logout')
-}
+  console.log('logout');
+};
+
+const activeIndex = computed(() => {
+  return router.currentRoute.value.meta.activeIndex;
+});
 </script>

@@ -1,7 +1,4 @@
 <template>
-  <v-container class="mt-8">
-    <h1 class="text-h4 font-weight-bold">협력사 관리</h1>
-  </v-container>
   <div>
     <v-btn @click="openDialog">
       협력사 삭제
@@ -16,12 +13,12 @@
       @cancel="handleCancel"
     />
   </div>
-  
+
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import ModalDialog from '@/components/common/ModalPopupComponent.vue' // 모달 컴포넌트 가져오기
+import { ref } from 'vue';
+import ModalDialog from '@/components/common/ModalPopupComponent.vue'; // 모달 컴포넌트 가져오기
 
 const modal = ref(null)
 const modalTitle = ref("협력사 삭제")
