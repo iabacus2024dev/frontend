@@ -72,6 +72,10 @@ class RestApiAdapter {
     return this.request(url, 'PUT', data)
   }
 
+  static async patch(url, data) {
+    return this.request(url, 'PATCH', data)
+  }
+
   static async delete(url) {
     return this.request(url, 'DELETE')
   }
