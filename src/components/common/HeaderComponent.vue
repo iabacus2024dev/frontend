@@ -9,7 +9,7 @@
       max-width="120"
       style="cursor: pointer"
       @click="goTo('/')"
-      src="http://www.iabacus.co.kr/data/designImages/BANNER_1665234808abacus_logo.png"
+      src="https://ezportal.bizmeka.com/companyImage/T31366/T31366_100_69bd36e2ee32422087c5d4203224b81a.png"
     />
 
     <template v-if="$vuetify.display.mdAndUp">
@@ -33,8 +33,12 @@
         <v-avatar icon="mdi-account-circle" />
         <v-menu activator="parent" origin="top">
           <v-list>
-            <v-list-item link title="마이페이지" @click="goTo('/profiles')"
-                         :active="activeIndex === 5" />
+            <v-list-item
+              link
+              title="마이페이지"
+              @click="goTo('/profiles')"
+              :active="activeIndex === 5"
+            />
             <v-list-item link title="로그아웃" @click="logout" />
           </v-list>
         </v-menu>
@@ -63,30 +67,32 @@
 </template>
 
 <script setup>
-import { computed, shallowRef } from 'vue';
-import { useRouter } from 'vue-router';
+import { computed, shallowRef } from 'vue'
+import { useRouter } from 'vue-router'
 
-const router = useRouter();
+const router = useRouter()
 
-const drawer = shallowRef(false);
-const items = router.getRoutes()
+const drawer = shallowRef(false)
+const items = router
+  .getRoutes()
   .filter((route) => route.meta.menu === true)
   .map((route) => {
     return {
       text: route.meta.title,
       path: route.path,
-    };
-});
+    }
+  })
 
 const goTo = (path) => {
-  router.push(path);
-};
+  router.push(path)
+}
 
 const logout = () => {
-  console.log('logout');
-};
+  console.log('logout')
+  router.push('/auths/login')
+}
 
 const activeIndex = computed(() => {
-  return router.currentRoute.value.meta.activeIndex;
-});
+  return router.currentRoute.value.meta.activeIndex
+})
 </script>

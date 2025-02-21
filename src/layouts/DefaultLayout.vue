@@ -2,7 +2,7 @@
   <v-app>
     <HeaderComponent />
     <v-main>
-      <v-container class="ml-10 mr-10">
+      <v-container>
         <MainHeaderComponent />
         <slot></slot>
       </v-container>
