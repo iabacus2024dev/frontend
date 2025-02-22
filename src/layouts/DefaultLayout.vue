@@ -12,9 +12,9 @@
 </template>
 
 <script setup>
-import HeaderComponent from '@/components/common/HeaderComponent.vue';
-import FooterComponent from '@/components/common/FooterComponent.vue';
-import MainHeaderComponent from '@/components/common/MainHeaderComponent.vue';
+import HeaderComponent from '@/components/common/HeaderComponent.vue'
+import FooterComponent from '@/components/common/FooterComponent.vue'
+import MainHeaderComponent from '@/components/common/MainHeaderComponent.vue'
 </script>
 
 <style scoped></style>
