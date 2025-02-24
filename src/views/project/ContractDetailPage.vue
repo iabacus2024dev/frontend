@@ -25,6 +25,9 @@
         v-model:end-date="progressInfoData.endDate"
       />
     </VCol>
+    <VCol>
+      <PersonInfoComponent/>
+    </VCol>
   </VRow>
 </VContainer>
 <VContainer class="btns-container">
@@ -73,6 +76,7 @@ import TableEventComponent from '@/components/table/TableEventComponent.vue';
 import ProjectInfoComponent from '@/components/project/ProjectInfoComponent.vue';
 import ContractInfoComponent from '@/components/project/ContractInfoComponent.vue';
 import ProgressInfoComponent from '@/components/project/ProgressInfoComponent.vue';
+import PersonInfoComponent from '@/components/project/PersonInfoComponent.vue';
 
 const tableTitleResponse = ref([
   '메뉴명', '메뉴설명', '열량(Kcal)', '당류(g/%)', '카페인(mg/%)'
