@@ -1,24 +1,22 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-import HomePage from '@/views/HomePage.vue'
-import TableTestPage from '@/views/TableTestPage.vue'
-import SearchBarTestPage from '@/views/SearchBarTestPage.vue'
-import ProjectPage from '@/views/project/ProjectPage.vue'
-import DefaultLayout from '@/layouts/DefaultLayout.vue'
-import MemberPage from '@/views/MemberPage.vue'
-import PartnersPage from '@/views/PartnersPage.vue'
-import PermissionPage from '@/views/PermissionPage.vue'
-import SalesPage from '@/views/SalesPage.vue'
-import ProfilePage from '@/views/ProfilePage.vue'
+import HomePage from '@/views/HomePage.vue';
+import TableTestPage from '@/views/TableTestPage.vue';
+import SearchBarTestPage from '@/views/SearchBarTestPage.vue';
+import ProjectPage from '@/views/project/ProjectPage.vue';
+import DefaultLayout from '@/layouts/DefaultLayout.vue';
+import MemberPage from '@/views/MemberPage.vue';
+import PartnersPage from '@/views/PartnersPage.vue';
+import PermissionPage from '@/views/PermissionPage.vue';
+import SalesPage from '@/views/SalesPage.vue';
+import ProfilePage from '@/views/ProfilePage.vue';
+import ToolTipComponent from '@/components/common/ToolTipComponent.vue';
 import ProgressBarTestPage from '@/views/ProgressBarTestPage.vue'
-import TransferListTestPage from '@/views/TransferListTestPage.vue'
-import TreeTestPage from '@/views/TreeTestPage.vue'
+import TransferListTestPage from '@/views/TransferListTestPage.vue';
+import TreeTestPage from '@/views/TreeTestPage.vue';
 import ToolTipTestPage from '@/views/ToolTipTestPage.vue'
-import InitializePage from '@/views/login/InitializePage.vue'
-import RegisterPage from '@/views/login/RegisterPage.vue'
-import LoginPage from '@/views/login/LoginPage.vue'
-import ContractDetailPage from '@/views/project/ContractDetailPage.vue'
-import LoginLayout from '@/layouts/LoginLayout.vue'
+import ContractDetailPage from '@/views/project/ContractDetailPage.vue';
+import ProjectDetailPage from '@/views/project/ProjectDetailPage.vue';
 
 const routes = [
   {
@@ -55,6 +53,33 @@ const routes = [
         },
         {
           title: '프로젝트 관리',
+          disabled: true,
+        },
+      ],
+    },
+  },
+  {
+    path: '/projects/detail',
+    name: 'projects/detail',
+    component: ProjectDetailPage,
+    meta: {
+      layout: DefaultLayout,
+      activeIndex: 0,
+      title: '프로젝트 관리',
+      breadcrumbs: [
+        {
+          title: '홈',
+          disabled: false,
+          to: {
+            name: 'home',
+          },
+        },
+        {
+          title: '프로젝트 관리',
+          disabled: false,
+        },
+        {
+          title: '프로젝트 상세',
           disabled: true,
         },
       ],
@@ -185,30 +210,6 @@ const routes = [
     component: ContractDetailPage,
     meta: { layout: DefaultLayout, activeIndex: 0 },
   },
-  {
-    path: '/auths/initialize',
-    name: 'initialize',
-    component: InitializePage,
-    meta: {
-      layout: LoginLayout,
-    },
-  },
-  {
-    path: '/auths/register',
-    name: 'register',
-    component: RegisterPage,
-    meta: {
-      layout: LoginLayout,
-    },
-  },
-  {
-    path: '/auths/login',
-    name: 'login',
-    component: LoginPage,
-    meta: {
-      layout: LoginLayout,
-    },
-  },
   /* [추후 삭제 예정] 테이블 컴포넌트 테스트용으로 만든 페이지입니다. */
   {
     path: '/table',
@@ -246,11 +247,11 @@ const routes = [
     component: TreeTestPage,
     meta: { layout: DefaultLayout },
   },
-]
+];
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
-})
+});
 
-export default router
+export default router;
