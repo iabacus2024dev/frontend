@@ -88,7 +88,7 @@ const visible = ref(false)
 const visibleConfirm = ref(false)
 
 const form = ref({
-  token: route.query.token,
+  token: route.query.token || '',
   newPassword: '',
   newPasswordConfirm: '',
 })
@@ -109,10 +109,15 @@ const goTo = (path) => {
   router.push({ path })
 }
 
-const handleInitializePassword = () => {
-  initializePassword(form.value)
-  alert('축하합니다! 로그인 가능합니다.')
-  goTo('/auths/login')
+const handleInitializePassword = async () => {
+  try {
+    await initializePassword(form.value)
+    alert('축하합니다! 로그인 가능합니다.')
+    goTo('/auths/login')
+  } catch (error) {
+    alert(error.response?.data.message)
+    throw error
+  }
 }
 
 onMounted(() => {})

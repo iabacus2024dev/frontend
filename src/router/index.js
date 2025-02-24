@@ -19,6 +19,7 @@ import RegisterPage from '@/views/login/RegisterPage.vue'
 import LoginPage from '@/views/login/LoginPage.vue'
 import ContractDetailPage from '@/views/project/ContractDetailPage.vue'
 import LoginLayout from '@/layouts/LoginLayout.vue'
+import FindPasswordPage from '@/views/login/FindPasswordPage.vue'
 import MemberDetailPage from '@/views/member/MemberDetailPage.vue'
 import ProjectDetailPage from '@/views/project/ProjectDetailPage.vue'
 import MemberCreatePopup from '@/views/member/MemberCreatePopup.vue'
@@ -239,6 +240,14 @@ const routes = [
     path: '/auths/login',
     name: 'login',
     component: LoginPage,
+    meta: {
+      layout: LoginLayout,
+    },
+  },
+  {
+    path: '/auths/find-password',
+    name: 'findPassword',
+    component: FindPasswordPage,
     meta: {
       layout: LoginLayout,
     },
