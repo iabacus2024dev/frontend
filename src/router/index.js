@@ -20,6 +20,7 @@ import LoginPage from '@/views/login/LoginPage.vue'
 import ContractDetailPage from '@/views/project/ContractDetailPage.vue'
 import LoginLayout from '@/layouts/LoginLayout.vue'
 import MemberDetailPage from '@/views/member/MemberDetailPage.vue'
+import ProjectDetailPage from '@/views/project/ProjectDetailPage.vue'
 
 const routes = [
   {
@@ -56,6 +57,37 @@ const routes = [
         },
         {
           title: '프로젝트 관리',
+          disabled: true,
+        },
+      ],
+    },
+  },
+  {
+    path: '/projects/detail',
+    name: 'projectDetail',
+    component: ProjectDetailPage,
+    meta: {
+      menu: false,
+      layout: DefaultLayout,
+      activeIndex: 0,
+      title: '프로젝트 관리',
+      breadcrumbs: [
+        {
+          title: '홈',
+          disabled: false,
+          to: {
+            name: 'home',
+          },
+        },
+        {
+          title: '프로젝트 관리',
+          disabled: false,
+          to: {
+            name: 'projects',
+          },
+        },
+        {
+          title: '프로젝트 상세',
           disabled: true,
         },
       ],
