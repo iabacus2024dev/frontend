@@ -5,7 +5,7 @@ import TableTestPage from '@/views/TableTestPage.vue'
 import SearchBarTestPage from '@/views/SearchBarTestPage.vue'
 import ProjectPage from '@/views/project/ProjectPage.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
-import MemberPage from '@/views/MemberPage.vue'
+import MemberPage from '@/views/member/MemberPage.vue'
 import PartnersPage from '@/views/PartnersPage.vue'
 import PermissionPage from '@/views/PermissionPage.vue'
 import SalesPage from '@/views/SalesPage.vue'
@@ -19,6 +19,7 @@ import RegisterPage from '@/views/login/RegisterPage.vue'
 import LoginPage from '@/views/login/LoginPage.vue'
 import ContractDetailPage from '@/views/project/ContractDetailPage.vue'
 import LoginLayout from '@/layouts/LoginLayout.vue'
+import MemberDetailPage from '@/views/member/MemberDetailPage.vue'
 
 const routes = [
   {
@@ -245,6 +246,36 @@ const routes = [
     name: 'tree',
     component: TreeTestPage,
     meta: { layout: DefaultLayout },
+  },
+  {
+    path: '/memberDetail',
+    name: 'memberDetail',
+    component: MemberDetailPage,
+    meta: {
+      layout: DefaultLayout,
+      activeIndex: 1,
+      title: '구성원 상세',
+      breadcrumbs: [
+        {
+          title: '홈',
+          disabled: false,
+          to: {
+            name: 'home',
+          },
+        },
+        {
+          title: '구성원 관리',
+          disabled: false,
+          to: {
+            name: 'members',
+          },
+        },
+        {
+          title: '구성원 상세',
+          disabled: true,
+        },
+      ],
+    },
   },
 ]
 
