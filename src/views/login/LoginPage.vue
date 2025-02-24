@@ -35,6 +35,7 @@
     </v-card-text>
     <v-card-actions class="justify-end">
       <v-btn color="primary" @click="goTo('/auths/register')">회원 등록</v-btn>
+      <v-btn color="primary" @click="goTo('/auths/find-password')">비밀번호 찾기</v-btn>
     </v-card-actions>
   </v-card>
 </template>

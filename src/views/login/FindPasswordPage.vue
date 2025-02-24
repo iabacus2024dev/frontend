@@ -7,27 +7,16 @@
       />
     </div>
     <v-card-text class="mt-3">
-      <h4 class="text-h5 mt-5 mb-1">회원 등록 👋🏻</h4>
-      <p class="mb-0">이름과 애버커스 회사 이메일을 입력해주세요.</p>
+      <h4 class="text-h5 mt-5 mb-1">비밀번호 찾기 👋🏻</h4>
+      <p class="mb-0">애버커스 회사 이메일을 입력해주세요.</p>
     </v-card-text>
 
     <v-alert class="ml-4 mr-4" dense outlined>
-      <p class="text-subtitle-2">애버커스에 등록된 구성원만 회원 등록이 가능합니다.</p>
+      <p class="text-subtitle-2">이메일을 통해 비밀번호 변경 링크가 전송됩니다.</p>
     </v-alert>
 
     <v-card-text>
       <v-form @submit.prevent="handleRegister" v-model="isFormValid">
-        <!-- 이름 -->
-        <v-text-field
-          v-model="form.name"
-          type="text"
-          placeholder="이름"
-          prepend-inner-icon="mdi-account"
-          variant="outlined"
-          density="comfortable"
-          :rules="[rules.required]"
-        />
-
         <!-- 이메일 -->
         <v-text-field
           v-model="form.email"
@@ -61,11 +50,10 @@
 
 <script setup>
 import { ref } from 'vue'
-import { register } from '@/apis/authService'
+import { findPassword } from '@/apis/authService'
 import router from '@/router/index.js'
 
 const form = ref({
-  name: '',
   email: '',
 })
 
@@ -79,7 +67,7 @@ const rules = ref({
 const handleRegister = async () => {
   try {
     loading.value = true
-    await register(form.value)
+    await findPassword(form.value)
     alert('이메일 링크가 발송되었습니다.')
     goTo('/auths/login')
   } catch (error) {

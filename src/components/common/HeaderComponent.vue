@@ -28,7 +28,7 @@
     <v-spacer />
 
     <template #append>
-      <span>이동욱님</span>
+      <span>박상철님</span>
       <v-btn class="ms-1" icon>
         <v-avatar icon="mdi-account-circle" />
         <v-menu activator="parent" origin="top">
