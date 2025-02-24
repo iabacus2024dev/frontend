@@ -20,6 +20,7 @@ import LoginPage from '@/views/login/LoginPage.vue'
 import ContractDetailPage from '@/views/project/ContractDetailPage.vue'
 import LoginLayout from '@/layouts/LoginLayout.vue'
 import MemberDetailPage from '@/views/member/MemberDetailPage.vue'
+import MemberCreatePopup from '@/views/member/MemberCreatePopup.vue'
 
 const routes = [
   {
@@ -272,6 +273,37 @@ const routes = [
         },
         {
           title: '구성원 상세',
+          disabled: true,
+        },
+      ],
+    },
+  },
+
+  {
+    path: '/memberCreate',
+    name: 'memberCreate',
+    component: MemberCreatePopup,
+    meta: {
+      layout: DefaultLayout,
+      activeIndex: 1,
+      title: '구성원 추가',
+      breadcrumbs: [
+        {
+          title: '홈',
+          disabled: false,
+          to: {
+            name: 'home',
+          },
+        },
+        {
+          title: '구성원 관리',
+          disabled: false,
+          to: {
+            name: 'members',
+          },
+        },
+        {
+          title: '구성원 추가',
           disabled: true,
         },
       ],
