@@ -2,7 +2,6 @@ import { restApiConfig } from '@/config/restApiConfig'
 import axios from 'axios'
 
 class RestApiAdapter {
-
   static axiosInstance = null
   static appContext = null
 
@@ -33,29 +32,11 @@ class RestApiAdapter {
       return response.data
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        const axiosError = error
-        console.error('API request error:', axiosError.message)
-
-        // JWT 토큰 만료나 인증 오류 처리
-        if (this.appContext?.config?.errorHandler) {
-          setTimeout(() => {
-            if (this.appContext?.config?.errorHandler) {
-              this.appContext.config.errorHandler(axiosError)
-            }
-          }, 0)
-        }
-        return "ERROR"
+        console.error(error.response?.data)
+        throw error
       } else {
         console.error('Unknown error occurred:', error)
-        const unknownError = new Error('Unknown error occurred')
-        if (this.appContext?.config?.errorHandler) {
-          setTimeout(() => {
-            if (this.appContext?.config?.errorHandler) {
-              this.appContext.config.errorHandler(unknownError)
-            }
-          }, 0)
-        }
-        return "ERROR"
+        throw new Error('Unknown error occurred')
       }
     }
   }
