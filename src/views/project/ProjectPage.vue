@@ -1,10 +1,6 @@
 <template>
   <v-container>
-    <v-card class="pa-4">
-      <div>
-        <SearchBar class="pa-4" :rows="searchRows" @search="handleSearch" @reset="handleReset" />
-      </div>
-    </v-card>
+    <SearchBar class="pa-4" :rows="searchRows" @search="handleSearch" @reset="handleReset" />
   </v-container>
   <!-- 테이블 컴포넌트 -->
   <v-container>
