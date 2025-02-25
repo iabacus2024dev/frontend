@@ -80,6 +80,7 @@ import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { initializePassword } from '@/apis/authService'
 import ModalPopupComponent from '@/components/common/ModalPopupComponent.vue'
+import { useToast } from 'vue-toastification'
 
 const route = useRoute()
 
@@ -109,13 +110,14 @@ const goTo = (path) => {
   router.push({ path })
 }
 
+const toast = useToast()
 const handleInitializePassword = async () => {
   try {
     await initializePassword(form.value)
-    alert('축하합니다! 로그인 가능합니다.')
+    toast.success('비밀번호가 초기화되었습니다.')
     goTo('/auths/login')
   } catch (error) {
-    alert(error.response?.data.message)
+    toast.error(error.response?.data.message)
     throw error
   }
 }
