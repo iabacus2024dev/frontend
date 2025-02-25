@@ -12,5 +12,8 @@ export default createVuetify({
   components: {
     VTreeview,
     VDateInput,
-  }
-});
+  },
+  locale: {
+    locale: 'ko',
+  },
+})
