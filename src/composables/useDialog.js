@@ -4,9 +4,9 @@ import { computed } from 'vue'
 export function useDialog() {
   const dialogStore = useDialogStore()
 
-  const openDialog = () => {
-    console.log('openDialog >>>')
-    return dialogStore.addDialog()
+  const openDialog = (dialogInfo) => {
+    console.log('openDialog >>>', dialogInfo)
+    return dialogStore.addDialog(dialogInfo)
   }
 
   const closeDialog = (dialogId) => {

@@ -25,7 +25,7 @@
     </VRow>
   </VContainer>
   <VContainer class="btns-container">
-    <VBtn variant="tonal" density="comfortable" class="delete-btn" @click="fnDeleteBtn">
+    <VBtn variant="tonal" density="comfortable" class="delete-btn" @click="handleDeleteBtn">
       계약 삭제
     </VBtn>
     <VBtn variant="tonal" density="comfortable" class="update-btn ml-2" @click="fnUpdateBtn">
@@ -139,8 +139,11 @@ const fnUpdateBtn = () => {
   console.log('계약 정보:', progressInfoData.value)
 }
 
-const fnDeleteBtn = () => {
-  dialog.openDialog()
+const handleDeleteBtn = () => {
+  dialog.openDialog({
+    title: '계약 삭제 처리',
+    contents: `${contractInfoData.value.contractCode}번 계약을 삭제하시겠습니까?`,
+  })
 }
 </script>
 

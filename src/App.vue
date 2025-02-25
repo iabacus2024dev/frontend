@@ -18,7 +18,6 @@ const handleDialogCancelBtn = (dialogId) => {
     <RouterView />
   </component>
 
-  <DialogComponent />
   <DialogComponent
     v-for="dialog in dialogs"
     :key="dialog.id"

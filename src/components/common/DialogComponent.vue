@@ -1,7 +1,9 @@
 <template>
   <v-dialog v-model="isDialogOpen" max-width="500">
-    <v-card title="제목 들어갈 자리">
-      <v-card-text> 해당 ~을 삭제하시겠습니까? </v-card-text>
+    <v-card>
+      <v-card-title>{{ props.model.title }}</v-card-title>
+      <v-divider />
+      <v-card-text>{{ props.model.contents }}</v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn text="확인" @click="closeDialog" class="confirm-btn"></v-btn>
