@@ -63,6 +63,7 @@
 import { ref } from 'vue'
 import { register } from '@/apis/authService'
 import router from '@/router/index.js'
+import { useToast } from 'vue-toastification'
 
 const form = ref({
   name: '',
@@ -76,15 +77,16 @@ const rules = ref({
   email: (value) => /.+@.+\..+/.test(value) || '이메일 형식이 아닙니다.',
 })
 
+const toast = useToast()
 const handleRegister = async () => {
   try {
     loading.value = true
     await register(form.value)
-    alert('이메일 링크가 발송되었습니다.')
+    toast.success('이메일 링크가 발송되었습니다.')
     goTo('/auths/login')
   } catch (error) {
     loading.value = false
-    alert(error.response?.data.message)
+    toast.error(error.response?.data.message)
     throw error
   }
 }
