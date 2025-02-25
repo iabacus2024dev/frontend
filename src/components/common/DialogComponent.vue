@@ -7,7 +7,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn text="확인" @click="closeDialog" class="confirm-btn"></v-btn>
-        <v-btn text="취소" @click="isDialogOpen = false" class="cancel-btn"></v-btn>
+        <v-btn text="취소" @click="closeDialog" class="cancel-btn"></v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
