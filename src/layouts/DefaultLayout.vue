@@ -2,7 +2,7 @@
   <v-app>
     <HeaderComponent />
     <v-main>
-      <v-container>
+      <v-container max-width="1440">
         <MainHeaderComponent />
         <slot></slot>
       </v-container>

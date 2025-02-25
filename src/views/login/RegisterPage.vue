@@ -47,7 +47,6 @@
           type="button"
           @click="handleRegister"
           :disabled="!isFormValid"
-          :loading="loading"
         >
           이메일 링크 발송
         </v-btn>
@@ -71,7 +70,6 @@ const form = ref({
 })
 
 const isFormValid = ref(false)
-const loading = ref(false)
 const rules = ref({
   required: (value) => !!value || '필수 입력 항목입니다.',
   email: (value) => /.+@.+\..+/.test(value) || '이메일 형식이 아닙니다.',
@@ -79,16 +77,9 @@ const rules = ref({
 
 const toast = useToast()
 const handleRegister = async () => {
-  try {
-    loading.value = true
-    await register(form.value)
-    toast.success('이메일 링크가 발송되었습니다.')
-    goTo('/auths/login')
-  } catch (error) {
-    loading.value = false
-    toast.error(error.response?.data.message)
-    throw error
-  }
+  await register(form.value)
+  toast.success('이메일 링크가 발송되었습니다.')
+  goTo('/auths/login')
 }
 
 const goTo = (path) => {

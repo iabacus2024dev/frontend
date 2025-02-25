@@ -1,11 +1,10 @@
 import { restApiConfig } from '@/config/restApiConfig'
 import axios from 'axios'
+import { useToast } from 'vue-toastification'
 
 class RestApiAdapter {
   static axiosInstance = null
   static appContext = null
-
-  constructor() {}
 
   static initialize(appContext) {
     this.appContext = appContext
@@ -22,8 +21,8 @@ class RestApiAdapter {
 
   // API 요청 처리
   static async request(url, method = 'GET', reqData = null) {
+    const toast = useToast()
     try {
-      console.log('API request:', method, url, reqData)
       const response = await this.getInstance().request({
         method,
         url,
@@ -31,13 +30,8 @@ class RestApiAdapter {
       })
       return response.data
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.error(error.response?.data)
-        throw error
-      } else {
-        console.error('Unknown error occurred:', error)
-        throw new Error('Unknown error occurred')
-      }
+      toast.error(error.response?.data.message ?? error.message)
+      throw error
     }
   }
 

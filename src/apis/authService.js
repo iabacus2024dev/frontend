@@ -1,33 +1,17 @@
 import RestApiAdapter from '@/adapters/restApiAdapter.js'
 
 export const register = async (form) => {
-  try {
-    return await RestApiAdapter.post('/api/v1/auths/register', form)
-  } catch (error) {
-    throw error
-  }
+  return await RestApiAdapter.post('/api/v1/auths/register', form)
 }
 
 export const initializePassword = async (form) => {
-  try {
-    return await RestApiAdapter.patch('/api/v1/auths/initialize', form)
-  } catch (error) {
-    throw error
-  }
+  return await RestApiAdapter.patch('/api/v1/auths/initialize', form)
 }
 
 export const findPassword = async (form) => {
-  try {
-    return await RestApiAdapter.post('/api/v1/auths/find-password', form)
-  } catch (error) {
-    throw error
-  }
+  return await RestApiAdapter.post('/api/v1/auths/find-password', form)
 }
 
 export const changePassword = async (form) => {
-  try {
-    return await RestApiAdapter.patch('/api/v1/members/1/password', form)
-  } catch (error) {
-    throw error
-  }
+  return await RestApiAdapter.patch('/api/v1/members/1/password', form)
 }
