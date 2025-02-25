@@ -56,9 +56,11 @@ import TableEventComponent from '@/components/table/TableEventComponent.vue'
 import ProjectInfoComponent from '@/components/project/ProjectInfoComponent.vue'
 import ContractInfoComponent from '@/components/project/ContractInfoComponent.vue'
 import ProgressInfoComponent from '@/components/project/ProgressInfoComponent.vue'
-import PersonInfoComponent from '@/components/project/PersonInfoComponent.vue'
 
 import { getContractDetail } from '@/apis/contractService'
+import { useDialog } from '@/composables/useDialog'
+
+const dialog = useDialog()
 
 const tableTitleResponse = ref(['메뉴명', '메뉴설명', '열량(Kcal)', '당류(g/%)', '카페인(mg/%)'])
 
@@ -138,7 +140,7 @@ const fnUpdateBtn = () => {
 }
 
 const fnDeleteBtn = () => {
-  console.log('Todo >>> 계약 삭제 의사 확인 팝업 띄우기')
+  dialog.openDialog()
 }
 </script>
 
