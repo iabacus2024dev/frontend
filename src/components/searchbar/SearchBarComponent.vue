@@ -1,5 +1,5 @@
 <template>
-  <v-card class="pa-4">
+  <v-card class="pa-4" variant="oulined">
     <v-row v-for="(row, rowIndex) in rows" :key="rowIndex">
       <v-col
         v-for="(field, index) in row.fields"
@@ -136,5 +136,9 @@ const onReset = () => {
 /* 드롭다운 아이콘 크기 줄이기 */
 :deep(.v-select__menu-icon) {
   font-size: 18px !important;
+}
+
+.v-card {
+  border: 1px solid lightgray;
 }
 </style>
