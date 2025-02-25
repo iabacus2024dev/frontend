@@ -215,10 +215,41 @@ const routes = [
     },
   },
   {
-    path: '/projects/detail/contracts/detail', // '/contracts/:id',
+    path: '/projects/detail/contracts/detail',
     name: 'contracts',
     component: ContractDetailPage,
-    meta: { layout: DefaultLayout, activeIndex: 0 },
+    meta: {
+      layout: DefaultLayout,
+      activeIndex: 0,
+      title: '계약 상세',
+      breadcrumbs: [
+        {
+          title: '홈',
+          disabled: false,
+          to: {
+            name: 'home',
+          },
+        },
+        {
+          title: '프로젝트 관리',
+          disabled: false,
+          to: {
+            name: 'projects',
+          },
+        },
+        {
+          title: '프로젝트 상세',
+          disabled: false,
+          to: {
+            name: 'projects',
+          },
+        },
+        {
+          title: '계약 상세',
+          disabled: true,
+        },
+      ],
+    },
   },
   {
     path: '/auths/initialize',

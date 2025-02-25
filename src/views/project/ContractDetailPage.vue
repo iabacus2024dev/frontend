@@ -1,8 +1,4 @@
 <template>
-  <VContainer class="mt-5">
-    <p class="text-h4 font-weight-bold">계약 상세</p>
-  </VContainer>
-
   <!-- 상세 정보 폼 -->
   <VContainer>
     <VRow>
