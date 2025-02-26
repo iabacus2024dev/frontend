@@ -108,22 +108,14 @@ const progressInfoData = ref({
 })
 
 const fetchGetContractDetail = async (contractId) => {
-  try {
-    const contractDetail = await getContractDetail(contractId)
-    updateContractInfo(contractDetail)
-    updateProgressInfo(contractDetail)
-  } catch (error) {
-    throw error
-  }
+  const contractDetail = await getContractDetail(contractId)
+  updateContractInfo(contractDetail)
+  updateProgressInfo(contractDetail)
 }
 
 const fetchDeleteContract = async (contractId) => {
-  try {
-    await deleteContract(contractId)
-    toast.success('계약이 성공적으로 삭제되었습니다.')
-  } catch (error) {
-    throw error
-  }
+  await deleteContract(contractId)
+  toast.success('계약이 성공적으로 삭제되었습니다.')
 }
 
 const updateContractInfo = (contractDetail) => {
@@ -141,7 +133,7 @@ const updateProgressInfo = (contractDetail) => {
 
 /* 컴포넌트가 마운트될 때 계약 상세 정보 가져오기 */
 onMounted(() => {
-  const contractId = '550e8400-e29b-41d4-a716-446655440001' // todo: 프로젝트 상세에서 클릭한 계약 ID를 넘겨주기
+  const contractId = '550e8400-e29b-41d4-a716-446655440000' // todo: 프로젝트 상세에서 클릭한 계약 ID를 넘겨주기
   fetchGetContractDetail(contractId)
 })
 
