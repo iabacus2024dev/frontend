@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 import HomePage from '@/views/HomePage.vue'
-import TableTestPage from '@/views/TableTestPage.vue'
-import SearchBarTestPage from '@/views/SearchBarTestPage.vue'
+import TableTestPage from '@/views/test/TableTestPage.vue'
+import SearchBarTestPage from '@/views/test/SearchBarTestPage.vue'
 import ProjectPage from '@/views/project/ProjectPage.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import MemberPage from '@/views/member/MemberPage.vue'
@@ -10,10 +10,10 @@ import PartnersPage from '@/views/PartnersPage.vue'
 import PermissionPage from '@/views/PermissionPage.vue'
 import SalesPage from '@/views/SalesPage.vue'
 import ProfilePage from '@/views/ProfilePage.vue'
-import ProgressBarTestPage from '@/views/ProgressBarTestPage.vue'
-import TransferListTestPage from '@/views/TransferListTestPage.vue'
-import TreeTestPage from '@/views/TreeTestPage.vue'
-import ToolTipTestPage from '@/views/ToolTipTestPage.vue'
+import ProgressBarTestPage from '@/views/test/ProgressBarTestPage.vue'
+import TransferListTestPage from '@/views/test/TransferListTestPage.vue'
+import TreeTestPage from '@/views/test/TreeTestPage.vue'
+import ToolTipTestPage from '@/views/test/ToolTipTestPage.vue'
 import InitializePage from '@/views/login/InitializePage.vue'
 import RegisterPage from '@/views/login/RegisterPage.vue'
 import LoginPage from '@/views/login/LoginPage.vue'
@@ -215,10 +215,41 @@ const routes = [
     },
   },
   {
-    path: '/projects/detail/contracts/detail', // '/contracts/:id',
+    path: '/projects/detail/contracts/detail',
     name: 'contracts',
     component: ContractDetailPage,
-    meta: { layout: DefaultLayout, activeIndex: 0 },
+    meta: {
+      layout: DefaultLayout,
+      activeIndex: 0,
+      title: '계약 상세',
+      breadcrumbs: [
+        {
+          title: '홈',
+          disabled: false,
+          to: {
+            name: 'home',
+          },
+        },
+        {
+          title: '프로젝트 관리',
+          disabled: false,
+          to: {
+            name: 'projects',
+          },
+        },
+        {
+          title: '프로젝트 상세',
+          disabled: false,
+          to: {
+            name: 'projects',
+          },
+        },
+        {
+          title: '계약 상세',
+          disabled: true,
+        },
+      ],
+    },
   },
   {
     path: '/auths/initialize',

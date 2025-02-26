@@ -1,8 +1,4 @@
 <template>
-  <VContainer class="mt-5">
-    <p class="text-h4 font-weight-bold">계약 상세</p>
-  </VContainer>
-
   <!-- 상세 정보 폼 -->
   <VContainer>
     <VRow>
@@ -29,10 +25,10 @@
     </VRow>
   </VContainer>
   <VContainer class="btns-container">
-    <VBtn variant="tonal" density="comfortable" class="delete-btn" @click="fnDeleteBtn">
+    <VBtn variant="tonal" density="comfortable" class="delete-btn" @click="handleDeleteBtn">
       계약 삭제
     </VBtn>
-    <VBtn variant="tonal" density="comfortable" class="update-btn ml-2" @click="fnUpdateBtn">
+    <VBtn variant="tonal" density="comfortable" class="update-btn ml-2" @click="handleUpdateBtn">
       계약 수정
     </VBtn>
   </VContainer>
@@ -60,9 +56,11 @@ import TableEventComponent from '@/components/table/TableEventComponent.vue'
 import ProjectInfoComponent from '@/components/project/ProjectInfoComponent.vue'
 import ContractInfoComponent from '@/components/project/ContractInfoComponent.vue'
 import ProgressInfoComponent from '@/components/project/ProgressInfoComponent.vue'
-import PersonInfoComponent from '@/components/project/PersonInfoComponent.vue'
 
 import { getContractDetail } from '@/apis/contractService'
+import { useDialog } from '@/composables/useDialog'
+
+const dialog = useDialog()
 
 const tableTitleResponse = ref(['메뉴명', '메뉴설명', '열량(Kcal)', '당류(g/%)', '카페인(mg/%)'])
 
@@ -141,8 +139,18 @@ const fnUpdateBtn = () => {
   console.log('계약 정보:', progressInfoData.value)
 }
 
-const fnDeleteBtn = () => {
-  console.log('Todo >>> 계약 삭제 의사 확인 팝업 띄우기')
+const handleDeleteBtn = () => {
+  dialog.openDialog({
+    title: '계약 삭제',
+    contents: `${contractInfoData.value.contractCode}번 계약을 삭제하시겠습니까?`,
+  })
+}
+
+const handleUpdateBtn = () => {
+  dialog.openDialog({
+    title: '계약 수정',
+    contents: `${contractInfoData.value.contractCode}번 계약을 수정하시겠습니까?`,
+  })
 }
 </script>
 
