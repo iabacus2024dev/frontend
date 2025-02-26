@@ -64,6 +64,13 @@ const dialog = useDialog()
 
 const tableTitleResponse = ref(['메뉴명', '메뉴설명', '열량(Kcal)', '당류(g/%)', '카페인(mg/%)'])
 
+const props = defineProps({
+  projectId: String,
+  contractId: String,
+})
+
+console.log(props.projectId, props.contractId)
+
 const tableDataResponse = ref([
   {
     menuName: '아메리카노',
