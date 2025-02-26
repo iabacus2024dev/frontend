@@ -18,7 +18,7 @@
     </v-alert>
 
     <v-card-text>
-      <v-form @submit.prevent="handleInitializePassword" v-model="isFormValid">
+      <v-form @submit.prevent v-model="isFormValid">
         <!-- 새로운 비밀번호 -->
         <v-text-field
           class="md-3"
@@ -50,7 +50,7 @@
           prepend-inner-icon="mdi-lock-outline"
           variant="outlined"
           density="comfortable"
-          :rules="[rules.match, rules.required]"
+          :rules="[rules.required, rules.match]"
           @click:append-inner="visibleConfirm = !visibleConfirm"
         />
 
@@ -59,7 +59,7 @@
           color="#EB6129"
           size="x-large"
           block
-          type="button"
+          type="submit"
           @click="handleInitializePassword"
           :disabled="!isFormValid"
         >

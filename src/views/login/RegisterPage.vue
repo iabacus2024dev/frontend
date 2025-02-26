@@ -16,7 +16,7 @@
     </v-alert>
 
     <v-card-text>
-      <v-form @submit.prevent="handleRegister" v-model="isFormValid">
+      <v-form @submit.prevent v-model="isFormValid">
         <!-- 이름 -->
         <v-text-field
           v-model="form.name"
@@ -44,7 +44,7 @@
           color="#EB6129"
           size="x-large"
           block
-          type="button"
+          type="submit"
           @click="handleRegister"
           :disabled="!isFormValid"
         >

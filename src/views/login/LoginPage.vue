@@ -10,7 +10,7 @@
     </v-card-text>
 
     <v-card-text>
-      <v-form>
+      <v-form @submit.prevent>
         <!-- 이메일 -->
         <v-text-field
           v-model="form.email"
@@ -20,7 +20,7 @@
           density="compact"
         />
 
-        <!-- 이메일 -->
+        <!-- 비밀번호 -->
         <v-text-field
           v-model="form.password"
           type="password"
@@ -47,7 +47,6 @@ import router from '@/router/index.js'
 const form = ref({
   email: '',
   password: '',
-  remember: false,
 })
 
 const login = () => {
