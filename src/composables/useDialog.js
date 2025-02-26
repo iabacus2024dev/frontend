@@ -5,12 +5,16 @@ export function useDialog() {
   const dialogStore = useDialogStore()
 
   const openDialog = (dialogInfo) => {
-    console.log('openDialog >>>', dialogInfo)
+    console.log('openDialog >>>', dialogStore.dialogs.length)
     return dialogStore.addDialog(dialogInfo)
   }
 
   const closeDialog = (dialogId) => {
-    return dialogStore.removeDialog(dialogId)
+    dialogStore.removeDialog(dialogId)
+  }
+
+  const cancelDialog = (dialogId) => {
+    dialogStore.cancelDialog(dialogId)
   }
 
   const dialogs = computed(() => dialogStore.dialogs)
@@ -19,5 +23,6 @@ export function useDialog() {
     dialogs,
     openDialog,
     closeDialog,
+    cancelDialog,
   }
 }
