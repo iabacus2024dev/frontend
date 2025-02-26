@@ -57,9 +57,12 @@ import ProjectInfoComponent from '@/components/project/ProjectInfoComponent.vue'
 import ContractInfoComponent from '@/components/project/ContractInfoComponent.vue'
 import ProgressInfoComponent from '@/components/project/ProgressInfoComponent.vue'
 
-import { getContractDetail } from '@/apis/contractService'
+import { deleteContract, getContractDetail } from '@/apis/contractService'
 import { useDialog } from '@/composables/useDialog'
 
+import { useToast } from 'vue-toastification'
+
+const toast = useToast()
 const dialog = useDialog()
 
 const tableTitleResponse = ref(['메뉴명', '메뉴설명', '열량(Kcal)', '당류(g/%)', '카페인(mg/%)'])
@@ -92,6 +95,7 @@ const projectInfoData = ref({
 })
 
 const contractInfoData = ref({
+  id: '1',
   contractCode: 'coffeepj-01-ctr-01',
   startDate: '2025-02-04',
   endDate: '2025-03-06',
@@ -103,7 +107,7 @@ const progressInfoData = ref({
   endDate: '2025-03-06',
 })
 
-const fetchContractDetail = async (contractId) => {
+const fetchGetContractDetail = async (contractId) => {
   try {
     const contractDetail = await getContractDetail(contractId)
     updateContractInfo(contractDetail)
@@ -113,7 +117,17 @@ const fetchContractDetail = async (contractId) => {
   }
 }
 
+const fetchDeleteContract = async (contractId) => {
+  try {
+    await deleteContract(contractId)
+    toast.success('계약이 성공적으로 삭제되었습니다.')
+  } catch (error) {
+    throw error
+  }
+}
+
 const updateContractInfo = (contractDetail) => {
+  contractInfoData.value.id = contractDetail.id
   contractInfoData.value.contractCode = contractDetail.code
   contractInfoData.value.startDate = contractDetail.startDate
   contractInfoData.value.endDate = contractDetail.endDate
@@ -127,8 +141,8 @@ const updateProgressInfo = (contractDetail) => {
 
 /* 컴포넌트가 마운트될 때 계약 상세 정보 가져오기 */
 onMounted(() => {
-  const contractId = '550e8400-e29b-41d4-a716-446655440000' // todo: 프로젝트 상세에서 클릭한 계약 ID를 넘겨주기
-  fetchContractDetail(contractId)
+  const contractId = '550e8400-e29b-41d4-a716-446655440001' // todo: 프로젝트 상세에서 클릭한 계약 ID를 넘겨주기
+  fetchGetContractDetail(contractId)
 })
 
 /* 버튼 클릭 시, 다이얼로그 오픈 */
@@ -136,7 +150,7 @@ const handleDeleteBtn = () => {
   dialog.openDialog({
     title: '계약 삭제',
     contents: `${contractInfoData.value.contractCode}번 계약을 삭제하시겠습니까?`,
-    fnCallback: fnAfterDeleteBtn,
+    fnCallback: () => fetchDeleteContract(contractInfoData.value.id),
   })
 }
 
@@ -149,8 +163,6 @@ const handleUpdateBtn = () => {
 }
 
 /* 다이얼로그 닫히고, 실행할 함수들 정의 */
-const fnAfterDeleteBtn = () => alert('삭제했지?? ㅇㅋㅇㅋ 난 삭제후 콜백함수임')
-
 const fnAfterUpdateBtn = () => alert('수정했지?? ㅇㅋㅇ 난 수정후 콜백함수다')
 </script>
 

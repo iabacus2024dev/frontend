@@ -7,3 +7,11 @@ export const getContractDetail = async (contractId) => {
     throw error
   }
 }
+
+export const deleteContract = async (contractId) => {
+  try {
+    await RestApiAdapter.delete(`api/v1/contracts/${contractId}`)
+  } catch (error) {
+    throw error
+  }
+}
