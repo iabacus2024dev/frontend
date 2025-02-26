@@ -131,14 +131,7 @@ onMounted(() => {
   fetchContractDetail(contractId)
 })
 
-/* 계약 수정 버튼 클릭시 콘솔 출력 */
-const fnUpdateBtn = () => {
-  console.log('Todo >>> 계약 수정 의사 확인 팝업 띄우기')
-  console.log('프로젝트 정보:', projectInfoData.value)
-  console.log('계약 정보:', contractInfoData.value)
-  console.log('계약 정보:', progressInfoData.value)
-}
-
+/* 버튼 클릭 시, 다이얼로그 오픈 */
 const handleDeleteBtn = () => {
   dialog.openDialog({
     title: '계약 삭제',
@@ -155,6 +148,7 @@ const handleUpdateBtn = () => {
   })
 }
 
+/* 다이얼로그 닫히고, 실행할 함수들 정의 */
 const fnAfterDeleteBtn = () => alert('삭제했지?? ㅇㅋㅇㅋ 난 삭제후 콜백함수임')
 
 const fnAfterUpdateBtn = () => alert('수정했지?? ㅇㅋㅇ 난 수정후 콜백함수다')

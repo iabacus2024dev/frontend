@@ -19,7 +19,7 @@ import { ref, defineEmits, defineProps, watch } from 'vue'
 const isDialogOpen = ref(false) // 다이얼로그 열림 여부
 
 const props = defineProps({ model: Object })
-const emits = defineEmits(['close-dialog'])
+const emits = defineEmits(['close-dialog', 'cancel-dialog'])
 
 // props 변경 감지하여 반영
 watch(
