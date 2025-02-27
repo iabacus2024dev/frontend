@@ -13,12 +13,12 @@
               variant="outlined"
               density="compact"
               :items="typeOptions"
-              item-text="label"
+              item-title="label"
               item-value="value"
             />
           </VRow>
         </VCol>
-        <VCol cols="9" class="mt-3">
+        <VCol cols="9" class="mt-10">
           <VRow>
             <VSelect
               v-model="rank"
@@ -26,12 +26,12 @@
               variant="outlined"
               density="compact"
               :items="rankOptions"
-              item-text="label"
+              item-title="label"
               item-value="value"
             />
           </VRow>
         </VCol>
-        <VCol cols="9" class="mt-3">
+        <VCol cols="9" class="mt-10">
           <VRow>
             <VSelect
               v-model="grade"
@@ -39,12 +39,12 @@
               variant="outlined"
               density="compact"
               :items="gradeOptions"
-              item-text="label"
+              item-title="label"
               item-value="value"
             />
           </VRow>
         </VCol>
-        <VCol cols="9" class="mt-3">
+        <VCol cols="9" class="mt-10">
           <VRow>
             <VSelect
               v-model="team"
@@ -52,7 +52,7 @@
               variant="outlined"
               density="compact"
               :items="teamOptions"
-              item-text="label"
+              item-title="label"
               item-value="value"
             />
           </VRow>
@@ -63,17 +63,37 @@
 </template>
 
 <script setup>
-import { defineModel } from 'vue'
+import { defineModel, ref, onMounted } from 'vue'
+import { getTypeList, getRankList, getGradeList } from '@/apis/classificationService'
+import { getTeamList } from '@/apis/teamService'
 
 const type = defineModel('type')
 const rank = defineModel('rank')
 const grade = defineModel('grade')
 const team = defineModel('team')
 
-const typeOptions = ['전체', '정규직', '반프리', '프리랜서', '외주']
-const rankOptions = ['전체', '사장', '이사', '책임', '선임', '사원']
-const gradeOptions = ['전체', '초급', '중급', '고급', '특급']
-const teamOptions = ['가입정보팀', '영업정보팀', '고객정보팀', 'CRM팀', '빌링시스템']
+const typeOptions = ref([])
+const rankOptions = ref([])
+const gradeOptions = ref([])
+const teamOptions = ref([])
+
+onMounted(async () => {
+  try {
+    const fetchedTypeOptions = await getTypeList()
+    typeOptions.value = fetchedTypeOptions.map((item) => ({ label: item, value: item }))
+
+    const fetchedRankOptions = await getRankList()
+    rankOptions.value = fetchedRankOptions.map((item) => ({ label: item, value: item }))
+
+    const fetchedGradeOptions = await getGradeList()
+    gradeOptions.value = fetchedGradeOptions.map((item) => ({ label: item, value: item }))
+
+    const fetchedTeamOptions = await getTeamList()
+    teamOptions.value = fetchedTeamOptions.map((item) => ({ label: item, value: item }))
+  } catch (error) {
+    console.error('옵션 목록 가져오기 실패:', error)
+  }
+})
 </script>
 
 <style scoped>
