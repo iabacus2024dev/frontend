@@ -5,17 +5,32 @@ import { createApp } from 'vue'
 import pinia from '@/stores'
 import router from '@/router'
 import vuetify from '@/plugins/vuetify'
+import Toast from 'vue-toastification'
+import 'vue-toastification/dist/index.css'
+
 //import { openErrorPopUp } from '@/core/utils/errorPopup'
 import RestApiAdapter from '@/adapters/restApiAdapter'
-import { registerLayouts } from './layouts/register';
+import { registerLayouts } from './layouts/register'
 
-
-const app = createApp(App);
-
-registerLayouts(app);
-app.use(pinia);
-app.use(router);
-app.use(vuetify);
+const app = createApp(App)
+registerLayouts(app)
+app.use(pinia)
+app.use(router)
+app.use(vuetify)
+app.use(Toast, {
+  position: 'top-center',
+  timeout: 3000,
+  closeOnClick: true,
+  pauseOnFocusLoss: true,
+  pauseOnHover: true,
+  draggable: true,
+  draggablePercent: 0.6,
+  showCloseButtonOnHover: true,
+  hideProgressBar: false,
+  closeButton: 'button',
+  icon: true,
+  rtl: false,
+})
 
 // app.config.errorHandler = async (err, vm, info) => {
 //     openErrorPopUp(err, vm, info)

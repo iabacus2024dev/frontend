@@ -1,11 +1,11 @@
 <template>
-  <v-card class="pa-4">
+  <v-card class="pa-4" variant="oulined">
     <v-row v-for="(row, rowIndex) in rows" :key="rowIndex">
       <v-col
         v-for="(field, index) in row.fields"
         :key="index"
-        cols = "12"
-        class="search-field "
+        cols="12"
+        class="search-field"
         md="3"
         sm="5"
       >
@@ -63,39 +63,39 @@
 </template>
 
 <script setup>
-import { reactive, defineProps, defineEmits } from "vue";
-import { VDateInput } from "vuetify/labs/VDateInput";
+import { reactive, defineProps, defineEmits } from 'vue'
+import { VDateInput } from 'vuetify/labs/VDateInput'
 
 // Props 정의
 const props = defineProps({
   rows: {
     type: Array,
-    required: true
+    required: true,
   },
   buttonWidth: {
     type: String,
-    default: "250px", // 버튼 그룹 너비
-  }
-});
+    default: '250px', // 버튼 그룹 너비
+  },
+})
 
 // Emits 정의
-const emit = defineEmits(["search", "reset"]);
+const emit = defineEmits(['search', 'reset'])
 
 // 검색 데이터 상태
-const searchData = reactive({});
+const searchData = reactive({})
 
 // 검색 실행
 const onSearch = () => {
-  emit("search", searchData);
-};
+  emit('search', searchData)
+}
 
 // 검색 조건 초기화
 const onReset = () => {
-  Object.keys(searchData).forEach(key => {
-    searchData[key] = "";
-  });
-  emit("reset");
-};
+  Object.keys(searchData).forEach((key) => {
+    searchData[key] = ''
+  })
+  emit('reset')
+}
 </script>
 
 <style scoped>
@@ -121,9 +121,9 @@ const onReset = () => {
 
 /* v-select 전체 크기 조절 */
 :deep(.v-field) {
-  min-height: 20px !important;  /* 높이 줄이기 */
+  min-height: 20px !important; /* 높이 줄이기 */
   font-size: clamp(11px, 1.3vw, 14px); /* 최소 12px, 기본 1.2vw, 최대 14px */
-  padding: 2px 8px !important;  /* 내부 여백 줄이기 */
+  padding: 2px 8px !important; /* 내부 여백 줄이기 */
 }
 
 /* 입력 필드 크기 조절 */
@@ -138,4 +138,7 @@ const onReset = () => {
   font-size: 18px !important;
 }
 
+.v-card {
+  border: 1px solid lightgray;
+}
 </style>

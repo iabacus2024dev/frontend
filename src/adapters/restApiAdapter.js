@@ -1,12 +1,10 @@
 import { restApiConfig } from '@/config/restApiConfig'
 import axios from 'axios'
+import { useToast } from 'vue-toastification'
 
 class RestApiAdapter {
-
   static axiosInstance = null
   static appContext = null
-
-  constructor() {}
 
   static initialize(appContext) {
     this.appContext = appContext
@@ -23,8 +21,8 @@ class RestApiAdapter {
 
   // API 요청 처리
   static async request(url, method = 'GET', reqData = null) {
+    const toast = useToast()
     try {
-      console.log('API request:', method, url, reqData)
       const response = await this.getInstance().request({
         method,
         url,
@@ -32,31 +30,8 @@ class RestApiAdapter {
       })
       return response.data
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        const axiosError = error
-        console.error('API request error:', axiosError.message)
-
-        // JWT 토큰 만료나 인증 오류 처리
-        if (this.appContext?.config?.errorHandler) {
-          setTimeout(() => {
-            if (this.appContext?.config?.errorHandler) {
-              this.appContext.config.errorHandler(axiosError)
-            }
-          }, 0)
-        }
-        return "ERROR"
-      } else {
-        console.error('Unknown error occurred:', error)
-        const unknownError = new Error('Unknown error occurred')
-        if (this.appContext?.config?.errorHandler) {
-          setTimeout(() => {
-            if (this.appContext?.config?.errorHandler) {
-              this.appContext.config.errorHandler(unknownError)
-            }
-          }, 0)
-        }
-        return "ERROR"
-      }
+      toast.error(error.response?.data.message ?? error.message)
+      throw error
     }
   }
 
@@ -70,6 +45,10 @@ class RestApiAdapter {
 
   static async put(url, data) {
     return this.request(url, 'PUT', data)
+  }
+
+  static async patch(url, data) {
+    return this.request(url, 'PATCH', data)
   }
 
   static async delete(url) {
