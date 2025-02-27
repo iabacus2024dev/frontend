@@ -13,11 +13,12 @@
               variant="outlined"
               density="compact"
               type="date"
+              :rules="[requiredRule]"
             />
           </VRow>
         </VCol>
 
-        <VCol cols="9" class="mt-3" v-if="showQuitButton">
+        <VCol cols="9" class="mt-10" v-if="showQuitButton">
           <VRow>
             <VTextField
               v-model="quitDate"
@@ -30,13 +31,13 @@
           </VRow>
         </VCol>
 
-        <VCol cols="9" class="mt-3">
+        <VCol cols="9" class="mt-10">
           <VRow>
             <VTextField v-model="salary" label="연봉" variant="outlined" density="compact" />
             <VLabel class="ml-3">(단위: 천)</VLabel>
           </VRow>
         </VCol>
-        <VCol cols="9" class="mt-3">
+        <VCol cols="9" class="mt-10">
           <VRow>
             <VTextField
               v-model="monthlyPay"
@@ -53,7 +54,6 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
 import { defineModel, defineProps } from 'vue'
 
 const joinDate = defineModel('joinDate')
@@ -67,6 +67,9 @@ const props = defineProps({
     default: true,
   },
 })
+
+// 필수 입력 규칙: 값이 없으면 에러 메시지 표시
+const requiredRule = (value) => !!value || '필수 입력 항목입니다.'
 
 const handleQuit = () => {
   console.log('퇴사 처리 버튼 클릭')
