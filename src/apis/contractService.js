@@ -7,3 +7,7 @@ export const getContractDetail = async (contractId) => {
 export const deleteContract = async (contractId) => {
   await RestApiAdapter.delete(`api/v1/contracts/${contractId}`)
 }
+
+export const updateContract = async (contractId, requestData) => {
+  await RestApiAdapter.put(`api/v1/contracts/${contractId}`, requestData)
+}
