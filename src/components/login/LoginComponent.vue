@@ -26,13 +26,12 @@ const required = (v) => {
 <template>
   <v-sheet class="d-flex align-center justify-center" height="70vh">
     <v-card class="px-6 py-8" elevation="0" width="380">
-      <v-img
-        class="mx-auto my-12"
-        max-width="270"
-        style="cursor: pointer"
-        @click="goTo('/')"
-        src="http://www.iabacus.co.kr/data/designImages/BANNER_1665234808abacus_logo.png"
-      />
+      <div class="d-flex justify-center mb-5">
+        <v-img
+          max-width="200"
+          src="https://ezportal.bizmeka.com/companyImage/T31366/T31366_100_69bd36e2ee32422087c5d4203224b81a.png"
+        />
+      </div>
       <v-form
         v-model="form"
         @submit.prevent="onSubmit"
