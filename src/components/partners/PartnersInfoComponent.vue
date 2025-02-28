@@ -1,98 +1,87 @@
 <template>
-  <VCard class="pt-2 px-2">
-    <VCardItem>
-      <VCardTitle>기본 정보</VCardTitle>
-    </VCardItem>
-    <VCardText>
-      <VRow class="gap-4">
-        <VCol cols="12" md="12">
-          <VTextField
-            v-model="name"
-            label="협력사명"
-            variant="outlined"
-            density="compact"
-            :disabled="isReadOnly"
-          />
-        </VCol>
-        <VCol cols="12" md="12">
-          <VTextField
-            v-model="ceoName"
-            label="대표자명"
-            variant="outlined"
-            density="compact"
-            :disabled="isReadOnly"
-          />
-        </VCol>
-        <VCol cols="12" md="12">
-          <VTextField
+  <v-card class="pt-2 px-2">
+    <v-card-item>
+      <v-card-title>기본 정보</v-card-title>
+    </v-card-item>
+
+    <v-card-text>
+      <v-row class="gap-4">
+        <v-col cols="12">
+          <v-text-field v-model="name" label="협력사명" variant="outlined" density="compact" />
+        </v-col>
+
+        <v-col cols="12">
+          <v-text-field v-model="ceoName" label="대표자명" variant="outlined" density="compact" />
+        </v-col>
+
+        <v-col cols="12">
+          <v-text-field
             v-model="salesRepName"
             label="영업대표명"
             variant="outlined"
             density="compact"
-            :disabled="isReadOnly"
           />
-        </VCol>
-        <VCol cols="12" md="12">
-          <VTextField
+        </v-col>
+
+        <v-col cols="12">
+          <v-text-field
             v-model="salesRepPhone"
             label="영업대표 연락처"
             variant="outlined"
             density="compact"
-            :disabled="isReadOnly"
           />
-        </VCol>
-        <VCol cols="12" md="12">
-          <VTextField
+        </v-col>
+
+        <v-col cols="12">
+          <v-text-field
             v-model="salesRepEmail"
             label="영업대표 이메일"
             variant="outlined"
             density="compact"
-            :disabled="isReadOnly"
           />
-        </VCol>
-        <VCol cols="8">
-          <VTextField
+        </v-col>
+
+        <v-col cols="8">
+          <v-text-field
             v-model="zipcode"
             label="우편번호"
             variant="outlined"
             density="compact"
-            :disabled="isReadOnly"
+            :disabled="isAddressLocked"
           />
-        </VCol>
-        <VCol cols="4">
-          <VBtn v-if="!isReadOnly" variant="tonal" density="comfortable" class="update-btn ml-2">
+        </v-col>
+
+        <v-col cols="4">
+          <v-btn
+            variant="tonal"
+            density="comfortable"
+            class="update-btn ml-2"
+            @click="openPostcode"
+          >
             주소 찾기
-          </VBtn>
-        </VCol>
-        <VCol cols="12" md="12">
-          <VTextField
+          </v-btn>
+        </v-col>
+
+        <v-col cols="12">
+          <v-text-field
             v-model="street"
             label="주소"
             variant="outlined"
             density="compact"
-            :disabled="isReadOnly"
+            :disabled="isAddressLocked"
           />
-        </VCol>
-        <VCol cols="12" md="12">
-          <VTextField
-            v-model="detail"
-            label="상세주소"
-            variant="outlined"
-            density="compact"
-            :disabled="isReadOnly"
-          />
-        </VCol>
-      </VRow>
-    </VCardText>
-  </VCard>
+        </v-col>
+
+        <v-col cols="12">
+          <v-text-field v-model="detail" label="상세주소" variant="outlined" density="compact" />
+        </v-col>
+      </v-row>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script setup>
-import { defineProps, defineModel } from 'vue'
-
-const props = defineProps({
-  isReadOnly: Boolean,
-})
+import { ref, defineModel } from 'vue'
 
 const name = defineModel('name')
 const ceoName = defineModel('ceoName')
@@ -102,6 +91,19 @@ const salesRepEmail = defineModel('salesRepEmail')
 const zipcode = defineModel('zipcode')
 const street = defineModel('street')
 const detail = defineModel('detail')
+
+const isAddressLocked = ref(false)
+
+const openPostcode = () => {
+  new window.daum.Postcode({
+    oncomplete: (data) => {
+      console.log(data)
+      zipcode.value = data.zonecode
+      street.value = data.roadAddress
+      isAddressLocked.value = true
+    },
+  }).open()
+}
 </script>
 
 <style scoped>

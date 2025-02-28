@@ -1,58 +1,41 @@
 <template>
-  <VContainer fluid style="margin: 0px; padding: 0px; width: 100%" class="mt-5">
-    <VRow>
-      <VCol cols="12" md="6">
-        <PartnersInfoComponent
-          v-model:name="partnersInfoData.name"
-          v-model:ceoName="partnersInfoData.ceoName"
-          v-model:salesRepName="partnersInfoData.salesRepName"
-          v-model:salesRepPhone="partnersInfoData.salesRepPhone"
-          v-model:salesRepEmail="partnersInfoData.salesRepEmail"
-          v-model:zipcode="partnersInfoData.zipcode"
-          v-model:street="partnersInfoData.street"
-          v-model:detail="partnersInfoData.detail"
-          :isReadOnly="!isEditMode"
+  <v-container fluid style="margin: 0px; padding: 0px; width: 100%" class="mt-5">
+    <v-row>
+      <v-col cols="12" md="6">
+        <partners-info-component
+          v-model:name="partnersDetail.name"
+          v-model:ceoName="partnersDetail.ceoName"
+          v-model:salesRepName="partnersDetail.salesRepName"
+          v-model:salesRepPhone="partnersDetail.salesRepPhone"
+          v-model:salesRepEmail="partnersDetail.salesRepEmail"
+          v-model:zipcode="partnersDetail.zipcode"
+          v-model:street="partnersDetail.street"
+          v-model:detail="partnersDetail.detail"
         />
-      </VCol>
-      <VCol cols="12" md="6">
-        <ContractInfoComponent
+      </v-col>
+
+      <v-col cols="12" md="6">
+        <contract-info-component
           class="mb-10"
-          v-model:grade="contractInfoData.grade"
-          v-model:commissionRate="contractInfoData.commissionRate"
-          :isReadOnly="!isEditMode"
+          v-model:grade="partnersDetail.grade"
+          v-model:commissionRate="partnersDetail.commissionRate"
         />
-        <AdditionalInfoComponent
-          v-model:comment="additionalInfoData.comment"
-          :isReadOnly="!isEditMode"
-        />
-      </VCol>
-    </VRow>
-    <VRow>
-      <VCol class="btns-container">
-        <VBtn
-          v-if="!isEditMode"
-          variant="tonal"
-          density="comfortable"
-          class="update-btn ml-2"
-          @click="fnUpdateBtn"
-        >
+        <additional-info-component v-model:comment="partnersDetail.comment" />
+      </v-col>
+    </v-row>
+
+    <v-row>
+      <v-col class="btns-container">
+        <v-btn variant="tonal" density="comfortable" class="update-btn ml-2" @click="fnSaveBtn">
           협력사 수정
-        </VBtn>
-        <VBtn
-          v-else
-          variant="tonal"
-          density="comfortable"
-          class="update-btn ml-2"
-          @click="fnSaveBtn"
-        >
-          협력사 저장
-        </VBtn>
-        <VBtn variant="tonal" density="comfortable" class="update-btn ml-2" @click="fnDeleteBtn">
+        </v-btn>
+
+        <v-btn variant="tonal" density="comfortable" class="update-btn ml-2" @click="fnDeleteBtn">
           협력사 삭제
-        </VBtn>
-      </VCol>
-    </VRow>
-  </VContainer>
+        </v-btn>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 <script setup>
 import { ref, onMounted } from 'vue'
@@ -67,30 +50,19 @@ import { useToast } from 'vue-toastification'
 
 const toast = useToast()
 const dialog = useDialog()
-const isEditMode = ref(false)
 
-// const partnerData = ref(null)
-
-/* 추후에 api로 상세 조회한 정보를 가져와야함 */
-const partnersInfoData = ref({
-  id: '1',
-  name: '애버커스',
-  ceoName: '임영택',
-  salesRepName: '홍길동',
-  salesRepPhone: '010-2347-2356',
-  salesRepEmail: 'aaaaa@naver.com',
-  zipcode: '10578',
-  street: '경기도 고양시 세솔로25',
-  detail: '2218동 205호',
-})
-
-const contractInfoData = ref({
-  grade: 'B',
-  commissionRate: '10.00',
-})
-
-const additionalInfoData = ref({
-  comment: '저번 프로젝트에 일을 빨리 처리함',
+const partnersDetail = ref({
+  name: '',
+  ceoName: '',
+  salesRepName: '',
+  salesRepPhone: '',
+  salesRepEmail: '',
+  zipcode: '',
+  street: '',
+  detail: '',
+  grade: '',
+  commissionRate: '',
+  comment: '',
 })
 
 onMounted(() => {
@@ -99,42 +71,16 @@ onMounted(() => {
 })
 
 const fetchGetPartnersDetail = async (partnersId) => {
-  const partnersDetail = await getPartnersDetail(partnersId)
-  console.log(partnersDetail)
-  updatePartnersInfo(partnersDetail)
-  updateContractInfo(partnersDetail)
-  updateAdditionalInfo(partnersDetail)
-}
-
-const updatePartnersInfo = (partnersDetail) => {
-  partnersInfoData.value.id = partnersDetail.id
-  partnersInfoData.value.name = partnersDetail.name
-  partnersInfoData.value.ceoName = partnersDetail.ceoName
-  partnersInfoData.value.salesRepName = partnersDetail.salesRepName
-  partnersInfoData.value.salesRepPhone = partnersDetail.salesRepPhone
-  partnersInfoData.value.salesRepEmail = partnersDetail.salesRepEmail
-  partnersInfoData.value.zipcode = partnersDetail.zipcode
-  partnersInfoData.value.street = partnersDetail.street
-  partnersInfoData.value.detail = partnersDetail.detail
-}
-
-const updateContractInfo = (partnersDetail) => {
-  contractInfoData.value.grade = partnersDetail.grade
-  contractInfoData.value.commissionRate = partnersDetail.commissionRate
-}
-
-const updateAdditionalInfo = (partnersDetail) => {
-  additionalInfoData.value.comment = partnersDetail.comment
-}
-
-const fnUpdateBtn = () => {
-  isEditMode.value = true
+  const data = await getPartnersDetail(partnersId)
+  // partnersDetail.value로 데이터를 할당
+  partnersDetail.value = data
+  console.log(partnersDetail.value)
 }
 
 const fnSaveBtn = () => {
   dialog.openDialog({
     title: '협력사 수정',
-    contents: `${partnersInfoData.value.name}의 정보를 수정하시겠습니까?`,
+    contents: `${partnersDetail.value.name}의 정보를 수정하시겠습니까?`,
     fnCallback: fnAfterUpdateBtn,
   })
 }
@@ -142,8 +88,8 @@ const fnSaveBtn = () => {
 const fnDeleteBtn = () => {
   dialog.openDialog({
     title: '협력사 삭제',
-    contents: `${partnersInfoData.value.name} 협력사를 삭제하시겠습니까?`,
-    fnCallback: () => fetchDeletePartners(partnersInfoData.value.id),
+    contents: `${partnersDetail.value.name} 협력사를 삭제하시겠습니까?`,
+    fnCallback: () => fetchDeletePartners(partnersDetail.value.id),
   })
 }
 
