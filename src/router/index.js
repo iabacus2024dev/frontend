@@ -6,7 +6,8 @@ import SearchBarTestPage from '@/views/test/SearchBarTestPage.vue'
 import ProjectPage from '@/views/project/ProjectPage.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import MemberPage from '@/views/member/MemberPage.vue'
-import PartnersPage from '@/views/PartnersPage.vue'
+import PartnersPage from '@/views/partners/PartnersPage.vue'
+import PartnersDetailPage from '@/views/partners/PartnersDetailPage.vue'
 import PermissionPage from '@/views/PermissionPage.vue'
 import SalesPage from '@/views/SalesPage.vue'
 import ProfilePage from '@/views/ProfilePage.vue'
@@ -140,6 +141,20 @@ const routes = [
           title: '협력사 관리',
           disabled: true,
         },
+      ],
+    },
+  },
+  {
+    path: '/partners/detail',
+    name: 'partners-detail',
+    component: PartnersDetailPage,
+    meta: {
+      layout: DefaultLayout,
+      title: '협력사 상세',
+      breadcrumbs: [
+        { title: '홈', disabled: false, to: { name: 'home' } },
+        { title: '협력사 관리', disabled: false, to: { name: 'partners' } },
+        { title: '협력사 상세', disabled: true },
       ],
     },
   },
