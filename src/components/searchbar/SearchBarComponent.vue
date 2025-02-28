@@ -1,7 +1,7 @@
 <template>
-  <v-card class="pa-4" variant="oulined">
-    <v-row v-for="(row, rowIndex) in rows" :key="rowIndex">
-      <v-col
+  <VCard class="pa-4">
+    <VRow v-for="(row, rowIndex) in rows" :key="rowIndex">
+      <VCol
         v-for="(field, index) in row.fields"
         :key="index"
         cols="12"
@@ -14,57 +14,55 @@
           <label class="search-label" :for="field.key">{{ field.label }}</label>
 
           <!-- 텍스트 입력 -->
-          <v-text-field
+          <VTextField
             v-if="field.type === 'text'"
             v-model="searchData[field.key]"
             variant="outlined"
             density="compact"
             hide-details="auto"
             class="search-input"
-          ></v-text-field>
+          ></VTextField>
 
           <!-- 날짜 입력 -->
-          <v-date-input
+          <VTextField
             v-else-if="field.type === 'date'"
             v-model="searchData[field.key]"
-            prepend-icon=""
+            type="date"
             variant="outlined"
             density="compact"
-            :config="{ format: 'yyyy-MM-dd' }"
             hide-details="auto"
             class="search-input"
-          ></v-date-input>
+          >
+          </VTextField>
 
           <!-- 드롭다운 -->
-          <v-select
+          <VSelect
             v-else-if="field.type === 'select'"
-            label="전체"
             v-model="searchData[field.key]"
             :items="field.options"
-            item-title="label"
+            item-title="title"
             item-value="value"
             variant="outlined"
             density="compact"
             hide-details="auto"
             class="search-input"
-          ></v-select>
+          ></VSelect>
         </div>
-      </v-col>
-    </v-row>
+      </VCol>
+    </VRow>
 
     <!-- 마지막 행에 버튼 포함 -->
-    <v-row class="button-group pa-0">
-      <v-col class="d-flex justify-end">
-        <v-btn @click="onReset" class="btn reset mr-3" color="grey" variant="flat">초기화</v-btn>
-        <v-btn @click="onSearch" class="btn search" color="red" variant="flat">검색</v-btn>
-      </v-col>
-    </v-row>
-  </v-card>
+    <VRow class="button-group pa-0">
+      <VCol class="d-flex justify-end">
+        <VBtn @click="onReset" class="reset-btn mr-3" variant="flat">초기화</VBtn>
+        <VBtn @click="onSearch" class="search-btn" variant="flat">검색</VBtn>
+      </VCol>
+    </VRow>
+  </VCard>
 </template>
 
 <script setup>
 import { reactive, defineProps, defineEmits } from 'vue'
-import { VDateInput } from 'vuetify/labs/VDateInput'
 
 // Props 정의
 const props = defineProps({
@@ -119,6 +117,17 @@ const onReset = () => {
   flex: 1; /* 남은 공간을 모두 차지하도록 설정 */
 }
 
+/* 검색 버튼 스타일*/
+.search-btn {
+  background-color: #eb6129;
+  color: white;
+}
+
+/* 초기화 버튼 스타일 */
+.reset-btn {
+  background-color: lightgrey;
+}
+
 /* v-select 전체 크기 조절 */
 :deep(.v-field) {
   min-height: 20px !important; /* 높이 줄이기 */
@@ -136,9 +145,5 @@ const onReset = () => {
 /* 드롭다운 아이콘 크기 줄이기 */
 :deep(.v-select__menu-icon) {
   font-size: 18px !important;
-}
-
-.v-card {
-  border: 1px solid lightgray;
 }
 </style>
