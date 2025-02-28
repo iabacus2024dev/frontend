@@ -7,27 +7,46 @@
       <VRow no-gutters="0">
         <VCol cols="9" class="mt-3">
           <VRow>
-            <VTextField v-model="email" label="이메일" variant="outlined" density="compact" />
+            <VTextField
+              v-model="email"
+              label="이메일"
+              variant="outlined"
+              density="compact"
+              :rules="[requiredRule]"
+            />
             <VBtn
               flat="0"
               v-if="showCheckEmail"
               @click="handleCheckEmail"
               class="ml-3 check-mail-btn"
-              >중복확인</VBtn
             >
+              중복확인
+            </VBtn>
           </VRow>
         </VCol>
-        <VCol cols="9" class="mt-3">
-          <VRow
-            ><VTextField v-model="name" label="이름" variant="outlined" density="compact" />
-          </VRow>
-        </VCol>
-        <VCol cols="9" class="mt-3">
+        <VCol cols="9" class="mt-10">
           <VRow>
-            <VTextField v-model="phone" label="전화번호" variant="outlined" density="compact" />
+            <VTextField
+              v-model="name"
+              label="이름"
+              variant="outlined"
+              density="compact"
+              :rules="[requiredRule]"
+            />
           </VRow>
         </VCol>
-        <VCol cols="9" class="mt-3">
+        <VCol cols="9" class="mt-10">
+          <VRow>
+            <VTextField
+              v-model="phone"
+              label="전화번호"
+              variant="outlined"
+              density="compact"
+              :rules="[requiredRule]"
+            />
+          </VRow>
+        </VCol>
+        <VCol cols="9" class="mt-10">
           <VRow>
             <VTextField
               v-model="birthDate"
@@ -35,6 +54,7 @@
               variant="outlined"
               density="compact"
               type="date"
+              :rules="[requiredRule]"
             />
           </VRow>
         </VCol>
@@ -57,6 +77,9 @@ const props = defineProps({
     default: true,
   },
 })
+
+// 필수 입력 규칙: 값이 없으면 에러 메시지 출력
+const requiredRule = (value) => !!value || '필수 입력 항목입니다.'
 
 const handleCheckEmail = () => {
   console.log('중복 확인 버튼 클릭')
