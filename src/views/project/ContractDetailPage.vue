@@ -130,7 +130,7 @@ const fetchUpdateContract = async (contractId) => {
     startDate: contractInfoData.value.startDate,
     endDate: contractInfoData.value.endDate,
     endDate: contractInfoData.value.endDate,
-    status: 'RESERVED', // todo: Enum 한<->영 유틸 만들 예정
+    status: 'RESERVED', // todo: Enum
     actualStartDate: progressInfoData.value.startDate,
     actualEndDate: progressInfoData.value.endDate,
   }
@@ -173,19 +173,6 @@ const handleUpdateBtn = () => {
     contents: `${contractInfoData.value.contractCode}번 계약을 수정하시겠습니까?`,
     fnCallback: () => fetchUpdateContract(contractInfoData.value.id),
   })
-}
-
-/* 다이얼로그 닫히고, 실행할 함수들 정의 */
-const fnAfterUpdateBtn = () => {
-  alert('수정했지?? ㅇㅋㅇ 난 수정후 콜백함수다')
-  const requestData = {
-    startDate: contractInfoData.value.startDate,
-    endDate: contractInfoData.value.endDate,
-    status: 'RESERVED', // todo: Enum 한<->영 유틸 만들 예정
-    actualStartDate: progressInfoData.value.startDate,
-    actualEndDate: progressInfoData.value.endDate,
-  }
-  console.log(requestData)
 }
 </script>
 
