@@ -57,7 +57,7 @@ import ProjectInfoComponent from '@/components/project/ProjectInfoComponent.vue'
 import ContractInfoComponent from '@/components/project/ContractInfoComponent.vue'
 import ProgressInfoComponent from '@/components/project/ProgressInfoComponent.vue'
 
-import { deleteContract, getContractDetail } from '@/apis/contractService'
+import { deleteContract, getContractDetail, updateContract } from '@/apis/contractService'
 import { useDialog } from '@/composables/useDialog'
 
 import { useToast } from 'vue-toastification'
@@ -125,6 +125,20 @@ const fetchDeleteContract = async (contractId) => {
   toast.success('계약이 성공적으로 삭제되었습니다.')
 }
 
+const fetchUpdateContract = async (contractId) => {
+  const requestData = {
+    startDate: contractInfoData.value.startDate,
+    endDate: contractInfoData.value.endDate,
+    endDate: contractInfoData.value.endDate,
+    status: 'RESERVED', // todo: Enum
+    actualStartDate: progressInfoData.value.startDate,
+    actualEndDate: progressInfoData.value.endDate,
+  }
+
+  await updateContract(contractId, requestData)
+  toast.success('계약이 성공적으로 수정되었습니다.')
+}
+
 const updateContractInfo = (contractDetail) => {
   contractInfoData.value.id = contractDetail.id
   contractInfoData.value.contractCode = contractDetail.code
@@ -157,12 +171,9 @@ const handleUpdateBtn = () => {
   dialog.openDialog({
     title: '계약 수정',
     contents: `${contractInfoData.value.contractCode}번 계약을 수정하시겠습니까?`,
-    fnCallback: fnAfterUpdateBtn,
+    fnCallback: () => fetchUpdateContract(contractInfoData.value.id),
   })
 }
-
-/* 다이얼로그 닫히고, 실행할 함수들 정의 */
-const fnAfterUpdateBtn = () => alert('수정했지?? ㅇㅋㅇ 난 수정후 콜백함수다')
 </script>
 
 <style scoped>
