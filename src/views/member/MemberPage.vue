@@ -1,32 +1,28 @@
-MemberPage.vue
-
 <template>
   <v-container fluid style="margin: 0px; padding: 0px; width: 100%" class="mt-5">
     <v-row>
       <v-col cols="3">
-        <v-card>
+        <v-card variant="outlined" class="custom-card">
           <v-card-text>
             <LazyTreeViewWrapper :treeDataResponse="treeData" />
           </v-card-text>
         </v-card>
       </v-col>
       <v-col cols="9">
-        <v-card>
-          <div class="mt-5">
-            <SearchBarComponent :rows="searchRows" @search="handleSearch" @reset="handleReset" />
-          </div>
-          <v-card-text>
-            <TableComponent :table-title="tableTitleResponse" :table-data="tableDataResponse" />
-            <PaginationComponent
-              :total-items="totalItems"
-              :items-per-page="itemsPerPage"
-              @page-change="handlePageChange"
-            />
-          </v-card-text>
-          <v-card-actions class="justify-end">
-            <v-btn class="add-member-btn" @click="addMember">구성원 추가</v-btn>
-          </v-card-actions>
-        </v-card>
+        <div class="mt-5">
+          <SearchBarComponent :rows="searchRows" @search="handleSearch" @reset="handleReset" />
+        </div>
+        <v-card-text>
+          <TableComponent :table-title="tableTitleResponse" :table-data="tableDataResponse" />
+          <PaginationComponent
+            :total-items="totalItems"
+            :items-per-page="itemsPerPage"
+            @page-change="handlePageChange"
+          />
+        </v-card-text>
+        <v-card-actions class="justify-end">
+          <v-btn class="add-member-btn" @click="addMember">구성원 추가</v-btn>
+        </v-card-actions>
       </v-col>
     </v-row>
   </v-container>
@@ -176,5 +172,10 @@ const handleReset = () => {
 .add-member-btn {
   background-color: #eb6129;
   color: white;
+}
+.custom-card {
+  border: 1px solid #c5c3c3;
+  padding: 12px;
+  border-radius: 4px;
 }
 </style>

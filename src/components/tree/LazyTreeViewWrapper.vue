@@ -1,5 +1,3 @@
-LazyTreeViewWrapper.vue
-
 <template>
   <v-treeview
     :items="lazyItems"
