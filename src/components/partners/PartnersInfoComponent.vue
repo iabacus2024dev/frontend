@@ -1,5 +1,5 @@
 <template>
-  <v-card class="pt-2 px-2">
+  <v-card class="pt-2 px-2 custom-rounded">
     <v-card-item>
       <v-card-title>기본 정보</v-card-title>
     </v-card-item>
@@ -7,11 +7,23 @@
     <v-card-text>
       <v-row class="gap-4">
         <v-col cols="12">
-          <v-text-field v-model="name" label="협력사명" variant="outlined" density="compact" />
+          <v-text-field
+            v-model="name"
+            label="협력사명"
+            variant="outlined"
+            density="compact"
+            :rules="[requiredRule]"
+          />
         </v-col>
 
         <v-col cols="12">
-          <v-text-field v-model="ceoName" label="대표자명" variant="outlined" density="compact" />
+          <v-text-field
+            v-model="ceoName"
+            label="대표자명"
+            variant="outlined"
+            density="compact"
+            :rules="[requiredRule]"
+          />
         </v-col>
 
         <v-col cols="12">
@@ -20,6 +32,7 @@
             label="영업대표명"
             variant="outlined"
             density="compact"
+            :rules="[requiredRule]"
           />
         </v-col>
 
@@ -29,6 +42,8 @@
             label="영업대표 연락처"
             variant="outlined"
             density="compact"
+            :rules="[requiredRule]"
+            placeholder="010-1234-5678"
           />
         </v-col>
 
@@ -94,6 +109,8 @@ const detail = defineModel('detail')
 
 const isAddressLocked = ref(false)
 
+const requiredRule = (value) => !!value || '필수 입력 항목입니다.'
+
 const openPostcode = () => {
   new window.daum.Postcode({
     oncomplete: (data) => {
@@ -107,6 +124,10 @@ const openPostcode = () => {
 </script>
 
 <style scoped>
+.custom-rounded {
+  border-radius: 15px;
+}
+
 .update-btn {
   background-color: #eb6129;
   color: white;
