@@ -2,106 +2,90 @@
   <v-container fluid style="margin: 0px; padding: 0px; width: 100%" class="mt-5">
     <v-row>
       <v-col cols="3">
-        <v-card>
+        <v-card variant="outlined" class="custom-card">
           <v-card-text>
-            <TreeView :treeDataResponse="treeData" />
+            <LazyTreeViewWrapper :treeDataResponse="treeData" />
           </v-card-text>
         </v-card>
       </v-col>
       <v-col cols="9">
-        <v-card>
-          <div class="mt-5">
-            <SearchBarComponent :rows="searchRows" @search="handleSearch" @reset="handleReset" />
-          </div>
-          <v-card-text>
-            <TableComponent :table-title="tableTitleResponse" :table-data="tableDataResponse" />
-            <PaginationComponent
-              :total-items="totalItems"
-              :items-per-page="itemsPerPage"
-              @page-change="handlePageChange"
-            />
-          </v-card-text>
-          <v-card-actions class="justify-end">
-            <v-btn class="add-member-btn" @click="addMember">구성원 추가</v-btn>
-          </v-card-actions>
-        </v-card>
+        <div class="mt-5">
+          <SearchBarComponent :rows="searchRows" @search="handleSearch" @reset="handleReset" />
+        </div>
+        <v-card-text>
+          <TableComponent :table-title="tableTitleResponse" :table-data="tableDataResponse" />
+          <PaginationComponent
+            :total-items="totalItems"
+            :items-per-page="itemsPerPage"
+            @page-change="handlePageChange"
+          />
+        </v-card-text>
+        <v-card-actions class="justify-end">
+          <v-btn class="add-member-btn" @click="addMember">구성원 추가</v-btn>
+        </v-card-actions>
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { rawData } from '@/components/common/memberData.js'
+import { ref, onMounted } from 'vue'
 import TableComponent from '@/components/table/TableComponent.vue'
-import TreeView from '@/components/tree/TreeView.vue'
+import LazyTreeViewWrapper from '@/components/tree/LazyTreeViewWrapper.vue'
 import SearchBarComponent from '@/components/searchbar/SearchBarComponent.vue'
 import PaginationComponent from '@/components/common/PaginationComponent.vue'
+import { getTreeViews } from '@/apis/teamService'
 
 const tableTitleResponse = ref(['이름', '팀명', '직급', '구분', '등급', '가동현황', '입사일자'])
-
 const tableDataResponse = ref([
   {
-    name: '박성철',
+    name: '박상철',
     team: '고객정보팀',
-    position: '사원',
-    employment_type: '정규직',
+    rank: '사원',
+    type: '정규직',
     grade: '초급',
     status: '비가동',
-    hire_date: '2024-11-25',
+    join_date: '2024-11-25',
   },
   {
-    name: '유하진',
-    team: '기업정보팀',
-    position: '사원',
-    employment_type: '반프리',
+    name: '김영수',
+    team: '고객정보팀',
+    rank: '선임',
+    type: '정규직',
     grade: '중급',
-    status: '비가동',
-    hire_date: '2024-10-16',
-  },
-  {
-    name: '이지수',
-    team: '융합서비스정보팀',
-    position: '선임',
-    employment_type: '정규직',
-    grade: '초급',
     status: '가동',
-    hire_date: '2023-11-06',
+    join_date: '2023-05-15',
   },
   {
-    name: '김진규',
-    team: '기업정보팀',
-    position: '책임',
-    employment_type: '정규직',
-    grade: '고급',
-    status: '비가동',
-    hire_date: '2021-05-24',
-  },
-  {
-    name: '임세인',
+    name: '이영희',
     team: '고객정보팀',
-    position: '선임',
-    employment_type: '정규직',
-    grade: '초급',
+    rank: '책임',
+    type: '정규직',
+    grade: '고급',
     status: '가동',
-    hire_date: '2022-07-18',
+    join_date: '2022-02-10',
+  },
+  {
+    name: '박철수',
+    team: '고객정보팀',
+    rank: '이사',
+    type: '정규직',
+    grade: '특급',
+    status: '가동',
+    join_date: '2021-01-01',
   },
 ])
 
-const transformData = (data) => {
-  const transform = (obj) => {
-    return Object.entries(obj).map(([key, value]) => {
-      if (Array.isArray(value)) {
-        return { name: key, children: value.map((name) => ({ name })) }
-      } else {
-        return { name: key, children: transform(value) }
-      }
-    })
-  }
-  return transform(data)
-}
+const treeData = ref([])
 
-const treeData = ref(transformData(rawData))
+onMounted(async () => {
+  try {
+    const response = await getTreeViews()
+    treeData.value = response
+  } catch (error) {
+    console.error('트리뷰 데이터 로딩 실패:', error)
+  }
+})
 
 const addMember = () => {
   console.log('구성원 추가 버튼 클릭')
@@ -124,7 +108,7 @@ const searchRows = ref([
         ],
       },
       {
-        key: ' rnak',
+        key: 'rnak',
         label: '등급',
         type: 'select',
         columnCount: 4,
@@ -137,7 +121,7 @@ const searchRows = ref([
         ],
       },
       {
-        key: ' grade',
+        key: 'grade',
         label: '직급',
         type: 'select',
         columnCount: 4,
@@ -164,7 +148,7 @@ const searchRows = ref([
     ],
   },
   {
-    fields: [{ key: ' 이름', label: '이름', type: 'text', columnCount: 2 }],
+    fields: [{ key: '이름', label: '이름', type: 'text', columnCount: 2 }],
   },
 ])
 
@@ -181,12 +165,17 @@ const handleReset = () => {
 
 <style scoped>
 .v-treeview {
-  height: 600px;
+  height: 650px;
   overflow-y: auto;
 }
 
 .add-member-btn {
   background-color: #eb6129;
   color: white;
+}
+.custom-card {
+  border: 1px solid #c5c3c3;
+  padding: 12px;
+  border-radius: 4px;
 }
 </style>
