@@ -40,12 +40,12 @@
 
   <VContainer>
     <TableComponent :tableTitle="tableTitleResponse" :tableData="tableDataResponse" />
-
     <TableEventComponent
       :tableDataEvent="tableDataEventCondition"
       @create-data-button-click="fnCreateData"
     />
   </VContainer>
+
 </template>
 
 <script setup>
@@ -59,6 +59,7 @@ import ProgressInfoComponent from '@/components/project/ProgressInfoComponent.vu
 
 import { deleteContract, getContractDetail, updateContract } from '@/apis/contractService'
 import { useDialog } from '@/composables/useDialog'
+
 
 import { useToast } from 'vue-toastification'
 
@@ -189,5 +190,9 @@ const handleUpdateBtn = () => {
 .update-btn {
   background-color: #eb6129;
   color: white;
+}
+
+.custom-dialog {
+  z-index: 9999; /* 모달이 가장 위로 오도록 설정 */
 }
 </style>

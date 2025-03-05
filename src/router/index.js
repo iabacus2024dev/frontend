@@ -24,6 +24,7 @@ import FindPasswordPage from '@/views/login/FindPasswordPage.vue'
 import MemberDetailPage from '@/views/member/MemberDetailPage.vue'
 import ProjectDetailPage from '@/views/project/ProjectDetailPage.vue'
 import MemberCreatePopup from '@/views/member/MemberCreatePopup.vue'
+import ContractMemberDetailPage from '@/views/project/ContractMemberDetailPage.vue'
 
 const routes = [
   {
@@ -391,6 +392,50 @@ const routes = [
         },
         {
           title: '구성원 추가',
+          disabled: true,
+        },
+      ],
+    },
+  },
+  {
+    path: '/ContractMemberDetail',
+    name: 'ContractMemberDetail',
+    component: ContractMemberDetailPage,
+    meta: {
+      layout: DefaultLayout,
+      activeIndex: 1,
+      title: '투입 인원 상세',
+      breadcrumbs: [
+        {
+          title: '홈',
+          disabled: false,
+          to: {
+            name: 'home',
+          },
+        },
+        {
+          title: '프로젝트 관리',
+          disabled: false,
+          to: {
+            name: 'projects',
+          },
+        },
+        {
+          title: '프로젝트 상세',
+          disabled: false,
+          to: {
+            name: 'projectDetail',
+          },
+        },
+        {
+          title: '계약 상세',
+          disabled: false,
+          to: {
+            name: 'contracts',
+          },
+        },
+        {
+          title: '투입 인원 상세',
           disabled: true,
         },
       ],
