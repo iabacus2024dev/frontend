@@ -1,5 +1,5 @@
 <template>
-  <v-card class="pt-2 px-2">
+  <v-card class="pt-2 px-2" border="thin" variant="outlined">
     <v-card-item>
       <v-card-title>기타 정보</v-card-title>
     </v-card-item>

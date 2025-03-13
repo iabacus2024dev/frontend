@@ -1,6 +1,8 @@
 import { restApiConfig } from '@/config/restApiConfig'
 import axios from 'axios'
 import { useToast } from 'vue-toastification'
+import { useUserStore } from '@/stores/user.js'
+import router from '@/router/index.js'
 
 class RestApiAdapter {
   static axiosInstance = null
@@ -20,23 +22,30 @@ class RestApiAdapter {
   }
 
   // API 요청 처리
-  static async request(url, method = 'GET', reqData = null) {
-    const toast = useToast()
+  static async request(url, method = 'GET', reqData = null, params = null) {
     try {
       const response = await this.getInstance().request({
         method,
         url,
         data: reqData,
+        params,
       })
       return response.data
     } catch (error) {
+      if (error.response?.data.code === '403') {
+        await router.push('/')
+      } else if (error.response?.data.code === '401') {
+        useUserStore().logout()
+        await router.push('/auths/login')
+      }
+      const toast = useToast()
       toast.error(error.response?.data.message ?? error.message)
       throw error
     }
   }
 
-  static async get(url) {
-    return this.request(url, 'GET')
+  static async get(url, params) {
+    return this.request(url, 'GET', null, params)
   }
 
   static async post(url, data) {

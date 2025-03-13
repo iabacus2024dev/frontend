@@ -4,21 +4,21 @@
       :v-model="page"
       :length="length"
       :total-visible="10"
-      :density="'default'"
+      density="compact"
       @update:modelValue="handleUpdate"
     />
   </div>
 </template>
 
 <script setup>
-import { defineEmits, defineProps } from 'vue';
+import { defineEmits, defineProps } from 'vue'
 
-defineProps(['page', 'length']);
-let emits = defineEmits(['change-page']);
+defineProps(['page', 'length'])
+let emits = defineEmits(['change-page'])
 
 const handleUpdate = (value) => {
-  emits('change-page', value);
-};
+  emits('change-page', value)
+}
 </script>
 
 <style scoped></style>

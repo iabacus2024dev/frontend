@@ -1,5 +1,5 @@
 <template>
-  <v-card border="thin" class="mt-4 pa-4" variant="outlined">
+  <v-card border="md" class="mt-4 pa-4" variant="outlined">
     <v-card-title class="text-h5 font-weight-bold">비밀번호 변경</v-card-title>
     <v-divider></v-divider>
     <v-card-text>
@@ -68,7 +68,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { changePassword } from '@/apis/authService.js'
+import { changePassword } from '@/apis/memberService.js'
 import { useToast } from 'vue-toastification'
 
 const isFormValid = ref(false)
