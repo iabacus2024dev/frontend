@@ -11,12 +11,16 @@ import 'vue-toastification/dist/index.css'
 //import { openErrorPopUp } from '@/core/utils/errorPopup'
 import RestApiAdapter from '@/adapters/restApiAdapter'
 import { registerLayouts } from './layouts/register'
+import VueCookies from 'vue-cookies'
 
 const app = createApp(App)
+
 registerLayouts(app)
+
 app.use(pinia)
 app.use(router)
 app.use(vuetify)
+app.use(VueCookies)
 app.use(Toast, {
   position: 'top-center',
   timeout: 3000,

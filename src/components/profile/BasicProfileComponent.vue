@@ -1,11 +1,11 @@
 <template>
-  <v-card border="thin" class="mt-4 pa-4" variant="outlined">
+  <v-card border="md" class="mt-4 pa-4" variant="outlined">
     <v-card-title class="text-h5 font-weight-bold">{{ user.name }} </v-card-title>
     <v-divider></v-divider>
     <v-card-item>
       <v-text-field
         label="팀"
-        v-model="user.team"
+        v-model="user.teamName"
         density="compact"
         variant="underlined"
         prepend-icon="mdi-account-group"
@@ -54,17 +54,14 @@
 
 <script setup>
 import { ref } from 'vue'
+import { getMyEmployeeDetail } from '@/apis/employeeService.js'
 
-const user = ref({
-  name: '박상철',
-  team: '고객정보팀',
-  email: 'tkdcjf38@iabacus.co.kr',
-  role: '모든 구성원',
-  status: 'Active',
-  phone: '010-1234-5678',
-  birthDate: '1998-01-01',
-  joinDate: '2021-01-01',
-})
+const user = ref({})
+
+const getProfile = async () => {
+  user.value = await getMyEmployeeDetail()
+}
+getProfile()
 </script>
 
 <style scoped></style>

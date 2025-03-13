@@ -69,6 +69,8 @@
 <script setup>
 import { computed, shallowRef } from 'vue'
 import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/user.js'
+import { fetchLogout } from '@/apis/authService.js'
 
 const router = useRouter()
 
@@ -89,7 +91,8 @@ const goTo = (path) => {
 
 const logout = () => {
   console.log('logout')
-  router.push('/auths/login')
+  useUserStore().logout()
+  fetchLogout()
 }
 
 const activeIndex = computed(() => {

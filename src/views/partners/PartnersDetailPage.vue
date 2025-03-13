@@ -38,8 +38,8 @@
   </v-container>
 </template>
 <script setup>
-import { ref, onMounted } from 'vue'
-import { getPartnersDetail } from '@/apis/partnerService'
+import { onMounted, ref } from 'vue'
+import { deletePartners, getPartnersDetail, updatePartners } from '@/apis/partnerService'
 
 import PartnersInfoComponent from '@/components/partners/PartnersInfoComponent.vue'
 import ContractInfoComponent from '@/components/partners/ContractInfoComponent.vue'
@@ -47,6 +47,7 @@ import AdditionalInfoComponent from '@/components/partners/AdditionalInfoCompone
 
 import { useDialog } from '@/composables/useDialog'
 import { useToast } from 'vue-toastification'
+import { useRoute, useRouter } from 'vue-router'
 
 const toast = useToast()
 const dialog = useDialog()
@@ -55,8 +56,8 @@ const partnersDetail = ref({
   name: '',
   ceoName: '',
   salesRepName: '',
-  salesRepPhone: '',
   salesRepEmail: '',
+  salesRepPhone: '',
   zipcode: '',
   street: '',
   detail: '',
@@ -65,16 +66,14 @@ const partnersDetail = ref({
   comment: '',
 })
 
+const route = useRoute()
+const partnersId = route.params.id
 onMounted(() => {
-  const partnersId = '1' // todo: 협력사 메인에서 클릭한 협력사 ID를 넘겨주기
   fetchGetPartnersDetail(partnersId)
 })
 
 const fetchGetPartnersDetail = async (partnersId) => {
-  const data = await getPartnersDetail(partnersId)
-  // partnersDetail.value로 데이터를 할당
-  partnersDetail.value = data
-  console.log(partnersDetail.value)
+  partnersDetail.value = await getPartnersDetail(partnersId)
 }
 
 const fnSaveBtn = () => {
@@ -89,16 +88,21 @@ const fnDeleteBtn = () => {
   dialog.openDialog({
     title: '협력사 삭제',
     contents: `${partnersDetail.value.name} 협력사를 삭제하시겠습니까?`,
-    fnCallback: () => fetchDeletePartners(partnersDetail.value.id),
+    fnCallback: () => fetchDeletePartners(),
   })
 }
 
-const fetchDeleteContract = async (partnersId) => {
-  //await deleteContract(partnersId)
+const router = useRouter()
+const fetchDeletePartners = async () => {
+  await deletePartners(partnersId)
   toast.success('협력사가 성공적으로 삭제되었습니다.')
+  await router.push('/partners')
 }
 
-const fnAfterUpdateBtn = () => alert('수정했지?? ㅇㅋㅇ 난 수정후 콜백함수다')
+const fnAfterUpdateBtn = async () => {
+  await updatePartners(partnersId, partnersDetail.value)
+  toast.success('협력사가 성공적으로 수정되었습니다.')
+}
 </script>
 
 <style scoped>

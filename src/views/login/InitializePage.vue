@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto pa-12 pb-8" max-width="448" rounded="lg" elevation="0">
+  <v-card class="mx-auto pa-8 pt-7" max-width="448" elevation="0" rounded="lg">
     <div class="d-flex justify-center">
       <v-img
         max-width="200"
@@ -57,7 +57,8 @@
         <!-- 시작하기 버튼 -->
         <v-btn
           color="#EB6129"
-          size="x-large"
+          size="large"
+          rounded="lg"
           block
           type="submit"
           @click="handleInitializePassword"

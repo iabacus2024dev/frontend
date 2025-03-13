@@ -24,6 +24,8 @@ import FindPasswordPage from '@/views/login/FindPasswordPage.vue'
 import MemberDetailPage from '@/views/member/MemberDetailPage.vue'
 import ProjectDetailPage from '@/views/project/ProjectDetailPage.vue'
 import MemberCreatePopup from '@/views/member/MemberCreatePopup.vue'
+import { useUserStore } from '@/stores/user.js'
+import { useToast } from 'vue-toastification'
 
 const routes = [
   {
@@ -145,8 +147,8 @@ const routes = [
     },
   },
   {
-    path: '/partners/detail',
-    name: 'partners-detail',
+    path: '/partners/:id',
+    name: 'partnersDetail',
     component: PartnersDetailPage,
     meta: {
       layout: DefaultLayout,
@@ -401,6 +403,16 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
+})
+
+router.beforeEach((to, from, next) => {
+  const userStore = useUserStore()
+  if (userStore.isAuthenticated !== 'true' && !to.fullPath.startsWith('/auths')) {
+    const toast = useToast()
+    toast.error('먼저 로그인이 필요합니다!')
+    next({ name: 'login' })
+  }
+  next()
 })
 
 export default router

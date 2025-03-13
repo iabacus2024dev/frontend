@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto pa-8 pt-7 auth-card" max-width="448" elevation="0" rounded="lg">
+  <v-card class="mx-auto pa-8 pt-7" max-width="448" elevation="0" rounded="lg">
     <div class="d-flex justify-center">
       <v-img
         max-width="200"
@@ -42,7 +42,8 @@
         <!-- 이메일 링크 발송 버튼 -->
         <v-btn
           color="#EB6129"
-          size="x-large"
+          size="large"
+          rounded="lg"
           block
           type="submit"
           @click="handleRegister"
@@ -52,9 +53,19 @@
         </v-btn>
       </v-form>
     </v-card-text>
-    <v-card-actions class="justify-end">
-      <v-btn color="primary" @click="goTo('/auths/login')"> 로그인 </v-btn>
-    </v-card-actions>
+    <v-row justify="center" class="text-body-2">
+      <v-col cols="auto">
+        <RouterLink to="/auths/login" class="text-decoration-none text-grey-darken-1">
+          로그인
+        </RouterLink>
+      </v-col>
+      <v-col cols="auto" class="px-2">|</v-col>
+      <v-col cols="auto">
+        <RouterLink to="/auths/find-password" class="text-decoration-none text-grey-darken-1">
+          비밀번호 찾기
+        </RouterLink>
+      </v-col>
+    </v-row>
   </v-card>
 </template>
 

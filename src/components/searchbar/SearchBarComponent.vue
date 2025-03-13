@@ -1,5 +1,5 @@
 <template>
-  <VCard class="pa-4">
+  <VCard class="pa-4" variant="outlined" elevation="0" border="thin">
     <VRow v-for="(row, rowIndex) in rows" :key="rowIndex">
       <VCol
         v-for="(field, index) in row.fields"
@@ -62,7 +62,7 @@
 </template>
 
 <script setup>
-import { reactive, defineProps, defineEmits } from 'vue'
+import { defineEmits, defineProps, reactive } from 'vue'
 
 // Props 정의
 const props = defineProps({

@@ -1,5 +1,5 @@
 <template>
-  <v-card border="thin" class="mt-4 pa-4" variant="outlined">
+  <v-card border="md" class="mt-4 pa-4" variant="outlined">
     <v-card-title class="font-weight-bold text-h5 text-left">내 휴가</v-card-title>
     <v-divider></v-divider>
     <v-card-text>

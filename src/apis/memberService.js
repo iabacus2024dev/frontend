@@ -1,9 +1,5 @@
-import RestApiAdapter from '@/adapters/restApiAdapter.js';
+import RestApiAdapter from '@/adapters/restApiAdapter.js'
 
-export const getMemberList = async () => {
-  try {
-    return await RestApiAdapter.get('/api/v1/members');
-  } catch (error) {
-    throw error;
-  }
-};
+export const changePassword = async (form) => {
+  return await RestApiAdapter.patch('/api/v1/members/password', form)
+}
