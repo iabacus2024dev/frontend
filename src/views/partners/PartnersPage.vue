@@ -31,7 +31,7 @@ const modal = ref(null)
 const modalTitle = ref('협력사 삭제')
 const modalText = ref('....삭제 하겠습니까?')
 
-const currentPage = ref(0)
+const currentPage = ref(1)
 const totalPages = ref(0)
 const totalElements = ref(0)
 
@@ -87,8 +87,8 @@ const handleCancel = () => {
 // 페이지 변경 이벤트 핸들러
 const handlePageChange = async (newPage) => {
   console.log(`페이지 변경: ${newPage}`)
-  currentPage.value = newPage - 1
-  params.value.page = newPage - 1
+  currentPage.value = newPage
+  params.value.page = newPage
   await searchPartners()
 }
 
