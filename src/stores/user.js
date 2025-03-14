@@ -8,7 +8,6 @@ export const useUserStore = defineStore('user', () => {
 
   function login() {
     localStorage.setItem('isAuthenticated', 'true')
-    localStorage.setItem('XSRF-TOKEN', $cookies.get('XSRF-TOKEN'))
   }
 
   function logout() {

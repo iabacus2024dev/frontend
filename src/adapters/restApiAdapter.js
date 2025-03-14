@@ -3,6 +3,7 @@ import axios from 'axios'
 import { useToast } from 'vue-toastification'
 import { useUserStore } from '@/stores/user.js'
 import router from '@/router/index.js'
+import { useCookies } from 'vue3-cookies'
 
 class RestApiAdapter {
   static axiosInstance = null
@@ -18,8 +19,10 @@ class RestApiAdapter {
       RestApiAdapter.axiosInstance = axios.create(restApiConfig)
       RestApiAdapter.axiosInstance.defaults.headers
       RestApiAdapter.axiosInstance.defaults.withCredentials = true
-      let xsrf = localStorage.getItem('XSRF-TOKEN')
+      const { cookies } = useCookies()
+      const xsrf = cookies.get('XSRF-TOKEN')
       if (xsrf) {
+        console.log(xsrf)
         RestApiAdapter.axiosInstance.defaults.headers['X-XSRF-TOKEN'] = xsrf
       }
     }
