@@ -16,7 +16,12 @@ class RestApiAdapter {
   static getInstance() {
     if (!RestApiAdapter.axiosInstance) {
       RestApiAdapter.axiosInstance = axios.create(restApiConfig)
+      RestApiAdapter.axiosInstance.defaults.headers
       RestApiAdapter.axiosInstance.defaults.withCredentials = true
+      let xsrf = localStorage.getItem('XSRF-TOKEN')
+      if (xsrf) {
+        RestApiAdapter.axiosInstance.defaults.headers['X-XSRF-TOKEN'] = xsrf
+      }
     }
     return RestApiAdapter.axiosInstance
   }
