@@ -3,6 +3,7 @@ import axios from 'axios'
 import { useToast } from 'vue-toastification'
 import { useUserStore } from '@/stores/user.js'
 import router from '@/router/index.js'
+import { useCookies } from 'vue3-cookies'
 
 class RestApiAdapter {
   static axiosInstance = null
