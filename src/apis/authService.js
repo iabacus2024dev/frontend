@@ -15,9 +15,8 @@ export const findPassword = async (form) => {
 }
 
 export const fetchLogin = async (form) => {
-  const response = await RestApiAdapter.post('/api/v1/auths/login?remember=true', form)
+  await RestApiAdapter.post('/api/v1/auths/login?remember=true', form)
   await useUserStore().login()
-  return response
 }
 
 export const fetchLogout = async () => {
