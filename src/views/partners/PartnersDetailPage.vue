@@ -64,6 +64,7 @@ const partnersDetail = ref({
   grade: '',
   commissionRate: '',
   comment: '',
+  modifiedDateTime: '',
 })
 
 const route = useRoute()

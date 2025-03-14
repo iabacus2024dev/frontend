@@ -3,15 +3,15 @@ import { computed } from 'vue'
 
 export const useUserStore = defineStore('user', () => {
   const isAuthenticated = computed(() => {
-    return sessionStorage.getItem('isAuthenticated')
+    return localStorage.getItem('isAuthenticated')
   })
 
   function login() {
-    sessionStorage.setItem('isAuthenticated', 'true')
+    localStorage.setItem('isAuthenticated', 'true')
   }
 
   function logout() {
-    sessionStorage.removeItem('isAuthenticated')
+    localStorage.removeItem('isAuthenticated')
   }
 
   return { isAuthenticated, login, logout }
