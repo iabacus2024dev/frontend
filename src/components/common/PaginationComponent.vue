@@ -1,10 +1,10 @@
 <template>
-  <div class="text-center">
+  <div class="text-center mt-3">
     <v-pagination
-      :v-model="page"
+      :model-value="page"
       :length="length"
       :total-visible="10"
-      density="compact"
+      density="default"
       @update:modelValue="handleUpdate"
     />
   </div>
@@ -13,7 +13,7 @@
 <script setup>
 import { defineEmits, defineProps } from 'vue'
 
-defineProps(['page', 'length'])
+const props = defineProps(['page', 'length'])
 let emits = defineEmits(['change-page'])
 
 const handleUpdate = (value) => {

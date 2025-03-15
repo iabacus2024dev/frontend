@@ -62,7 +62,8 @@
 </template>
 
 <script setup>
-import { defineEmits, defineProps, reactive } from 'vue'
+import { defineEmits, defineProps, reactive, onMounted } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 
 // Props 정의
 const props = defineProps({
@@ -78,12 +79,20 @@ const props = defineProps({
 
 // Emits 정의
 const emit = defineEmits(['search', 'reset'])
+const router = useRouter()
+const route = useRoute()
 
 // 검색 데이터 상태
 const searchData = reactive({})
 
-// 검색 실행
+onMounted(() => {
+  Object.keys(route.query).forEach((key) => {
+    searchData[key] = route.query[key]
+  })
+})
+
 const onSearch = () => {
+  router.replace({ query: { ...searchData, page: 1 } })
   emit('search', searchData)
 }
 
@@ -92,6 +101,7 @@ const onReset = () => {
   Object.keys(searchData).forEach((key) => {
     searchData[key] = ''
   })
+  router.replace({ query: {} })
   emit('reset')
 }
 </script>

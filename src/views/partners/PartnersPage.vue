@@ -20,12 +20,15 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import TableComponent from '@/components/table/TableComponent.vue'
 import PaginationComponent from '@/components/common/PaginationComponent.vue'
 import SearchBarComponent from '@/components/searchbar/SearchBarComponent.vue'
 import { getPartners } from '@/apis/partnerService.js'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+
+const router = useRouter()
+const route = useRoute()
 
 const modal = ref(null)
 const modalTitle = ref('협력사 삭제')
@@ -34,6 +37,15 @@ const modalText = ref('....삭제 하겠습니까?')
 const currentPage = ref(1)
 const totalPages = ref(0)
 const totalElements = ref(0)
+const items = ref([])
+
+const params = ref({
+  grade: '',
+  name: '',
+  ceoName: '',
+  salesRepName: '',
+  page: 1,
+})
 
 const headers = ref([
   { title: '협력사명', key: 'name' },
@@ -44,29 +56,43 @@ const headers = ref([
   { title: '평가등급', key: 'grade' },
   { title: '주소', key: 'address' },
 ])
-const items = ref([])
 
-const params = ref({
-  grade: '',
-  name: '',
-  ceoName: '',
-  salesRepName: '',
-  page: currentPage.value,
-})
-const router = useRouter()
 const clickRow = (item) => {
   router.push(`/partners/${item.id}`)
 }
+
+const restoreSearchParams = async () => {
+  const query = route.query
+  params.value = {
+    grade: query.grade || '',
+    name: query.name || '',
+    ceoName: query.ceoName || '',
+    salesRepName: query.salesRepName || '',
+    page: query.page ? Number(query.page) : 1,
+  }
+  currentPage.value = query.page ? Number(query.page) : 1
+}
+
+onMounted(async () => {
+  restoreSearchParams()
+  await searchPartners()
+})
+
 const searchPartners = async () => {
   const response = await getPartners(params.value)
   totalPages.value = response.totalPages
   totalElements.value = response.totalElements
   items.value = response.content
+
+  router.replace(`/partners?${buildQueryParams(params.value)}`)
 }
 
-onMounted(async () => {
-  await searchPartners()
-})
+const buildQueryParams = (params) => {
+  return Object.keys(params)
+    .filter((key) => params[key] !== '')
+    .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
+    .join('&')
+}
 
 // 모달 열기
 const openDialog = () => {
@@ -86,15 +112,18 @@ const handleCancel = () => {
 
 // 페이지 변경 이벤트 핸들러
 const handlePageChange = async (newPage) => {
-  console.log(`페이지 변경: ${newPage}`)
   currentPage.value = newPage
   params.value.page = newPage
   await searchPartners()
 }
 
-computed(() => {
-  return searchPartners(params.value)
-})
+watch(
+  () => route.query,
+  async () => {
+    restoreSearchParams()
+    await searchPartners()
+  },
+)
 
 const searchRows = ref([
   {
@@ -123,16 +152,16 @@ const searchRows = ref([
   },
 ])
 
-// ✅ 검색 이벤트 핸들러
 const handleSearch = async (filters) => {
-  console.log('검색 실행:', filters)
-  params.value = filters
+  params.value = { ...filters, page: 1 }
+  currentPage.value = 1
   await searchPartners()
 }
 
-// ✅ 초기화 이벤트 핸들러
 const handleReset = async () => {
-  console.log('검색 조건 초기화됨')
+  params.value = { grade: '', name: '', ceoName: '', salesRepName: '', page: 1 }
+  currentPage.value = 1
+  await searchPartners()
 }
 </script>
 
