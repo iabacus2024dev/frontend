@@ -101,8 +101,12 @@ const fetchDeletePartners = async () => {
 }
 
 const fnAfterUpdateBtn = async () => {
-  await updatePartners(partnersId, partnersDetail.value)
-  toast.success('협력사가 성공적으로 수정되었습니다.')
+  try {
+    await updatePartners(partnersId, partnersDetail.value)
+    toast.success('협력사가 성공적으로 수정되었습니다.')
+  } finally {
+    fetchGetPartnersDetail(partnersId)
+  }
 }
 </script>
 
