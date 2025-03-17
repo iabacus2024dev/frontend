@@ -48,9 +48,10 @@
     >
   </v-container>
   <v-container class="pa-0">
-    <H1>계약 목록</H1>
+    <H1>투입 인원 목록</H1>
+    <EmployeeListComponent/>
     <v-card>
-      <TableComponent :tableTitle="tableTitleResponse" :tableData="tableDataResponse" />
+      <TableComponent :tableTitle="tableTitleResponse" :tableData="tableDataResponse"/>
       <PaginationComponent
         :page="currentPage"
         :length="totalPages"
@@ -78,6 +79,7 @@ import ProgressInfoComponent from '@/components/project/ProgressInfoComponent.vu
 import AmountComponent from '@/components/project/AmountComponent.vue'
 import BasicInfoComponent from '@/components/project/BasicInfoComponent.vue'
 import PaginationComponent from '@/components/common/PaginationComponent.vue'
+import EmployeeListComponent from '@/components/employee/EmployeeListComponent.vue'
 
 const emits = defineEmits(['project-emit-button-click', 'project-delete-button-click'])
 
