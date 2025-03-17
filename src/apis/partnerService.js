@@ -17,8 +17,8 @@ export const deletePartners = async (id) => {
   return await RestApiAdapter.delete(`/api/v1/partners/${id}`)
 }
 
-export const downloadPartners = async () => {
-  await download('/api/v1/partners/excel/download', null, '협력사 정보')
+export const downloadPartners = async (params) => {
+  await download('/api/v1/partners/excel/download', params, '협력사 정보')
 }
 
 export const downloadPartnersSample = async (params) => {
