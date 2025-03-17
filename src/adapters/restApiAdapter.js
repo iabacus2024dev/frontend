@@ -30,7 +30,7 @@ class RestApiAdapter {
   }
 
   // API 요청 처리
-  static async request(url, method = 'GET', reqData = null, params = null) {
+  static async request(url, method = 'GET', reqData = null, params = null, options = {}) {
     try {
       let { cookies } = useCookies()
       const cookieXsrf = cookies.get('XSRF-TOKEN')
@@ -45,6 +45,7 @@ class RestApiAdapter {
         data: reqData,
         params,
         headers,
+        ...options,
       })
       return response.data
     } catch (error) {
@@ -60,12 +61,12 @@ class RestApiAdapter {
     }
   }
 
-  static async get(url, params) {
-    return this.request(url, 'GET', null, params)
+  static async get(url, params, options) {
+    return this.request(url, 'GET', null, params, options)
   }
 
-  static async post(url, data) {
-    return this.request(url, 'POST', data)
+  static async post(url, data, options) {
+    return this.request(url, 'POST', data, null, options)
   }
 
   static async put(url, data) {

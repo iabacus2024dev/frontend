@@ -4,6 +4,7 @@ import { VDateInput } from 'vuetify/labs/VDateInput'
 
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
+import { VFileUpload } from 'vuetify/labs/components'
 
 export default createVuetify({
   theme: {
@@ -12,6 +13,7 @@ export default createVuetify({
   components: {
     VTreeview,
     VDateInput,
+    VFileUpload,
   },
   locale: {
     locale: 'ko',
