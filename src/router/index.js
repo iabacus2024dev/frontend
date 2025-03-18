@@ -24,7 +24,7 @@ import FindPasswordPage from '@/views/login/FindPasswordPage.vue'
 import MemberDetailPage from '@/views/member/MemberDetailPage.vue'
 import ProjectDetailPage from '@/views/project/ProjectDetailPage.vue'
 import MemberCreatePopup from '@/views/member/MemberCreatePopup.vue'
-import { useUserStore } from '@/stores/user.js'
+import { useMemberStore } from '@/stores/member.js'
 import { useToast } from 'vue-toastification'
 
 const routes = [
@@ -406,8 +406,8 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const userStore = useUserStore()
-  if (userStore.isAuthenticated !== 'true' && !to.fullPath.startsWith('/auths')) {
+  const memberStore = useMemberStore()
+  if (memberStore.isAuthenticated === null && !to.fullPath.startsWith('/auths')) {
     const toast = useToast()
     toast.error('먼저 로그인이 필요합니다!')
     next({ name: 'login' })
