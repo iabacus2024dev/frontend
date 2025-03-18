@@ -1,7 +1,7 @@
 import { restApiConfig } from '@/config/restApiConfig'
 import axios from 'axios'
 import { useToast } from 'vue-toastification'
-import { useUserStore } from '@/stores/user.js'
+import { useMemberStore } from '@/stores/member.js'
 import router from '@/router/index.js'
 import { useCookies } from 'vue3-cookies'
 
@@ -52,7 +52,7 @@ class RestApiAdapter {
       if (error.response?.data.code === '403') {
         await router.push('/')
       } else if (error.response?.data.code === '401') {
-        useUserStore().logout()
+        useMemberStore().logout()
         await router.push('/auths/login')
       }
       const toast = useToast()

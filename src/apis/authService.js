@@ -1,5 +1,5 @@
 import RestApiAdapter from '@/adapters/restApiAdapter.js'
-import { useUserStore } from '@/stores/user.js'
+import { useMemberStore } from '@/stores/member.js'
 import router from '@/router/index.js'
 
 export const register = async (form) => {
@@ -14,13 +14,17 @@ export const findPassword = async (form) => {
   return await RestApiAdapter.post('/api/v1/auths/find-password', form)
 }
 
+export const getMyInfo = async () => {
+  return await RestApiAdapter.get('/api/v1/members/my')
+}
+
 export const fetchLogin = async (form) => {
   await RestApiAdapter.post('/api/v1/auths/login?remember=true', form)
-  await useUserStore().login()
+  await useMemberStore().login()
 }
 
 export const fetchLogout = async () => {
   await router.push('/auths/login')
   await RestApiAdapter.post('/api/v1/auths/logout')
-  useUserStore().logout()
+  useMemberStore().logout()
 }

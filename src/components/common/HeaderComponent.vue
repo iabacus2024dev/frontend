@@ -28,7 +28,7 @@
     <v-spacer />
 
     <template #append>
-      <span>박상철님</span>
+      <span>{{ name }}님</span>
       <v-btn class="ms-1" icon>
         <v-avatar icon="mdi-account-circle" />
         <v-menu activator="parent" origin="top">
@@ -67,14 +67,15 @@
 </template>
 
 <script setup>
-import { computed, shallowRef } from 'vue'
+import { computed, ref, shallowRef } from 'vue'
 import { useRouter } from 'vue-router'
-import { useUserStore } from '@/stores/user.js'
+import { useMemberStore } from '@/stores/member.js'
 import { fetchLogout } from '@/apis/authService.js'
 
 const router = useRouter()
 
 const drawer = shallowRef(false)
+const name = ref(JSON.parse(localStorage.getItem('member')).name)
 const items = router
   .getRoutes()
   .filter((route) => route.meta.menu === true)
@@ -90,8 +91,7 @@ const goTo = (path) => {
 }
 
 const logout = () => {
-  console.log('logout')
-  useUserStore().logout()
+  useMemberStore().logout()
   fetchLogout()
 }
 

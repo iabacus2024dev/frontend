@@ -6,7 +6,7 @@
       <v-list-item v-for="authority in authorities" :key="authority.name">
         <template #prepend>
           <v-avatar size="x-small">
-            <v-icon color="green" icon="mdi-circle-outline" />
+            <v-icon color="green" icon="mdi-check-circle-outline" />
           </v-avatar>
         </template>
 
@@ -22,13 +22,14 @@
 
 <script setup>
 import { onMounted, ref } from 'vue'
-import { getAthorities } from '@/apis/roleService'
+import { getAuthorities } from '@/apis/roleService'
 
 const authorities = ref([])
 
 const fetchGetAuthorities = async () => {
-  authorities.value = await getAthorities()
+  authorities.value = await getAuthorities()
 }
+
 onMounted(() => {
   fetchGetAuthorities()
 })
