@@ -41,25 +41,19 @@
           />
         </v-col>
 
-        <v-col cols="8">
+        <v-col cols="10">
           <v-text-field
             v-model="zipcode"
             label="우편번호"
             variant="outlined"
             density="compact"
             :disabled="isAddressLocked"
+            readonly
           />
         </v-col>
 
-        <v-col cols="4">
-          <v-btn
-            variant="tonal"
-            density="comfortable"
-            class="update-btn ml-2"
-            @click="openPostcode"
-          >
-            주소 찾기
-          </v-btn>
+        <v-col cols="2">
+          <v-btn variant="tonal" class="update-btn" @click="openPostcode"> 주소 찾기 </v-btn>
         </v-col>
 
         <v-col cols="12">
@@ -69,6 +63,7 @@
             variant="outlined"
             density="compact"
             :disabled="isAddressLocked"
+            readonly
           />
         </v-col>
 
