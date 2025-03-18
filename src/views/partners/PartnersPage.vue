@@ -6,56 +6,22 @@
   </v-row>
   <v-row>
     <v-col>
-      <v-btn
-        class="mr-3"
-        @click="fetchDownloadPartners"
-        prepend-icon="mdi-file-download-outline"
-        color="#eb6129"
-        elevation="1"
-        density="comfortable"
-      >
-        엑셀 다운로드
-      </v-btn>
-
-      <v-btn
-        class="mr-3"
-        @click="openDialog"
-        prepend-icon="mdi-file-upload-outline"
-        color="#eb6129"
-        elevation="1"
-        density="comfortable"
-      >
-        엑셀 업로드
-      </v-btn>
-      <v-dialog v-model="dialog" max-width="900px">
-        <v-card elevation="0">
-          <v-file-upload
-            v-model="uploadedFile"
-            accept=".xlsx, .xls"
-            label="엑셀 파일 선택"
-            clearable
-          ></v-file-upload>
-          <v-card-actions>
-            <v-btn text="엑셀 업로드" block border @click="fetchUploadPartners"></v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-
-      <v-btn
-        @click="fetchDownloadPartnersSample"
-        prepend-icon="mdi-file-upload-outline"
-        color="#eb6129"
-        elevation="1"
-        density="comfortable"
-      >
-        엑셀 샘플 다운로드
-      </v-btn>
-    </v-col>
-  </v-row>
-  <v-row>
-    <v-col>
-      전체 : {{ totalElements }}건
-      <TableComponent :headers="headers" :items="items" @click-row="clickRow" />
+      <v-row>
+        <v-col>
+          <div class="d-flex">전체 : {{ totalElements }}건</div>
+        </v-col>
+        <v-col class="d-flex justify-end mb-2">
+          <ExcelActionsComponent
+            @download="fetchDownloadPartners"
+            @upload="fetchUploadPartners"
+            @downloadSample="fetchDownloadPartnersSample"
+            v-model:file="uploadedFile"
+            v-model:dialog="dialog"
+          />
+        </v-col>
+      </v-row>
+      <!-- 테이블 컴포넌트 -->
+      <TableComponent :headers="headers" :items="items" @click-row="clickRow" :loading="loading" />
       <!-- 페이지네이션 -->
       <PaginationComponent
         :page="currentPage"
@@ -64,7 +30,6 @@
       />
     </v-col>
   </v-row>
-  <!-- 테이블 컴포넌트 -->
 </template>
 
 <script setup>
@@ -78,6 +43,8 @@ import {
   getPartners,
   uploadPartners,
 } from '@/apis/partnerService.js'
+import ExcelActionsComponent from '@/components/common/ExcelActionsComponent.vue'
+
 import { useRoute, useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
 
@@ -93,6 +60,7 @@ const currentPage = ref(1)
 const totalPages = ref(0)
 const totalElements = ref(0)
 const items = ref([])
+const loading = ref(false)
 
 const uploadedFile = ref(null)
 
@@ -136,12 +104,14 @@ onMounted(async () => {
 })
 
 const searchPartners = async () => {
+  loading.value = true
   const response = await getPartners(params.value)
   totalPages.value = response.totalPages
   totalElements.value = response.totalElements
   items.value = response.content
 
   await router.replace(`/partners?${buildQueryParams(params.value)}`)
+  loading.value = false
 }
 
 const buildQueryParams = (params) => {
@@ -154,17 +124,22 @@ const buildQueryParams = (params) => {
 const fetchDownloadPartners = async () => {
   console.log('엑셀 다운로드')
   await downloadPartners(params.value)
+  const toast = useToast()
+  toast.success('협력사 엑셀 다운로드에 성공하였습니다.')
 }
 
 const fetchDownloadPartnersSample = async () => {
   console.log('엑셀 샘플 다운로드')
   await downloadPartnersSample()
+  const toast = useToast()
+  toast.success('협력사 엑셀 샘플 다운로드에 성공하였습니다.')
 }
 
 const fetchUploadPartners = async () => {
   console.log('엑셀 업로드')
+  const toast = useToast()
   if (!uploadedFile.value) {
-    alert('파일을 선택해주세요.')
+    toast.error('파일을 선택해주세요.')
     return
   }
 
@@ -173,10 +148,14 @@ const fetchUploadPartners = async () => {
 
   try {
     await uploadPartners(formData)
-    const toast = useToast()
+    await handleReset()
     toast.success('협력사 엑셀 업로드에 성공하였습니다.')
+
+    dialog.value = false
+    uploadedFile.value = null
   } catch (error) {
     console.error('업로드 실패:', error)
+    throw error
   }
 }
 
@@ -214,7 +193,7 @@ const handlePageChange = async (newPage) => {
 watch(
   () => route.query,
   async () => {
-    restoreSearchParams()
+    await restoreSearchParams()
     await searchPartners()
   },
 )
@@ -235,11 +214,7 @@ const searchRows = ref([
           { title: 'E', value: 'E' },
         ],
       },
-      {
-        key: 'name',
-        label: '협력사명',
-        type: 'text',
-      },
+      { key: 'name', label: '협력사명', type: 'text' },
       { key: 'ceoName', label: '대표자명', type: 'text' },
       { key: 'salesRepName', label: '영업대표명', type: 'text' },
     ],

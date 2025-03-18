@@ -26,13 +26,8 @@
 
     <v-row>
       <v-col class="btns-container">
-        <v-btn variant="tonal" density="comfortable" class="update-btn ml-2" @click="fnSaveBtn">
-          협력사 수정
-        </v-btn>
-
-        <v-btn variant="tonal" density="comfortable" class="update-btn ml-2" @click="fnDeleteBtn">
-          협력사 삭제
-        </v-btn>
+        <v-btn variant="tonal" class="update-btn ml-2" @click="fnSaveBtn"> 협력사 수정 </v-btn>
+        <v-btn variant="tonal" class="update-btn ml-2" @click="fnDeleteBtn"> 협력사 삭제 </v-btn>
       </v-col>
     </v-row>
   </v-container>
