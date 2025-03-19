@@ -27,7 +27,7 @@
       </VCardItem>
       <VCardText class="pt-0">
         <VRow>
-          <VCol cols="12" md="2">
+          <VCol cols="12" md="3" class="pr-2">
             <VTextField
               v-model="startDate"
               label="계약 시작 일자"
@@ -37,7 +37,7 @@
               hide-details="auto"
             />
           </VCol>
-          <VCol cols="12" md="2">
+          <VCol cols="12" md="3" class="pr-2">
             <VTextField
               v-model="endDate"
               label="계약 종료 일자"
