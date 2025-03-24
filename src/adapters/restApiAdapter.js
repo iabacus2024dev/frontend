@@ -19,12 +19,6 @@ class RestApiAdapter {
       RestApiAdapter.axiosInstance = axios.create(restApiConfig)
       RestApiAdapter.axiosInstance.defaults.headers
       RestApiAdapter.axiosInstance.defaults.withCredentials = true
-      const { cookies } = useCookies()
-      const xsrf = cookies.get('XSRF-TOKEN')
-      if (xsrf) {
-        console.log(xsrf)
-        RestApiAdapter.axiosInstance.defaults.headers['X-XSRF-TOKEN'] = xsrf
-      }
     }
     return RestApiAdapter.axiosInstance
   }
@@ -33,11 +27,7 @@ class RestApiAdapter {
   static async request(url, method = 'GET', reqData = null, params = null, options = {}) {
     try {
       let { cookies } = useCookies()
-      const cookieXsrf = cookies.get('XSRF-TOKEN')
-      if (cookieXsrf) {
-        localStorage.setItem('XSRF-TOKEN', cookieXsrf)
-      }
-      const xsrf = localStorage.getItem('XSRF-TOKEN')
+      const xsrf = cookies.get('XSRF-TOKEN')
       const headers = xsrf ? { 'X-XSRF-TOKEN': xsrf } : {}
       const response = await this.getInstance().request({
         method,
