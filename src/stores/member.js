@@ -14,7 +14,6 @@ export const useMemberStore = defineStore('member', () => {
 
   function logout() {
     localStorage.removeItem('member')
-    localStorage.removeItem('XSRF-TOKEN')
     let { cookies } = useCookies()
     cookies.remove('XSRF-TOKEN')
   }
