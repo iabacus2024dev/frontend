@@ -40,7 +40,7 @@
 
     <v-col>
       <v-sheet min-height="70vh" rounded="lg">
-        <!--  -->
+        <OrganizationChartComponent />
       </v-sheet>
     </v-col>
   </v-row>
@@ -49,6 +49,7 @@
 <script setup>
 import { getRoles } from '@/apis/roleService.js'
 import { ref } from 'vue'
+import OrganizationChartComponent from '@/components/OrganizationChartComponent.vue'
 
 const roles = ref([])
 

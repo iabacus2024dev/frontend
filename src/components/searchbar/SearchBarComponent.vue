@@ -1,5 +1,5 @@
 <template>
-  <VCard class="pa-4" elevation="0" rounded="lg">
+  <VCard class="pa-4" elevation="0" rounded="lg" border="thin">
     <VRow v-for="(row, rowIndex) in rows" :key="rowIndex">
       <VCol
         v-for="(field, index) in row.fields"

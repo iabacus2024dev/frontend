@@ -1,5 +1,5 @@
 <template>
-  <v-card border="md" class="mt-4 pa-4" variant="outlined">
+  <v-card border="thin" variant="outlined" rounded="lg">
     <v-sheet class="pa-4">
       <v-text-field
         v-model="search"
