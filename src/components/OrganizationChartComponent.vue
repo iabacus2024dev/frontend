@@ -1,12 +1,12 @@
 <template>
-  <v-card>
-    <v-sheet class="pa-4" color="#d9d9d9">
+  <v-card border="md" class="mt-4 pa-4" variant="outlined">
+    <v-sheet class="pa-4">
       <v-text-field
         v-model="search"
         clear-icon="mdi-close-circle-outline"
         placeholder="구성원 이름"
         prepend-inner-icon="mdi-magnify"
-        variant="solo"
+        variant="outlined"
         clearable
         flat
         hide-details
@@ -17,21 +17,25 @@
       <v-col class="d-flex align-center" cols="12" sm="6">
         <v-treeview
           v-model:opened="open"
-          :custom-filter="filter"
+          v-model:selected="tree"
+          :custom-filter="searchFilter"
           :items="items"
           :search="search"
           open-on-click
-          v-model:selected="tree"
+          density="compact"
           class="flex-1-0"
           indeterminate-icon="mdi-account-arrow-down-outline"
           true-icon="mdi-account"
           false-icon="mdi-account-outline"
           item-title="name"
-          item-value="id"
-          select-strategy="classic"
+          item-value="employeeId"
+          select-strategy="leaf"
           return-object
           selectable
         >
+          <template v-slot:prepend="{ item, isOpen }">
+            <v-icon v-if="item.children" :icon="isOpen ? 'mdi-folder-open' : 'mdi-folder'"></v-icon>
+          </template>
         </v-treeview>
       </v-col>
 
@@ -48,8 +52,7 @@
             <v-scroll-x-transition group hide-on-leave>
               <v-chip
                 v-for="selection in tree"
-                :key="selection.id"
-                :prepend-icon="getIcon()"
+                :key="selection.employeeId"
                 :text="selection.name"
                 color="grey"
                 size="small"
@@ -84,72 +87,24 @@
 </template>
 
 <script setup>
-import { onMounted, ref, shallowRef, watch } from 'vue'
+import { defineEmits, ref, shallowRef } from 'vue'
 import { getTreeViews } from '@/apis/teamService.js'
 
-const icons = ['mdi-account']
+const emits = defineEmits(['save'])
 
-const breweries = ref([])
 const tree = ref([])
-const types = ref([])
 const items = ref([])
 
-watch(breweries, (val) => {
-  types.value = val
-    .reduce((acc, cur) => {
-      const type = cur.brewery_type
-      if (!acc.includes(type)) acc.push(type)
-      return acc
-    }, [])
-    .sort()
-
-  const children = types.value.map((type) => ({
-    id: type,
-    name: getName(type),
-    children: getChildren(type),
-  }))
-  const rootObj = items.value[0]
-  rootObj.children = children
-  items.value = [rootObj]
-})
-
-async function load() {
-  if (breweries.value.length) return
-
-  breweries.value = await getTreeViews()
-}
-
-function getChildren(type) {
-  const _breweries = []
-  for (const brewery of breweries.value) {
-    if (brewery.brewery_type !== type) continue
-    _breweries.push({
-      ...brewery,
-      name: getName(brewery.name),
-    })
-  }
-  return _breweries.sort((a, b) => {
-    return a.name > b.name ? 1 : -1
-  })
-}
-
-function getIcon() {
-  return icons[Math.floor(Math.random() * icons.length)]
-}
-
-function getName(name) {
-  return `${name.charAt(0).toUpperCase()}${name.slice(1)}`
-}
-
 function onClickClose(selection) {
-  tree.value = tree.value.filter((item) => item.id !== selection.id)
+  console.log(selection)
+  tree.value = tree.value.filter((item) => item.employeeId !== selection.employeeId)
 }
 
 const open = shallowRef([1, 2])
 const search = shallowRef(null)
 const caseSensitive = shallowRef(false)
 
-function filter(value, search, item) {
+function searchFilter(value, search, item) {
   return caseSensitive.value
     ? value.indexOf(search) > -1
     : value.toLowerCase().indexOf(search.toLowerCase()) > -1
@@ -162,9 +117,11 @@ const reset = () => {
 
 const save = () => {
   console.log(tree.value)
+  emits('save')
 }
 
-onMounted(async () => {
+const fetchTreeViews = async () => {
   items.value = await getTreeViews()
-})
+}
+fetchTreeViews()
 </script>
