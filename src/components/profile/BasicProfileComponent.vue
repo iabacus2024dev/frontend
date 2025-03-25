@@ -1,5 +1,5 @@
 <template>
-  <v-card border="md" class="mt-4 pa-4" variant="outlined">
+  <v-card border="thin" class="mt-4 pa-4" variant="outlined">
     <v-card-title class="text-h5 font-weight-bold">{{ user.name }} </v-card-title>
     <v-divider></v-divider>
     <v-card-item>

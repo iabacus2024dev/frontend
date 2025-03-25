@@ -1,5 +1,5 @@
 <template>
-  <v-card border="md" class="mt-4 pa-4" variant="outlined">
+  <v-card border="thin" variant="outlined" rounded="lg">
     <v-sheet class="pa-4">
       <v-text-field
         v-model="search"
@@ -96,7 +96,6 @@ const tree = ref([])
 const items = ref([])
 
 function onClickClose(selection) {
-  console.log(selection)
   tree.value = tree.value.filter((item) => item.employeeId !== selection.employeeId)
 }
 
@@ -116,7 +115,6 @@ const reset = () => {
 }
 
 const save = () => {
-  console.log(tree.value)
   emits('save')
 }
 

@@ -4,7 +4,7 @@
       :model-value="page"
       :length="length"
       :total-visible="10"
-      density="default"
+      density="comfortable"
       @update:modelValue="handleUpdate"
     />
   </div>

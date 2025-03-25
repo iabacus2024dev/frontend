@@ -1,5 +1,5 @@
 <template>
-  <v-card border="md" class="mt-4 pa-4" variant="outlined">
+  <v-card border="thin" class="mt-4 pa-4" variant="outlined">
     <v-card-title class="font-weight-bold text-h5 text-left">내 권한 목록</v-card-title>
     <v-divider></v-divider>
     <v-list>
@@ -22,12 +22,12 @@
 
 <script setup>
 import { onMounted, ref } from 'vue'
-import { getAuthorities } from '@/apis/roleService'
+import { getMyAuthorities } from '@/apis/roleService'
 
 const authorities = ref([])
 
 const fetchGetAuthorities = async () => {
-  authorities.value = await getAuthorities()
+  authorities.value = await getMyAuthorities()
 }
 
 onMounted(() => {

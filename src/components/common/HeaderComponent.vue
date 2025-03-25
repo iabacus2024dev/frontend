@@ -1,49 +1,50 @@
 <template>
-  <v-app-bar class="px-md-4" elevation="1">
-    <template #prepend>
+  <v-app-bar elevation="1">
+    <v-container class="mx-auto d-flex align-center justify-center" max-width="1440">
       <v-app-bar-nav-icon v-if="$vuetify.display.smAndDown" @click="drawer = !drawer" />
-    </template>
 
-    <v-img
-      class="me-sm-8"
-      max-width="120"
-      style="cursor: pointer"
-      @click="goTo('/')"
-      src="https://ezportal.bizmeka.com/companyImage/T31366/T31366_100_69bd36e2ee32422087c5d4203224b81a.png"
-    />
-
-    <template v-if="$vuetify.display.mdAndUp">
-      <v-btn
-        v-for="(item, i) in items"
-        :key="i"
-        :active="i === activeIndex"
-        @click="goTo(item.path)"
-        class="me-2 text-none"
-        slim
-        v-bind="i === activeIndex && { color: '#EB6129' }"
-        :text="item.text"
+      <v-img
+        class="me-sm-8"
+        max-width="120"
+        style="cursor: pointer"
+        v-if="!$vuetify.display.smAndDown"
+        @click="goTo('/')"
+        src="https://ezportal.bizmeka.com/companyImage/T31366/T31366_100_69bd36e2ee32422087c5d4203224b81a.png"
       />
-    </template>
 
-    <v-spacer />
+      <div v-if="$vuetify.display.mdAndUp">
+        <v-btn
+          v-for="(item, i) in items"
+          :key="i"
+          :active="i === activeIndex"
+          @click="goTo(item.path)"
+          class="me-2 text-none"
+          slim
+          v-bind="i === activeIndex && { color: '#EB6129' }"
+          :text="item.text"
+        />
+      </div>
 
-    <template #append>
-      <span>{{ name }}님</span>
-      <v-btn class="ms-1" icon>
-        <v-avatar icon="mdi-account-circle" />
-        <v-menu activator="parent" origin="top">
-          <v-list>
-            <v-list-item
-              link
-              title="마이페이지"
-              @click="goTo('/profiles')"
-              :active="activeIndex === 5"
-            />
-            <v-list-item link title="로그아웃" @click="logout" />
-          </v-list>
-        </v-menu>
-      </v-btn>
-    </template>
+      <v-spacer />
+
+      <div class="justify-end">
+        <span>{{ name }}님</span>
+        <v-btn class="ms-1" icon>
+          <v-avatar icon="mdi-account-circle" />
+          <v-menu activator="parent" origin="top">
+            <v-list>
+              <v-list-item
+                link
+                title="마이페이지"
+                @click="goTo('/profiles')"
+                :active="activeIndex === 5"
+              />
+              <v-list-item link title="로그아웃" @click="logout" />
+            </v-list>
+          </v-menu>
+        </v-btn>
+      </div>
+    </v-container>
   </v-app-bar>
 
   <v-navigation-drawer
