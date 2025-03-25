@@ -6,6 +6,8 @@ import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
 import { VFileUpload } from 'vuetify/labs/components'
 
+import { ko } from 'vuetify/locale'
+
 export default createVuetify({
   theme: {
     defaultTheme: 'light',
@@ -17,5 +19,7 @@ export default createVuetify({
   },
   locale: {
     locale: 'ko',
+    fallback: 'en',
+    messages: { ko },
   },
 })
