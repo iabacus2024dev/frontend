@@ -96,7 +96,6 @@ const tree = ref([])
 const items = ref([])
 
 function onClickClose(selection) {
-  console.log(selection)
   tree.value = tree.value.filter((item) => item.employeeId !== selection.employeeId)
 }
 
@@ -116,7 +115,6 @@ const reset = () => {
 }
 
 const save = () => {
-  console.log(tree.value)
   emits('save')
 }
 

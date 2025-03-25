@@ -58,7 +58,7 @@
 </template>
 
 <script setup>
-import { ref, defineEmits } from 'vue'
+import { defineEmits, defineModel } from 'vue'
 
 const emits = defineEmits(['download', 'upload', 'downloadSample'])
 const file = defineModel('file')

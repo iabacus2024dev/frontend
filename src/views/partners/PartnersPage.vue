@@ -4,6 +4,7 @@
       <SearchBarComponent :rows="searchRows" @search="handleSearch" @reset="handleReset" />
     </v-col>
   </v-row>
+  <h1 class="text-h5 mt-3 mb-3 font-weight-bold mt-7">협력사 목록</h1>
   <v-row>
     <v-col>
       <v-row>
@@ -21,7 +22,20 @@
         </v-col>
       </v-row>
       <!-- 테이블 컴포넌트 -->
-      <TableComponent :headers="headers" :items="items" @click-row="clickRow" :loading="loading" />
+      <TableComponent
+        :headers="headers"
+        :items="items"
+        @click-row="clickRow"
+        :loading="loading"
+        @download="fetchDownloadPartners"
+        @upload="fetchUploadPartners"
+        @downloadSample="fetchDownloadPartnersSample"
+        v-model:file="uploadedFile"
+        v-model:dialog="dialog"
+        :page="currentPage"
+        :length="totalPages"
+        @change-page="handlePageChange"
+      />
       <!-- 페이지네이션 -->
       <PaginationComponent
         :page="currentPage"

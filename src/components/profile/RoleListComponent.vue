@@ -22,12 +22,12 @@
 
 <script setup>
 import { onMounted, ref } from 'vue'
-import { getAuthorities } from '@/apis/roleService'
+import { getMyAuthorities } from '@/apis/roleService'
 
 const authorities = ref([])
 
 const fetchGetAuthorities = async () => {
-  authorities.value = await getAuthorities()
+  authorities.value = await getMyAuthorities()
 }
 
 onMounted(() => {

@@ -1,5 +1,9 @@
 import RestApiAdapter from '@/adapters/restApiAdapter.js'
 
-export const getAuthorities = async () => {
+export const getMyAuthorities = async () => {
+  return await RestApiAdapter.get(`/api/v1/roles/my`)
+}
+
+export const getRoles = async () => {
   return await RestApiAdapter.get(`/api/v1/roles`)
 }

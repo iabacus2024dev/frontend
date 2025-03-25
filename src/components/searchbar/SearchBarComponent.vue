@@ -1,5 +1,5 @@
 <template>
-  <VCard class="pa-4" variant="outlined" elevation="0" border="thin">
+  <VCard class="pa-4" elevation="0" rounded="lg">
     <VRow v-for="(row, rowIndex) in rows" :key="rowIndex">
       <VCol
         v-for="(field, index) in row.fields"
@@ -62,8 +62,8 @@
 </template>
 
 <script setup>
-import { defineEmits, defineProps, reactive, onMounted } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { defineEmits, defineProps, onMounted, reactive } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 // Props 정의
 const props = defineProps({
