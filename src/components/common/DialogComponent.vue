@@ -1,9 +1,17 @@
 <template>
-  <v-dialog v-model="isDialogOpen" max-width="500">
+  <v-dialog v-model="isDialogOpen" :width="'auto'" :height="'auto'">
     <v-card>
       <v-card-title>{{ props.model.title }}</v-card-title>
       <v-divider />
-      <v-card-text>{{ props.model.contents }}</v-card-text>
+      <v-card-text>
+        <component
+          v-if="props.model.component"
+          :is="props.model.component"
+          v-bind="props.model.props"
+          ref="dialogContent"
+        />
+        <div v-else>{{ props.model.contents }}</div>
+      </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn text="확인" @click="closeDialog" class="confirm-btn"></v-btn>
@@ -14,9 +22,10 @@
 </template>
 
 <script setup>
-import { ref, defineEmits, defineProps, watch } from 'vue'
+import {defineEmits, defineProps, ref, watch} from 'vue'
 
 const isDialogOpen = ref(false) // 다이얼로그 열림 여부
+const dialogContent = ref(null);
 
 const props = defineProps({ model: Object })
 const emits = defineEmits(['close-dialog', 'cancel-dialog'])
@@ -32,7 +41,9 @@ watch(
 
 const closeDialog = () => {
   console.log('closeDialog >>>', props.model.id)
-  emits('close-dialog', props.model.id) // dialog의 id를 부모로 전달
+  const selectedMembers = dialogContent.value.getSelectedMembers?.();
+  props.model.props.onConfirm(selectedMembers);
+  emits('close-dialog', props.model.id);
 }
 
 const cancelDialog = () => {
