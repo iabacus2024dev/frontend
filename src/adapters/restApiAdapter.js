@@ -24,11 +24,20 @@ class RestApiAdapter {
   }
 
   // API 요청 처리
-  static async request(url, method = 'GET', reqData = null, params = null, options = {}) {
+  static async request(
+    url,
+    method = 'GET',
+    reqData = null,
+    params = null,
+    options = {},
+    headers = {},
+  ) {
     try {
       let { cookies } = useCookies()
-      const xsrf = cookies.get('XSRF-TOKEN')
-      const headers = xsrf ? { 'X-XSRF-TOKEN': xsrf } : {}
+      let xsrf = cookies.get('XSRF-TOKEN')
+      if (xsrf !== undefined) {
+        headers['X-XSRF-TOKEN'] = xsrf
+      }
       const response = await this.getInstance().request({
         method,
         url,
@@ -55,8 +64,8 @@ class RestApiAdapter {
     return this.request(url, 'GET', null, params, options)
   }
 
-  static async post(url, data, options) {
-    return this.request(url, 'POST', data, null, options)
+  static async post(url, data, options, headers) {
+    return this.request(url, 'POST', data, null, options, headers)
   }
 
   static async put(url, data) {
