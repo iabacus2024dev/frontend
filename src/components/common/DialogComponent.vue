@@ -22,10 +22,10 @@
 </template>
 
 <script setup>
-import {defineEmits, defineProps, ref, watch} from 'vue'
+import { defineEmits, defineProps, ref, watch } from 'vue'
 
 const isDialogOpen = ref(false) // 다이얼로그 열림 여부
-const dialogContent = ref(null);
+const dialogContent = ref(null)
 
 const props = defineProps({ model: Object })
 const emits = defineEmits(['close-dialog', 'cancel-dialog'])
@@ -41,9 +41,9 @@ watch(
 
 const closeDialog = () => {
   console.log('closeDialog >>>', props.model.id)
-  const selectedMembers = dialogContent.value.getSelectedMembers?.();
-  props.model.props.onConfirm(selectedMembers);
-  emits('close-dialog', props.model.id);
+  // const selectedMembers = dialogContent.value.getSelectedMembers?.()
+  // props.model.props.onConfirm(selectedMembers)
+  emits('close-dialog', props.model.id)
 }
 
 const cancelDialog = () => {

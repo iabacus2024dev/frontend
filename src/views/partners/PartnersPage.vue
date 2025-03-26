@@ -4,52 +4,35 @@
       <SearchBarComponent :rows="searchRows" @search="handleSearch" @reset="handleReset" />
     </v-col>
   </v-row>
-  <h1 class="text-h5 mt-3 mb-3 font-weight-bold mt-7">협력사 목록</h1>
   <v-row>
     <v-col>
-      <v-row>
-        <v-col>
-          <div class="d-flex">전체 : {{ totalElements }}건</div>
-        </v-col>
-        <v-col class="d-flex justify-end mb-2">
-          <ExcelActionsComponent
-            @download="fetchDownloadPartners"
-            @upload="fetchUploadPartners"
-            @downloadSample="fetchDownloadPartnersSample"
-            v-model:file="uploadedFile"
-            v-model:dialog="dialog"
-          />
-        </v-col>
-      </v-row>
       <!-- 테이블 컴포넌트 -->
       <TableComponent
         :headers="headers"
         :items="items"
-        @click-row="clickRow"
+        :title="title"
         :loading="loading"
-        @download="fetchDownloadPartners"
-        @upload="fetchUploadPartners"
-        @downloadSample="fetchDownloadPartnersSample"
-        v-model:file="uploadedFile"
-        v-model:dialog="dialog"
+        @click-row="clickRow"
         :page="currentPage"
-        :length="totalPages"
-        @change-page="handlePageChange"
+        :length="totalElements"
+        @loadItems="loadItems"
       />
-      <!-- 페이지네이션 -->
-      <PaginationComponent
-        :page="currentPage"
-        :length="totalPages"
-        @change-page="handlePageChange"
-      />
+      <div class="d-flex justify-end">
+        <ExcelActionsComponent
+          @download="fetchDownloadPartners"
+          @upload="fetchUploadPartners"
+          @downloadSample="fetchDownloadPartnersSample"
+          v-model:file="uploadedFile"
+          v-model:dialog="dialog"
+        />
+      </div>
     </v-col>
   </v-row>
 </template>
 
 <script setup>
-import { onMounted, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import TableComponent from '@/components/table/TableComponent.vue'
-import PaginationComponent from '@/components/common/PaginationComponent.vue'
 import SearchBarComponent from '@/components/searchbar/SearchBarComponent.vue'
 import {
   downloadPartners,
@@ -65,16 +48,14 @@ import { useToast } from 'vue-toastification'
 const router = useRouter()
 const route = useRoute()
 
-const modal = ref(null)
-const modalTitle = ref('협력사 삭제')
-const modalText = ref('....삭제 하겠습니까?')
+const title = ref('협력사 목록')
 const dialog = ref(false)
+const loading = ref(false)
 
 const currentPage = ref(1)
 const totalPages = ref(0)
 const totalElements = ref(0)
 const items = ref([])
-const loading = ref(false)
 
 const uploadedFile = ref(null)
 
@@ -84,6 +65,7 @@ const params = ref({
   ceoName: '',
   salesRepName: '',
   page: 1,
+  size: 10,
 })
 
 const headers = ref([
@@ -108,24 +90,10 @@ const restoreSearchParams = async () => {
     ceoName: query.ceoName || '',
     salesRepName: query.salesRepName || '',
     page: query.page ? Number(query.page) : 1,
+    size: query.size ? Number(query.size) : 10,
   }
   currentPage.value = query.page ? Number(query.page) : 1
-}
-
-onMounted(async () => {
-  await restoreSearchParams()
-  await searchPartners()
-})
-
-const searchPartners = async () => {
-  loading.value = true
-  const response = await getPartners(params.value)
-  totalPages.value = response.totalPages
-  totalElements.value = response.totalElements
-  items.value = response.content
-
-  await router.replace(`/partners?${buildQueryParams(params.value)}`)
-  loading.value = false
+  console.log(params.value)
 }
 
 const buildQueryParams = (params) => {
@@ -173,42 +141,10 @@ const fetchUploadPartners = async () => {
   }
 }
 
-const openDialog = () => {
-  dialog.value = true
-}
-
-const closeDialog = () => {
-  dialog.value = false
-}
-
-// 모달 열기
-const openModal = () => {
-  modal.value?.open()
-}
-
-// 확인 버튼 클릭 시
-const handleConfirm = () => {
-  console.log('확인 버튼 클릭됨!')
-  console.log('사용하는 페이지에서 저장,삭제등등 기능 구현하면 됨')
-}
-
-// 취소 버튼 클릭 시
-const handleCancel = () => {
-  console.log('취소 버튼 클릭됨!')
-}
-
-// 페이지 변경 이벤트 핸들러
-const handlePageChange = async (newPage) => {
-  currentPage.value = newPage
-  params.value.page = newPage
-  await searchPartners()
-}
-
 watch(
   () => route.query,
   async () => {
     await restoreSearchParams()
-    await searchPartners()
   },
 )
 
@@ -219,8 +155,10 @@ const searchRows = ref([
         key: 'grade',
         label: '평가등급',
         type: 'select',
-        columnCount: 5,
+        columnCount: 6,
+        defaultSelected: { title: '전체', value: '' },
         options: [
+          { title: '전체', value: '' },
           { title: 'A', value: 'A' },
           { title: 'B', value: 'B' },
           { title: 'C', value: 'C' },
@@ -235,17 +173,40 @@ const searchRows = ref([
   },
 ])
 
+const loadItems = async (page = 1, itemsPerPage = 10, sortBy = []) => {
+  loading.value = true
+  params.value.page = page
+  params.value.size = itemsPerPage
+  if (sortBy.length > 0) {
+    params.value.sort = sortBy[0].key + ',' + sortBy[0].order
+  } else {
+    params.value.sort = []
+  }
+
+  const response = await getPartners(params.value)
+  items.value = response.content
+
+  totalPages.value = response.totalPages
+  totalElements.value = response.totalElements
+
+  await router.replace(`/partners?${buildQueryParams(params.value)}`)
+  loading.value = false
+}
+
 const handleSearch = async (filters) => {
   params.value = { ...filters, page: 1 }
+  console.log(params.value)
   currentPage.value = 1
-  await searchPartners()
+  await loadItems()
 }
 
 const handleReset = async () => {
   params.value = { grade: '', name: '', ceoName: '', salesRepName: '', page: 1 }
   currentPage.value = 1
-  await searchPartners()
+  await loadItems()
 }
+
+restoreSearchParams()
 </script>
 
 <style scoped></style>
