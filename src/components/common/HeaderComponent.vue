@@ -76,7 +76,7 @@ import { fetchLogout } from '@/apis/authService.js'
 const router = useRouter()
 
 const drawer = shallowRef(false)
-const name = ref(JSON.parse(localStorage.getItem('member')).name)
+const name = ref(JSON.parse(localStorage.getItem('member'))?.name)
 const items = router
   .getRoutes()
   .filter((route) => route.meta.menu === true)

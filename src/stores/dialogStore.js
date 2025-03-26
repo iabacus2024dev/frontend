@@ -12,6 +12,8 @@ export const useDialogStore = defineStore('dialog', () => {
       id: dialogId,
       title: dialogInfo.title,
       contents: dialogInfo.contents,
+      component: dialogInfo.component || null,
+      props: dialogInfo.props || {},
       fnCallback: dialogInfo.fnCallback,
       fnCancleCallback: dialogInfo.fnCancleCallback,
     })
