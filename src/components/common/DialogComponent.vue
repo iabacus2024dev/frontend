@@ -41,9 +41,11 @@ watch(
 
 const closeDialog = () => {
   console.log('closeDialog >>>', props.model.id)
-  const selectedMembers = dialogContent.value?.getSelectedMembers?.() || [];
-
-  props.model.props.onConfirm(selectedMembers);
+  const value = dialogContent.value;
+  if (value !== null) {
+    const selectedMembers = value.getSelectedMembers?.() || [];
+    props.model.props.onConfirm(selectedMembers);
+  }
   emits('close-dialog', props.model.id);
 }
 
