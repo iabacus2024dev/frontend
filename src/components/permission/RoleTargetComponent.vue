@@ -1,9 +1,11 @@
 <script setup>
 import {useDialog} from "@/composables/useDialog.js";
 import RoleSettingDialog from "@/components/permission/RoleSettingDialog.vue";
+import {useRoleStore} from "@/stores/roleStore.js";
 
 const {openDialog} = useDialog();
 const emit = defineEmits(["roleUpdated"]);
+const roleStore = useRoleStore();
 
 const props = defineProps({
   role: Object,
@@ -17,6 +19,8 @@ const openRoleSettingDialog = () => {
     props: {
       initialRoles: props.role?.members || [],
       onConfirm: (selectedMember) => {
+        roleStore.setSelectedMembers(selectedMember)
+
         const existingIds = new Set(props.role?.members.map((member) => member.id) || []);
         const newMembers = selectedMember.filter((member) => !existingIds.has(member.id));
 

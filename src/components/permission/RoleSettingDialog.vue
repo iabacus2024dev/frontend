@@ -1,5 +1,6 @@
 <script setup>
-import {ref, shallowRef, watch} from 'vue'
+import {onMounted, ref, shallowRef, watch} from 'vue'
+import {getTreeViews} from "@/apis/teamService.js";
 
 const icons = [
   'mdi-beer',
@@ -10,70 +11,25 @@ const icons = [
 const breweries = ref([])
 const tree = ref([])
 const types = ref([])
-const items = ref([{
-  id: 1,
-  title: '(주)애버커스',
-  children: [
-    {
-      id: 2,
-      title: '통신사업본부',
-      children: [
-        {
-          id: 201,
-          title: '유동필',
-        },
-        {
-          id: 202,
-          title: '홍효상',
-        },
-        {
-          id: 203,
-          title: 'Nekosaur',
-        },
-        {
-          id: 204,
-          title: 'Jacek',
-        },
-        {
-          id: 205,
-          title: 'Andrew',
-        },
-      ],
-    },
-    {
-      id: 3,
-      title: 'Administrators',
-      children: [
-        {
-          id: 301,
-          title: 'Blaine',
-        },
-        {
-          id: 302,
-          title: 'Yuchao',
-        },
-      ],
-    },
-    {
-      id: 4,
-      title: 'Contributors',
-      children: [
-        {
-          id: 401,
-          title: 'Phlow',
-        },
-        {
-          id: 402,
-          title: 'Brandon',
-        },
-        {
-          id: 403,
-          title: 'Sean',
-        },
-      ],
-    },
-  ],
-}]);
+const items = ref([]);
+
+const fetchTreeData = async () => {
+  try {
+    const response = await getTreeViews();
+    items.value = response.map((node) => transForNode(node));
+  } catch (err) {
+    console.error("fetchTreeData error", err);
+  }
+}
+
+const transForNode = (node) => ({
+  departmentId: node.departmentId,
+  employeeId: node.employeeId,
+  title: node.name,
+  children: node.children ? node.children.map(transForNode) : null
+});
+
+onMounted(fetchTreeData);
 
 watch(breweries, val => {
   types.value = val.reduce((acc, cur) => {
