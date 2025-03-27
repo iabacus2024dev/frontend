@@ -1,38 +1,32 @@
 <template>
-  <!-- 엑셀 다운로드 버튼 -->
-  <v-btn
-    class="mr-3"
-    @click="emitDownload"
-    prepend-icon="mdi-microsoft-excel"
-    color="#eb6129"
-    elevation="1"
-    density="comfortable"
-  >
-    엑셀 다운로드
-  </v-btn>
+  <v-card class="mt-5" variant="flat" elevation="0">
+    <!-- 엑셀 다운로드 버튼 -->
+    <v-btn
+      class="mr-3"
+      @click="emitDownload"
+      prepend-icon="mdi-microsoft-excel"
+      color="#eb6129"
+      elevation="1"
+    >
+      엑셀 다운로드
+    </v-btn>
 
-  <!-- 엑셀 샘플 다운로드 버튼 -->
-  <v-btn
-    class="mr-3"
-    @click="emitDownloadSample"
-    prepend-icon="mdi-microsoft-excel"
-    color="#eb6129"
-    elevation="1"
-    density="comfortable"
-  >
-    엑셀 샘플 다운로드
-  </v-btn>
+    <!-- 엑셀 샘플 다운로드 버튼 -->
+    <v-btn
+      class="mr-3"
+      @click="emitDownloadSample"
+      prepend-icon="mdi-microsoft-excel"
+      color="#eb6129"
+      elevation="1"
+    >
+      엑셀 샘플 다운로드
+    </v-btn>
 
-  <!-- 엑셀 업로드 버튼 -->
-  <v-btn
-    @click="openDialog"
-    prepend-icon="mdi-microsoft-excel"
-    color="#eb6129"
-    elevation="1"
-    density="comfortable"
-  >
-    엑셀 업로드
-  </v-btn>
+    <!-- 엑셀 업로드 버튼 -->
+    <v-btn @click="openDialog" prepend-icon="mdi-microsoft-excel" color="#eb6129" elevation="1">
+      엑셀 업로드
+    </v-btn>
+  </v-card>
 
   <!-- 업로드 팝업 -->
   <v-dialog v-model="dialog" max-width="900px">

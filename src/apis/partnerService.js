@@ -26,9 +26,7 @@ export const downloadPartnersSample = async (params) => {
 }
 
 export const uploadPartners = async (formData) => {
-  return await RestApiAdapter.post('/api/v1/partners/excel/upload', formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
+  return await RestApiAdapter.post('/api/v1/partners/excel/upload', formData, null, {
+    'Content-Type': 'multipart/form-data',
   })
 }
