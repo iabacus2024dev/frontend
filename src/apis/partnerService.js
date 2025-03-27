@@ -1,6 +1,10 @@
 import RestApiAdapter from '@/adapters/restApiAdapter.js'
 import { download } from '@/apis/common/downloadService.js'
 
+export const createPartners = async (data) => {
+  return await RestApiAdapter.post('/api/v1/partners', data)
+}
+
 export const getPartnersDetail = async (partnersId) => {
   return await RestApiAdapter.get(`/api/v1/partners/${partnersId}`)
 }
