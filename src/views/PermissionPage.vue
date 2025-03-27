@@ -2,16 +2,25 @@
 import RoleSelectionComponent from "@/components/permission/RoleSelectionComponent.vue";
 import RoleAddComponent from "@/components/permission/RoleAddComponent.vue";
 import RoleTargetComponent from "@/components/permission/RoleTargetComponent.vue";
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import PermissionSettingComponent from "@/components/permission/PermissionSettingComponent.vue";
+import {getRoles} from "@/apis/roleService.js";
 
 const selectedRole = ref(null);
 const customRoles = ref([]);
-const defaultRoles = ref([
-  ["관리자", 2],
-  ["팀장", 12],
-  ["정직원", 200],
-]);
+const defaultRoles = ref([]);
+
+const fetchRoles = async () => {
+  try {
+    (await getRoles()).forEach((res) => {
+      ((res.isDefault ? defaultRoles : customRoles).value.push([res.name, res.memberCount]))
+    });
+  } catch (err) {
+    console.error("fetchRoles error", err);
+  }
+};
+
+onMounted(fetchRoles);
 
 const handleRoleSelected = (role) => {
   selectedRole.value = {
@@ -31,15 +40,31 @@ const handleRoleRemoved = (targetRole) => {
   customRoles.value = customRoles.value.filter(([title]) => title !== targetRole.title)
 }
 
-const handleRoleUpdated = (updatedRole) => {
-  if (selectedRole.value && selectedRole.value.title === updatedRole.title) {
-    selectedRole.value.count = updatedRole.count;
-    selectedRole.value.members = [...updatedRole.members];
+function updateDefaultRole(updatedRole) {
+  const defaultRole = defaultRoles.value.find(([title]) => title === updatedRole.title);
+  if (defaultRole) {
+    defaultRole[1] = updatedRole.count;
   }
+}
+
+function updateCustomRole(updatedRole) {
   const customRole = customRoles.value.find(([title]) => title === updatedRole.title);
   if (customRole) {
     customRole[1] = updatedRole.count;
   }
+}
+
+function updateSelectedRole(updatedRole) {
+  if (selectedRole.value && selectedRole.value.title === updatedRole.title) {
+    selectedRole.value.count = updatedRole.count;
+    selectedRole.value.members = [...updatedRole.members];
+  }
+}
+
+const handleRoleUpdated = (updatedRole) => {
+  updateSelectedRole(updatedRole);
+  updateDefaultRole(updatedRole);
+  updateCustomRole(updatedRole);
 }
 </script>
 

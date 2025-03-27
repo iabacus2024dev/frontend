@@ -1,5 +1,5 @@
 <script setup>
-import {ref} from "vue";
+import {ref, watch} from "vue";
 
 const props = defineProps({
   title: String,
@@ -7,14 +7,25 @@ const props = defineProps({
   showEdit: Boolean
 });
 
-const select = ref()
+const select = ref([]);
 
 const items = [
   '전체',
   '소속 팀',
   '투입 프로젝트',
   '본인',
-]
+];
+
+const isDisabled = ref(false);
+
+watch(select, (newValue) => {
+  if (newValue.includes("전체")) {
+    select.value = ["전체"];
+    isDisabled.value = true;
+  } else {
+    isDisabled.value = false;
+  }
+});
 </script>
 
 <template>
@@ -35,7 +46,22 @@ const items = [
           :items="items"
           chips
           multiple
-        ></v-combobox>
+        >
+          <template v-slot:selection="{ item, index }">
+            <v-chip v-if="item === '전체'" closable @click:close="select = []">
+              {{ item }}
+            </v-chip>
+            <v-chip v-else-if="!isDisabled" closable @click:close="select.splice(index, 1)">
+              {{ item }}
+            </v-chip>
+          </template>
+
+          <template v-slot:item="{ props, item }">
+            <v-list-item v-bind="props" :disabled="isDisabled && item !== '전체'">
+              {{ item }}
+            </v-list-item>
+          </template>
+        </v-combobox>
       </v-col>
     </div>
   </div>
