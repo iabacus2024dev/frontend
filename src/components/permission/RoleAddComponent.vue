@@ -1,21 +1,13 @@
 <script setup>
-import {onMounted, ref, watch} from 'vue'
+import {ref, watch} from 'vue'
 
 const colors = ['green', 'purple', 'indigo', 'cyan', 'teal', 'orange']
 const editingItem = ref(null)
-const items = ref([
-  { header: true, title: '옵션 선택하기 또는 만들기' }
-])
+const items = ref([])
 const nonce = ref(1)
 const model = ref([])
 const search = ref(null)
 const emit = defineEmits(['roleAdded', 'roleRemoved']);
-
-onMounted(() => {
-  if (items.value[1]) {
-    model.value.push(items.value[1]);
-  }
-})
 
 watch(model, (val, prev) => {
   if (val.length === prev.length) return
@@ -62,7 +54,7 @@ function filter (value, queryText, item) {
 
   const availableOptions = items.value.filter(x => !model.value.includes(x))
   const hasAnyMatch = availableOptions.some(
-    x => !x.header && toLowerCaseString(x.title).includes(query)
+    x => toLowerCaseString(x.title).includes(query)
   )
   if (item.raw.header) return !hasAnyMatch
 

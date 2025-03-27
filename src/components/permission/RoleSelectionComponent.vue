@@ -22,32 +22,6 @@ const props = defineProps({
     required: true,
   }
 })
-
-const localDefaultRoles = ref([...props.defaultRoles]);
-
-watch(
-  () => props.selectRoles,
-  (newRole) => {
-    if (!newRole) return;
-
-    const roleIndex = localDefaultRoles.value.findIndex(
-      ([title]) => title === newRole.title
-    );
-
-    if (roleIndex !== -1) {
-      localDefaultRoles.value[roleIndex][1] = newRole.count;
-    }
-  },
-  {immediate: true, deep: true}
-);
-
-watch(
-  () => props.defaultRoles,
-  (newDefaultRoles) => {
-    localDefaultRoles.value = [...newDefaultRoles];
-  },
-  {immediate: true, deep: true}
-);
 </script>
 
 <template>
@@ -62,7 +36,7 @@ watch(
         </template>
 
         <v-list-item
-          v-for="([title, count], i) in localDefaultRoles"
+          v-for="([title, count], i) in props.defaultRoles"
           :key="i"
           :value="title"
           @click="selectedRole([title, count])"

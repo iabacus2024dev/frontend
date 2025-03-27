@@ -38,13 +38,14 @@ const openRoleSettingDialog = () => {
     <div v-if="role">
       '<strong>{{ role.title }}</strong>' 역할 대상 ({{ role.count }})
     </div>
+
     <v-divider class="my-4"></v-divider>
 
-    <div v-if="role" class="position-relative">
-      <div>
+    <div v-if="role" class="d-flex justify-space-between align-center">
+      <div class="d-flex flex-wrap">
         <v-icon v-for="i in Math.min(role.count, 30)" icon="mdi-account-circle" :key="i"></v-icon>
       </div>
-      <v-btn class="set-role-btn" append-icon="mdi-check-circle" @click="openRoleSettingDialog">
+      <v-btn append-icon="mdi-check-circle" @click="openRoleSettingDialog">
         <template v-slot:append>
           <v-icon>mdi-arrow-right</v-icon>
         </template>
@@ -57,15 +58,5 @@ const openRoleSettingDialog = () => {
 </template>
 
 <style scoped>
-.position-relative {
-  position: relative; /* 버튼의 위치 기준점 설정 */
-  padding-right: 48px; /* 버튼과 아이콘 간 간격 확보 */
-}
 
-.set-role-btn {
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%); /* 버튼을 중앙 정렬 */
-}
 </style>
