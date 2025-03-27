@@ -68,7 +68,7 @@ const routes = [
     },
   },
   {
-    path: '/projects/detail',
+    path: '/projects/:id',
     name: 'projectDetail',
     component: ProjectDetailPage,
     meta: {
