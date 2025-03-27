@@ -39,12 +39,14 @@ watch(
   { immediate: true },
 )
 
-function selectMembers() {
-  const selectedMembers = dialogContent.value.getSelectedMembers?.() || [];
-  if (selectedMembers !== null) {
-    props.model.props.onConfirm(selectedMembers);
+const selectMembers = () => {
+  if (props.model.component?.__name === 'RoleSettingDialog' && dialogContent.value?.getSelectedMembers) {
+    const selectedMembers = dialogContent.value.getSelectedMembers();
+    if (selectedMembers) {
+      props.model.props.onConfirm(selectedMembers);
+    }
   }
-}
+};
 
 const closeDialog = () => {
   console.log('closeDialog >>>', props.model.id)
