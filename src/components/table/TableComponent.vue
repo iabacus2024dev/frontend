@@ -33,7 +33,17 @@
       ]"
       density="comfortable"
       hover
-    />
+    >
+      <template v-slot:item.status="{ item }">
+        <v-chip
+          :color="item.status === '진행중' ? 'success' : 'info'"
+          size="small"
+          text-color="white"
+        >
+          {{ item.status }}
+        </v-chip>
+      </template>
+    </v-data-table-server>
   </v-card>
 </template>
 
