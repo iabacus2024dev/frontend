@@ -2,18 +2,21 @@
 import RoleSelectionComponent from "@/components/permission/RoleSelectionComponent.vue";
 import RoleAddComponent from "@/components/permission/RoleAddComponent.vue";
 import RoleTargetComponent from "@/components/permission/RoleTargetComponent.vue";
-import {onMounted, ref} from "vue";
+import {onMounted, reactive, ref} from "vue";
 import PermissionSettingComponent from "@/components/permission/PermissionSettingComponent.vue";
 import {getRoles} from "@/apis/roleService.js";
 
-const selectedRole = ref(null);
-const customRoles = ref([]);
-const defaultRoles = ref([]);
+const role = reactive({
+  selected: null,
+  custom: [],
+  default: [],
+  isDefault: false
+})
 
 const fetchRoles = async () => {
   try {
     (await getRoles()).forEach((res) => {
-      ((res.isDefault ? defaultRoles : customRoles).value.push([res.name, res.memberCount]))
+      (res.isDefault ? role.default : role.custom).push([res.name, res.memberCount])
     });
   } catch (err) {
     console.error("fetchRoles error", err);
@@ -22,49 +25,46 @@ const fetchRoles = async () => {
 
 onMounted(fetchRoles);
 
-const handleRoleSelected = (role) => {
-  selectedRole.value = {
-    title: role[0],
-    count: role[1],
+const handleRoleSelected = (selectedRole) => {
+  role.selected = {
+    title: selectedRole[0],
+    count: selectedRole[1],
     members: []
   }
 }
 
 const handleRoleAdded = (newRole) => {
-  if (!customRoles.value.some(([title]) => title === newRole.title)) {
-    customRoles.value = [...customRoles.value, [newRole.title, 1]];
+  if (!role.custom.some(([title]) => title === newRole.title)) {
+    role.custom.push([newRole.title, 1]);
   }
 };
 
 const handleRoleRemoved = (targetRole) => {
-  customRoles.value = customRoles.value.filter(([title]) => title !== targetRole.title)
+  const index = role.custom.findIndex(([title]) => title === targetRole.title);
+  if (index !== -1) role.custom.splice(index, 1);
 }
 
-function updateDefaultRole(updatedRole) {
-  const defaultRole = defaultRoles.value.find(([title]) => title === updatedRole.title);
-  if (defaultRole) {
-    defaultRole[1] = updatedRole.count;
-  }
-}
-
-function updateCustomRole(updatedRole) {
-  const customRole = customRoles.value.find(([title]) => title === updatedRole.title);
-  if (customRole) {
-    customRole[1] = updatedRole.count;
+function updateRole(whichRole, updatedRole) {
+  const foundRole = whichRole.find(([title]) => title === updatedRole.title);
+  if (foundRole) {
+    foundRole[1] = updatedRole.count;
+    role.isDefault = whichRole === role.default;
   }
 }
 
 function updateSelectedRole(updatedRole) {
-  if (selectedRole.value && selectedRole.value.title === updatedRole.title) {
-    selectedRole.value.count = updatedRole.count;
-    selectedRole.value.members = [...updatedRole.members];
+  console.log(updatedRole)
+  if (role.selected && role.selected.title === updatedRole.title) {
+    role.selected.count = updatedRole.count;
+    role.selected.members = [...updatedRole.members];
   }
 }
 
 const handleRoleUpdated = (updatedRole) => {
+  console.log(updatedRole)
   updateSelectedRole(updatedRole);
-  updateDefaultRole(updatedRole);
-  updateCustomRole(updatedRole);
+  updateRole(role.default, updatedRole);
+  updateRole(role.custom, updatedRole);
 }
 </script>
 
@@ -72,11 +72,11 @@ const handleRoleUpdated = (updatedRole) => {
   <v-row>
     <v-col cols="12" md="3">
       <RoleAddComponent @roleAdded="handleRoleAdded" @roleRemoved="handleRoleRemoved"/>
-      <RoleSelectionComponent :select-roles="selectedRole" :custom-roles="customRoles" :default-roles="defaultRoles" @roleSelected="handleRoleSelected" />
+      <RoleSelectionComponent :select-roles="role.selected" :custom-roles="role.custom" :default-roles="role.default" @roleSelected="handleRoleSelected" />
     </v-col>
     <v-col cols="12" md="9">
-      <RoleTargetComponent :role="selectedRole" @roleUpdated="handleRoleUpdated" />
-      <PermissionSettingComponent />
+      <RoleTargetComponent :role="role.selected" @roleUpdated="handleRoleUpdated" />
+      <PermissionSettingComponent :select-roles="role.selected" :is-default="role.isDefault" />
     </v-col>
   </v-row>
 </template>

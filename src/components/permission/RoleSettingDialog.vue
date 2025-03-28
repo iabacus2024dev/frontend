@@ -39,7 +39,7 @@ watch(breweries, val => {
   }, []).sort()
 
   const children = types.value.map(type => ({
-    id: type,
+    employeeId: type,
     name: getName(type),
     children: getChildren(type),
   }))
@@ -71,7 +71,7 @@ function getName (name) {
 }
 
 function onClickClose (selection) {
-  tree.value = tree.value.filter(item => item.id !== selection.id)
+  tree.value = tree.value.filter(item => item.employeeId !== selection.employeeId)
 }
 
 const search = shallowRef(null)
@@ -144,7 +144,7 @@ defineExpose({
               <v-scroll-x-transition group hide-on-leave>
                 <v-chip
                   v-for="selection in tree"
-                  :key="selection.id"
+                  :key="selection.employeeId"
                   :prepend-icon="getIcon()"
                   :text="selection.title"
                   color="grey"

@@ -405,14 +405,14 @@ const router = createRouter({
   routes,
 })
 
-router.beforeEach((to, from, next) => {
-  const memberStore = useMemberStore()
-  if (memberStore.isAuthenticated === null && !to.fullPath.startsWith('/auths')) {
-    const toast = useToast()
-    toast.error('먼저 로그인이 필요합니다!')
-    next({ name: 'login' })
-  }
-  next()
-})
+// router.beforeEach((to, from, next) => {
+//   const memberStore = useMemberStore()
+//   if (memberStore.isAuthenticated === null && !to.fullPath.startsWith('/auths')) {
+//     const toast = useToast()
+//     toast.error('먼저 로그인이 필요합니다!')
+//     next({ name: 'login' })
+//   }
+//   next()
+// })
 
 export default router
