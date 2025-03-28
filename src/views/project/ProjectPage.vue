@@ -140,8 +140,8 @@ const searchRows = ref([
   {
     // 세 번째 행: 텍스트 검색 (프로젝트명, 프로젝트 코드)
     fields: [
-      { key: 'projectName', label: '프로젝트 이름', type: 'text', columnCount: 2 },
-      { key: 'projectCode', label: '프로젝트 코드', type: 'text', columnCount: 2 },
+      { key: 'name', label: '프로젝트 이름', type: 'text', columnCount: 2 },
+      { key: 'code', label: '프로젝트 코드', type: 'text', columnCount: 2 },
     ],
   },
 ])

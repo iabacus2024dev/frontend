@@ -88,9 +88,17 @@ const searchRows = ref([
         label: '평가등급',
         type: 'select',
         columnCount: 6,
-        options: ['A', 'B', 'C', 'D', 'E']
-          .map((v) => ({ title: v, value: v }))
-          .concat([{ title: '전체', value: '' }]),
+        input: {
+          user_id: 1,
+        },
+        options: [
+          { title: '전체', value: '' },
+          { title: 'A', value: 'A' },
+          { title: 'B', value: 'B' },
+          { title: 'C', value: 'C' },
+          { title: 'D', value: 'D' },
+          { title: 'E', value: 'E' },
+        ],
       },
       { key: 'name', label: '협력사명', type: 'text' },
       { key: 'ceoName', label: '대표자명', type: 'text' },
