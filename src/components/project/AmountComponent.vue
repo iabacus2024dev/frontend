@@ -1,5 +1,5 @@
 <template>
-  <VCard variant="outlined" class="pt-2 px-2">
+  <VCard variant="outlined" border="thin" class="pt-2 px-2">
     <VCardItem>
       <VCardTitle>금액 정보</VCardTitle>
     </VCardItem>
@@ -7,7 +7,7 @@
       <VRow class="v-row--no-gutters">
         <VCol cols="12" md="6" class="pr-4">
           <VTextField
-            v-model="amountData.expectatedAmount"
+            v-model="projectDetail.expectedAmount"
             label="예상계금액 (단위:천)"
             variant="outlined"
             density="compact"
@@ -16,7 +16,7 @@
 
         <VCol cols="12" md="6">
           <VTextField
-            v-model="amountData.actualAmount"
+            v-model="projectDetail.contractAmount"
             label="예상계금액 (단위:천)"
             variant="outlined"
             density="compact"
@@ -30,7 +30,7 @@
 <script setup>
 import { defineModel } from 'vue'
 
-const amountData = defineModel()
+const projectDetail = defineModel()
 </script>
 
 <style scoped></style>

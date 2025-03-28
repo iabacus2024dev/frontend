@@ -1,5 +1,5 @@
 <template>
-  <VCard variant="outlined" class="pt-2 px-2">
+  <VCard variant="outlined" border="thin" class="pt-2 px-2">
     <VCardItem>
       <VCardTitle>원청사</VCardTitle>
     </VCardItem>
@@ -7,7 +7,7 @@
       <VRow class="v-row--no-gutters">
         <VCol cols="12" md="12">
           <VTextField
-            v-model="mainCompanyData.mainCompany"
+            v-model="projectDetail.mainCompany"
             label="원청사"
             variant="outlined"
             density="compact"
@@ -16,7 +16,7 @@
 
         <VCol cols="12" md="12">
           <VTextField
-            v-model="mainCompanyData.mainCompanyRepName"
+            v-model="projectDetail.mainCompanyRep"
             label="담당자명"
             variant="outlined"
             density="compact"
@@ -25,7 +25,7 @@
 
         <VCol cols="12" md="12">
           <VTextField
-            v-model="mainCompanyData.mainCompanyRepPhone"
+            v-model="projectDetail.mainCompanyRepPhone"
             label="연락처"
             variant="outlined"
             density="compact"
@@ -39,7 +39,7 @@
 <script setup>
 import { defineModel } from 'vue'
 
-const mainCompanyData = defineModel()
+const projectDetail = defineModel()
 </script>
 
 <style scoped></style>
