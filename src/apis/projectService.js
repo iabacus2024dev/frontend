@@ -5,6 +5,10 @@ export const getProjects = async (params) => {
   return await RestApiAdapter.get('/api/v1/projects', params)
 }
 
+export const getProjectDetail = async (id) => {
+  return await RestApiAdapter.get(`/api/v1/projects/${id}`)
+}
+
 export const downloadProjects = async (params) => {
   await download('/api/v1/projects/excel/download', params, '프로젝트 정보 정보')
 }

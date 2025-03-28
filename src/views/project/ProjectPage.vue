@@ -15,7 +15,6 @@
         :page="currentPage"
         :length="totalElements"
         @loadItems="loadItems"
-        @open-dialog="dialog = true"
       />
       <div class="d-flex justify-end">
         <ExcelActionsComponent
@@ -36,8 +35,14 @@ import SearchBarComponent from '@/components/searchbar/SearchBarComponent.vue'
 import TableComponent from '@/components/table/TableComponent.vue'
 import ExcelActionsComponent from '@/components/common/ExcelActionsComponent.vue'
 import { useRoute, useRouter } from 'vue-router'
-import { downloadProjects, getProjects } from '@/apis/projectService.js'
+import {
+  downloadProjects,
+  downloadProjectsSample,
+  getProjects,
+  uploadProjects,
+} from '@/apis/projectService.js'
 import { useToast } from 'vue-toastification'
+import { formatPrice } from '@/utils/MoneyUtils.js'
 
 const router = useRouter()
 const route = useRoute()
@@ -49,23 +54,22 @@ const currentPage = ref(1)
 const totalElements = ref(0)
 const items = ref([])
 
+const size = ref(10)
+const sort = ref('')
+
 const uploadedFile = ref(null)
 
 // 검색 조건 및 페이징 조건
 const params = ref({
-  code: '',
-  name: '',
-  type: '',
+  searchType: '',
   startDate: '',
   endDate: '',
-  contractDate: '',
-  contractAmount: 0,
-  mainCompany: '',
-  clientCompany: '',
+  type: '',
   status: '',
+  name: '',
+  code: '',
   page: 1,
   size: 10,
-  sort: '',
 })
 
 // 테이블 헤더
@@ -76,10 +80,15 @@ const headers = ref([
   { title: '시작 일자', key: 'startDate' },
   { title: '종료 일자', key: 'endDate' },
   { title: '계약 일자', key: 'contractDate' },
-  { title: '계약 금액', key: 'contractAmount' },
+  {
+    title: '계약 금액',
+    key: 'contractAmount',
+    align: 'end',
+    value: (item) => formatPrice(item.contractAmount),
+  },
   { title: '발주사', key: 'mainCompany' },
   { title: '원청사', key: 'clientCompany' },
-  { title: '상태', key: 'status' },
+  { title: '상태', key: 'status', 'disable-sort': true },
 ])
 
 // 검색 조건
@@ -87,10 +96,19 @@ const searchRows = ref([
   {
     // 첫 번째 행: 4개의 날짜 검색 조건
     fields: [
+      {
+        key: 'searchType',
+        label: '날짜 검색 조건',
+        type: 'select',
+        columnCount: 3,
+        options: [
+          { title: '시작일자', value: '시작일자' },
+          { title: '종료일자', value: '종료일자' },
+          { title: '계약일자', value: '계약일자' },
+        ],
+      },
       { key: 'startDate', label: '계약 시작일자', type: 'date', columnCount: 4 },
       { key: 'endDate', label: '계약 종료일자', type: 'date', columnCount: 4 },
-      { key: 'pInsertStartDate', label: '투입 시작일자', type: 'date', columnCount: 4 },
-      { key: 'pInsertEndDate', label: '투입 종료일자', type: 'date', columnCount: 4 },
     ],
   },
   {
@@ -110,8 +128,9 @@ const searchRows = ref([
         key: 'status',
         label: '진행 상태',
         type: 'select',
-        columnCount: 4,
+        columnCount: 3,
         options: [
+          { title: '예약', value: '예약' },
           { title: '진행중', value: '진행중' },
           { title: '완료', value: '완료' },
         ],
@@ -131,13 +150,24 @@ const searchRows = ref([
 const clickRow = (item) => router.push(`/projects/${item.id}`)
 
 // 데이터 불러오기
-const loadItems = async (page = 1, size = 10, sortBy = []) => {
+const loadItems = async (page = 1, itemsPerPage = 10, sortBy = []) => {
   loading.value = true
-  params.value = {
-    page,
-    size,
-    sort: sortBy.length ? `${sortBy[0].key},${sortBy[0].order}` : '',
+  params.value.page = page
+  params.value.size = itemsPerPage
+
+  if (sortBy.length > 0) {
+    if (sortBy[0].key === 'status') {
+      loading.value = false
+      return
+    }
+    params.value.sort = sortBy[0].key + ',' + sortBy[0].order
+  } else {
+    params.value.sort = []
   }
+
+  size.value = itemsPerPage
+  sort.value = params.value.sort
+
   const response = await getProjects(params.value)
   items.value = response.content
   totalElements.value = response.totalElements
@@ -147,14 +177,24 @@ const loadItems = async (page = 1, size = 10, sortBy = []) => {
 
 // 검색 이벤트 핸들러
 const handleSearch = async (filters) => {
-  Object.assign(params.value, filters, { page: 1 })
+  params.value = { ...filters, page: 1 }
   currentPage.value = 1
   await loadItems()
 }
 
 // 초기화 이벤트 핸들러
 const handleReset = async () => {
-  params.value = {}
+  params.value = {
+    searchType: '',
+    startDate: '',
+    endDate: '',
+    type: '',
+    status: '',
+    name: '',
+    code: '',
+    page: 1,
+    size: 10,
+  }
   currentPage.value = 1
   await loadItems()
 }
@@ -167,42 +207,54 @@ const fetchDownloadProjects = async () => {
   toast.success('협력사 엑셀 다운로드에 성공하였습니다.')
 }
 
-// 테이블 엑셀 관련 이벤트
-const tableExcelEventCondition = ref({
-  excelUpload: true,
-  excelDownload: true,
-})
-
-// 페이지 변경 이벤트 핸들러
-const handlePageChange = (newPage) => {
-  console.log(`페이지 변경: ${newPage}`)
+// 엑셀 샘플 다운로드
+const fetchDownloadProjectsSample = async () => {
+  console.log('엑셀 샘플 다운로드')
+  await downloadProjectsSample()
+  const toast = useToast()
+  toast.success('프로젝트 엑셀 샘플 다운로드에 성공하였습니다.')
 }
 
-const fnCreateData = () => {
-  console.log('fnCreateData >>>', 'todo: 데이터 등록 팝업창 뜨기')
-}
-
-const fnExcelUpload = () => {
-  console.log('fnExcelUpload >>>', 'todo: 엑셀 업로드 실행')
-}
-
-const restoreSearchParams = async () => {
-  params.value = {
-    code: route.query.code || '',
-    name: route.query.name || '',
-    type: route.query.type || '',
-    startDate: route.query.startDate || '',
-    endDate: route.query.endDate || '',
-    contractDate: route.query.contractDate || '',
-    contractAmount: Number(route.query.contractAmount) || 0,
-    mainCompany: route.query.mainCompany || '',
-    clientCompany: route.query.clientCompany || '',
-    status: route.query.status || '',
-    page: Number(route.query.page) || 1,
-    size: Number(route.query.size) || 10,
-    sort: route.query.sort || '',
+// 엑셀 업로드
+const fetchUploadProjects = async () => {
+  console.log('엑셀 업로드')
+  const toast = useToast()
+  if (!uploadedFile.value) {
+    toast.error('파일을 선택해주세요.')
+    return
   }
-  currentPage.value = params.value.page
+
+  const formData = new FormData()
+  formData.append('file', uploadedFile.value)
+
+  try {
+    await uploadProjects(formData)
+    await handleReset()
+    toast.success('프로젝트 엑셀 업로드에 성공하였습니다.')
+
+    dialog.value = false
+    uploadedFile.value = null
+  } catch (error) {
+    console.error('업로드 실패:', error)
+    throw error
+  }
+}
+
+// 검색 내용 url에 반영
+const restoreSearchParams = async () => {
+  let query = route.query
+  params.value = {
+    searchType: query.searchType || '',
+    startDate: query.startDate || '',
+    endDate: query.endDate || '',
+    type: query.type || '',
+    status: query.status || '',
+    name: query.name || '',
+    code: query.code || '',
+    page: query.page ? query.page : 1,
+    size: query.size ? query.size : 10,
+  }
+  currentPage.value = query.page ? Number(query.page) : 1
 }
 
 const buildQueryParams = (params) => {

@@ -53,6 +53,7 @@ const loading = ref(false)
 
 const currentPage = ref(1)
 const totalElements = ref(0)
+const size = ref(10)
 const items = ref([])
 
 const uploadedFile = ref(null)
@@ -122,7 +123,6 @@ const loadItems = async (page = 1, itemsPerPage = 10, sortBy = []) => {
 // 검색 이벤트 핸들러
 const handleSearch = async (filters) => {
   params.value = { ...filters, page: 1 }
-  console.log(params.value)
   currentPage.value = 1
   await loadItems()
 }
@@ -187,7 +187,6 @@ const restoreSearchParams = async () => {
     size: query.size ? Number(query.size) : 10,
   }
   currentPage.value = query.page ? Number(query.page) : 1
-  console.log(params.value)
 }
 
 const buildQueryParams = (params) => {
