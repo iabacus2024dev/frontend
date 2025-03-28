@@ -7,3 +7,7 @@ export const getMyAuthorities = async () => {
 export const getRoles = async () => {
   return await RestApiAdapter.get(`/api/v1/roles`)
 }
+
+export const addRole = async (data) => {
+  return await RestApiAdapter.post('/api/v1/roles', data)
+}

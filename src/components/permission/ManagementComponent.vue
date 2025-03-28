@@ -1,12 +1,14 @@
 <script setup>
-import {ref, watch} from "vue";
+import {computed, ref, watch} from "vue";
 
 const props = defineProps({
-  title: String,
-  showView: Boolean,
-  showEdit: Boolean
+  title: String
 });
+const emit = defineEmits(['viewAuth', 'editAuth', 'authRange'])
 
+const checkView = ref(false);
+const checkEdit = ref(false);
+const showEdit = props.title !== '매출 관리';
 const select = ref([]);
 
 const items = [
@@ -16,16 +18,15 @@ const items = [
   '본인',
 ];
 
-const isDisabled = ref(false);
-
-watch(select, (newValue) => {
-  if (newValue.includes("전체")) {
-    select.value = ["전체"];
-    isDisabled.value = true;
-  } else {
-    isDisabled.value = false;
-  }
+watch(checkEdit, (check) => {
+  checkView.value = !!check;
+  emit('viewAuth', checkView.value);
+  emit('editAuth', checkEdit.value);
 });
+
+watch(select, (newVal) => {
+  emit('authRange', newVal);
+})
 </script>
 
 <template>
@@ -33,10 +34,10 @@ watch(select, (newValue) => {
     <p>{{ title }}</p>
     <div class="checkbox-container">
       <div class="checkbox-left">
-        <v-checkbox v-if="showView" label="조회"></v-checkbox>
+        <v-checkbox v-model="checkView" label="조회"></v-checkbox>
       </div>
       <div class="checkbox-right">
-        <v-checkbox v-if="showEdit" label="편집"></v-checkbox>
+        <v-checkbox v-if="showEdit" v-model="checkEdit" label="편집"></v-checkbox>
       </div>
     </div>
     <div class="pt-6 ml-4 combobox-container">
@@ -44,23 +45,11 @@ watch(select, (newValue) => {
         <v-combobox
           v-model="select"
           :items="items"
+          label="권한 범위"
           chips
-          multiple
+          item-title="text"
+          item-value="value"
         >
-          <template v-slot:selection="{ item, index }">
-            <v-chip v-if="item === '전체'" closable @click:close="select = []">
-              {{ item }}
-            </v-chip>
-            <v-chip v-else-if="!isDisabled" closable @click:close="select.splice(index, 1)">
-              {{ item }}
-            </v-chip>
-          </template>
-
-          <template v-slot:item="{ props, item }">
-            <v-list-item v-bind="props" :disabled="isDisabled && item !== '전체'">
-              {{ item }}
-            </v-list-item>
-          </template>
         </v-combobox>
       </v-col>
     </div>
