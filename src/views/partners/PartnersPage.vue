@@ -16,6 +16,7 @@
         :page="currentPage"
         :length="totalElements"
         @loadItems="loadItems"
+        @open-dialog="CreateDialogs"
       />
       <div class="d-flex justify-end">
         <ExcelActionsComponent
@@ -39,15 +40,20 @@ import {
   downloadPartnersSample,
   getPartners,
   uploadPartners,
+  createPartners,
 } from '@/apis/partnerService.js'
 import ExcelActionsComponent from '@/components/common/ExcelActionsComponent.vue'
 
 import { useRoute, useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
+import { useDialog } from '@/composables/useDialog'
+import PartnersCreatePopup from './PartnersCreatePopup.vue'
 
 const router = useRouter()
 const route = useRoute()
+const toast = useToast()
 
+const CreateDialog = useDialog()
 const dialog = ref(false)
 const loading = ref(false)
 
@@ -142,11 +148,27 @@ const handleReset = async () => {
   await loadItems()
 }
 
+const CreateDialogs = () => {
+  CreateDialog.openDialog({
+    title: '협력사 등록',
+    component: PartnersCreatePopup,
+    fnCallback: (data) => {
+      console.log('받은 데이터: ', data)
+      fectchCreatePartners(data)
+    },
+  })
+}
+
+const fectchCreatePartners = async (data) => {
+  await createPartners(data)
+  await handleReset()
+  toast.success('협력사가 성공적으로 등록되었습니다.')
+}
+
 // 엑셀 다운로드
 const fetchDownloadPartners = async () => {
   console.log('엑셀 다운로드')
   await downloadPartners(params.value)
-  const toast = useToast()
   toast.success('협력사 엑셀 다운로드에 성공하였습니다.')
 }
 
@@ -154,14 +176,12 @@ const fetchDownloadPartners = async () => {
 const fetchDownloadPartnersSample = async () => {
   console.log('엑셀 샘플 다운로드')
   await downloadPartnersSample()
-  const toast = useToast()
   toast.success('협력사 엑셀 샘플 다운로드에 성공하였습니다.')
 }
 
 // 엑셀 업로드
 const fetchUploadPartners = async () => {
   console.log('엑셀 업로드')
-  const toast = useToast()
   if (!uploadedFile.value) {
     toast.error('파일을 선택해주세요.')
     return
