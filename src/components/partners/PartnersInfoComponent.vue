@@ -1,5 +1,5 @@
 <template>
-  <v-card class="pt-2 px-2" border="thin" variant="outlined">
+  <v-card class="pt-2 px-2 small-card" border="thin" variant="outlined">
     <v-card-item>
       <v-card-title>기본 정보</v-card-title>
     </v-card-item>
@@ -7,11 +7,23 @@
     <v-card-text>
       <v-row class="gap-4">
         <v-col cols="12">
-          <v-text-field v-model="name" label="협력사명" variant="outlined" density="compact" />
+          <v-text-field
+            v-model="name"
+            label="협력사명"
+            variant="outlined"
+            density="compact"
+            :rules="[rules.required]"
+          />
         </v-col>
 
         <v-col cols="12">
-          <v-text-field v-model="ceoName" label="대표자명" variant="outlined" density="compact" />
+          <v-text-field
+            v-model="ceoName"
+            label="대표자명"
+            variant="outlined"
+            density="compact"
+            :rules="[rules.required]"
+          />
         </v-col>
 
         <v-col cols="12">
@@ -20,6 +32,7 @@
             label="영업대표명"
             variant="outlined"
             density="compact"
+            :rules="[rules.required]"
           />
         </v-col>
 
@@ -29,6 +42,8 @@
             label="영업대표 연락처"
             variant="outlined"
             density="compact"
+            placeholder="010-1234-2345"
+            :rules="[rules.required, rules.phone]"
           />
         </v-col>
 
@@ -89,6 +104,12 @@ const detail = defineModel('detail')
 
 const isAddressLocked = ref(false)
 
+const rules = {
+  required: (value) => !!value || '필수 입력 항목입니다.',
+  phone: (value) =>
+    /^(010-\d{4}-\d{4})$/.test(value) || '올바른 전화번호 형식(010-1234-1234)을 입력하세요.',
+}
+
 const openPostcode = () => {
   new window.daum.Postcode({
     oncomplete: (data) => {
@@ -102,6 +123,11 @@ const openPostcode = () => {
 </script>
 
 <style scoped>
+.small-card {
+  max-width: 600px;
+  margin: auto;
+}
+
 .update-btn {
   background-color: #eb6129;
   color: white;
