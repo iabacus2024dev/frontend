@@ -9,8 +9,8 @@ export function useDialog() {
     return dialogStore.addDialog(dialogInfo)
   }
 
-  const closeDialog = (dialogId) => {
-    dialogStore.removeDialog(dialogId)
+  const closeDialog = (dialogId, data) => {
+    dialogStore.removeDialog(dialogId, data)
   }
 
   const cancelDialog = (dialogId) => {
