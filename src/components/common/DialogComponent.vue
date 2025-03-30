@@ -68,18 +68,14 @@ const handleConfirm = () => {
     const rawData = toRaw(formData)
     console.log('등록 버튼 클릭, 콜백 실행 데이터:', rawData)
 
-    if (props.model.fnCallback) {
-      props.model.fnCallback(rawData)
-    }
+    closeDialog(rawData)
   }
-
-  closeDialog()
 }
 
-const closeDialog = () => {
+const closeDialog = (data) => {
   console.log('closeDialog >>>', props.model.id)
   selectMembers()
-  emits('close-dialog', props.model.id)
+  emits('close-dialog', { dialogId: props.model.id, data })
 }
 
 const cancelDialog = () => {

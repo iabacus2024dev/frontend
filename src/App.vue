@@ -7,9 +7,9 @@ const { dialogs, closeDialog, cancelDialog } = useDialog()
 
 console.log('dialogs >>>', dialogs)
 
-const handleDialogCloseBtn = (dialogId) => {
+const handleDialogCloseBtn = ({ dialogId, data }) => {
   console.log('handleDialogCloseBtn >>>', dialogId)
-  closeDialog(dialogId)
+  closeDialog(dialogId, data)
 }
 
 const handleDialogCanCelBtn = (dialogId) => {
