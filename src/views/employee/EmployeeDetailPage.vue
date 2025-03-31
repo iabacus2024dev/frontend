@@ -1,32 +1,32 @@
 <template>
   <VCard>
     <PersonalInfoComponent
-      v-model:email="email"
-      v-model:name="name"
-      v-model:phone="phone"
-      v-model:birthDate="birthDate"
+      v-model:email="employeeDetail.email"
+      v-model:name="employeeDetail.name"
+      v-model:phone="employeeDetail.phone"
+      v-model:birthDate="employeeDetail.birthDate"
       :show-check-email="false"
     />
   </VCard>
   <VCard>
     <PersonalRecordComponent
-      v-model:type="type"
-      v-model:rank="rank"
-      v-model:grade="grade"
-      v-model:team="team"
+      v-model:type="employeeDetail.type"
+      v-model:rank="employeeDetail.rank"
+      v-model:grade="employeeDetail.grade"
+      v-model:team="employeeDetail.team"
     />
   </VCard>
   <VCard>
     <PersonalContractInfoComponent
-      v-model:joinDate="joinDate"
-      v-model:quitDate="quitDate"
-      v-model:salary="salary"
-      v-model:monthlyPay="monthlyPay"
+      v-model:joinDate="employeeDetail.joinDate"
+      v-model:quitDate="employeeDetail.leaveDate"
+      v-model:salary="employeeDetail.salary"
+      v-model:monthlyPay="employeeDetail.monthlyPay"
       :showQuitButton="true"
     />
   </VCard>
   <VCard>
-    <CommentComponent v-model:comment="comment" />
+    <CommentComponent v-model:comment="employeeDetail.comment" />
   </VCard>
   <VCardActions class="justify-end mt-3 mb-3">
     <VBtn class="delete-btn" @click="deleteMember">구성원 삭제</VBtn>
@@ -41,23 +41,34 @@ import PersonalInfoComponent from '@/components/member/PersonalInfoComponent.vue
 import PersonalRecordComponent from '@/components/member/PersonalRecordComponent.vue'
 import PersonalContractInfoComponent from '@/components/member/PersonalContractInfoComponent.vue'
 import CommentComponent from '@/components/member/CommentComponent.vue'
+import { useRoute } from 'vue-router'
+import { getEmployeeDetail } from '@/apis/employeeService.js'
 
-const email = ref('example@iabacus.co.kr')
-const name = ref('홍길동')
-const phone = ref('010-1234-5678')
-const birthDate = ref('1990-01-01')
+const route = useRoute()
+const employeeId = route.params.id
 
-const type = ref('정규직')
-const rank = ref('선임')
-const grade = ref('중급')
-const team = ref('가입정보팀')
+const employeeDetail = ref({
+  name: '',
+  email: '',
+  phone: '',
+  birthDate: '',
 
-const joinDate = ref('2021-01-01')
-const quitDate = ref('')
-const salary = ref('50000000')
-const monthlyPay = ref('5000000')
+  partnersId: Number,
+  partnersName: '',
+  type: '',
+  grade: '',
+  status: '',
 
-const comment = ref('좋은 직원')
+  joinDate: '',
+  leaveDate: '',
+  comment: '',
+  teamName: '',
+
+  salary: '',
+  monthlyPay: '',
+
+  modifiedDateTime: '',
+})
 
 const deleteMember = () => {
   console.log('구성원 삭제 버튼 클릭')
@@ -65,8 +76,8 @@ const deleteMember = () => {
 
 const updateMember = () => {
   const memberData = {
-    email: email.value,
     name: name.value,
+    email: email.value,
     phone: phone.value,
     birthDate: birthDate.value,
     type: type.value,
@@ -81,6 +92,12 @@ const updateMember = () => {
   }
   console.log('수정 버튼 클릭', memberData)
 }
+
+const fetchGetEmployeeDetail = () => {
+  getEmployeeDetail(employeeId)
+}
+
+fetchGetEmployeeDetail()
 
 const cancel = () => {
   console.log('취소 버튼 클릭')

@@ -63,9 +63,7 @@
 </template>
 
 <script setup>
-import { defineModel, ref, onMounted } from 'vue'
-import { getTypeList, getRankList, getGradeList } from '@/apis/classificationService'
-import { getTeamList } from '@/apis/teamService'
+import { defineModel, ref } from 'vue'
 
 const type = defineModel('type')
 const rank = defineModel('rank')
@@ -77,23 +75,23 @@ const rankOptions = ref([])
 const gradeOptions = ref([])
 const teamOptions = ref([])
 
-onMounted(async () => {
-  try {
-    const fetchedTypeOptions = await getTypeList()
-    typeOptions.value = fetchedTypeOptions.map((item) => ({ label: item, value: item }))
-
-    const fetchedRankOptions = await getRankList()
-    rankOptions.value = fetchedRankOptions.map((item) => ({ label: item, value: item }))
-
-    const fetchedGradeOptions = await getGradeList()
-    gradeOptions.value = fetchedGradeOptions.map((item) => ({ label: item, value: item }))
-
-    const fetchedTeamOptions = await getTeamList()
-    teamOptions.value = fetchedTeamOptions.map((item) => ({ label: item, value: item }))
-  } catch (error) {
-    console.error('옵션 목록 가져오기 실패:', error)
-  }
-})
+// onMounted(async () => {
+//   try {
+//     const fetchedTypeOptions = await getTypeList()
+//     typeOptions.value = fetchedTypeOptions.map((item) => ({ label: item, value: item }))
+//
+//     const fetchedRankOptions = await getRankList()
+//     rankOptions.value = fetchedRankOptions.map((item) => ({ label: item, value: item }))
+//
+//     const fetchedGradeOptions = await getGradeList()
+//     gradeOptions.value = fetchedGradeOptions.map((item) => ({ label: item, value: item }))
+//
+//     const fetchedTeamOptions = await getTeamList()
+//     teamOptions.value = fetchedTeamOptions.map((item) => ({ label: item, value: item }))
+//   } catch (error) {
+//     console.error('옵션 목록 가져오기 실패:', error)
+//   }
+// })
 </script>
 
 <style scoped>
