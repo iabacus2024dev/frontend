@@ -46,14 +46,8 @@ watch(
 )
 
 const selectMembers = () => {
-  if (
-    props.model.component?.__name === 'RoleSettingDialog' &&
-    dialogContent.value?.getSelectedMembers
-  ) {
-    const selectedMembers = dialogContent.value.getSelectedMembers()
-    if (selectedMembers) {
-      props.model.props.onConfirm(selectedMembers)
-    }
+  if (props.model.component?.__name === 'RoleSettingDialog' && dialogContent.value?.getSelectedMembers) {
+    props.model.props.onConfirm(dialogContent.value.getSelectedMembers())
   }
 }
 
@@ -61,15 +55,16 @@ const handleConfirm = () => {
   console.log('handleConfirm 실행, 다이얼로그 컴포넌트 데이터 가져오기')
 
   // 다이얼로그 내부 컴포넌트가 getFormData()를 제공하는 경우, 데이터를 가져와 콜백 실행
+  let rawData = null
   if (dialogContent.value?.getFormData) {
     const formData = dialogContent.value.getFormData()
 
     // 반응형 객체에서 원본 데이터를 추출하여 콜백으로 전달
-    const rawData = toRaw(formData)
+    rawData = toRaw(formData)
     console.log('등록 버튼 클릭, 콜백 실행 데이터:', rawData)
 
-    closeDialog(rawData)
   }
+  closeDialog(rawData)
 }
 
 const closeDialog = (data) => {

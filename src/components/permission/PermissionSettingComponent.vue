@@ -38,11 +38,8 @@ const handleSave = async () => {
       authorityList: managements.map(({title, permissions}) => ({
         authorityName: title,
         authorityPage: title.substring(0, title.lastIndexOf("관") - 1),
-        authorityAction: [
-          permissions.viewAuth && "조회",
-          permissions.editAuth && "편집"
-        ].filter(Boolean),
-        authorityRange: permissions.authRange
+        authorityAction: permissions.editAuth ? "편집" : permissions.viewAuth ? "조회" : null,
+        authorityRange: permissions.authRange?.replaceAll(" ", "_")
       }))
     });
     if (res === "success") {
