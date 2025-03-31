@@ -150,11 +150,10 @@ const searchRows = ref([
 const clickRow = (item) => router.push(`/projects/${item.id}`)
 
 // 데이터 불러오기
-const loadItems = async (page = 1, itemsPerPage = 10, sortBy = []) => {
+const loadItems = async (page = 1, itemsPerPage = size.value, sortBy = []) => {
   loading.value = true
   params.value.page = page
   params.value.size = itemsPerPage
-
   if (sortBy.length > 0) {
     if (sortBy[0].key === 'status') {
       loading.value = false
@@ -193,7 +192,6 @@ const handleReset = async () => {
     name: '',
     code: '',
     page: 1,
-    size: 10,
   }
   currentPage.value = 1
   await loadItems()
@@ -252,7 +250,6 @@ const restoreSearchParams = async () => {
     name: query.name || '',
     code: query.code || '',
     page: query.page ? query.page : 1,
-    size: query.size ? query.size : 10,
   }
   currentPage.value = query.page ? Number(query.page) : 1
 }

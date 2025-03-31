@@ -21,10 +21,16 @@
       :loading="loading"
       :page="page"
       :items-length="length"
-      @update:items-per-page="$emit('update:size', $event)"
+      :items-per-page="size"
+      :sort-by="sort"
+      @update:items-per-page="(newSize) => (size = newSize)"
       @click:row="(event, { item }) => $emit('clickRow', item)"
       @update:options="
-        ({ page, itemsPerPage, sortBy }) => $emit('loadItems', page, itemsPerPage, sortBy)
+        ({ page, itemsPerPage, sortBy }) => {
+          size = itemsPerPage
+          sort = sortBy
+          $emit('loadItems', page, itemsPerPage, sortBy)
+        }
       "
       :items-per-page-options="[
         { value: 10, title: '10' },
@@ -48,7 +54,7 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue'
+import { computed, defineProps, ref, watch } from 'vue'
 
 const props = defineProps({
   headers: Array,
@@ -57,6 +63,33 @@ const props = defineProps({
   length: Number,
   title: String,
   loading: Boolean,
+  size: Number,
+})
+
+const size = ref(
+  localStorage.getItem('itemsPerPage')
+    ? Number(localStorage.getItem('itemsPerPage'))
+    : props.size || 10,
+)
+
+watch(
+  () => props.size,
+  (newSize) => {
+    size.value = newSize
+  },
+)
+
+watch(size, (newSize) => {
+  localStorage.setItem('itemsPerPage', newSize)
+})
+
+const sortKey = computed(() => props.title + ' sort')
+
+const storedSort = localStorage.getItem(sortKey.value)
+const sort = ref(storedSort ? JSON.parse(storedSort) : [])
+
+watch(sort, (newSort) => {
+  localStorage.setItem(sortKey.value, JSON.stringify(newSort))
 })
 </script>
 
