@@ -3,7 +3,7 @@
     <v-row>
       <v-col cols="12">
         <PartnersInfoComponent
-          class="mb-10"
+          class="ma-3 pa-3"
           v-model:name="partnersCreate.name"
           v-model:ceoName="partnersCreate.ceoName"
           v-model:salesRepName="partnersCreate.salesRepName"
@@ -14,18 +14,18 @@
           v-model:detail="partnersCreate.detail"
         />
         <ContractInfoComponent
-          class="mb-10"
+          class="ma-3 pa-3"
           v-model:grade="partnersCreate.grade"
           v-model:commissionRate="partnersCreate.commissionRate"
         />
-        <AdditionalInfoComponent v-model:comment="partnersCreate.comment" />
+        <AdditionalInfoComponent class="ma-3 pa-3" v-model:comment="partnersCreate.comment" />
       </v-col>
     </v-row>
   </v-form>
 </template>
 
 <script setup>
-import { ref, defineExpose } from 'vue'
+import { defineExpose, ref } from 'vue'
 import PartnersInfoComponent from '@/components/partners/PartnersInfoComponent.vue'
 import ContractInfoComponent from '@/components/partners/ContractInfoComponent.vue'
 import AdditionalInfoComponent from '@/components/partners/AdditionalInfoComponent.vue'
@@ -55,17 +55,4 @@ defineExpose({
 })
 </script>
 
-<style scoped>
-.btns-container {
-  display: flex;
-  justify-content: end;
-}
-.register-btn {
-  background-color: gainsboro;
-  color: white;
-}
-.cancel-btn {
-  background-color: #eb6129;
-  color: white;
-}
-</style>
+<style scoped></style>

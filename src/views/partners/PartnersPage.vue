@@ -10,7 +10,7 @@
       <TableComponent
         :headers="headers"
         :items="items"
-        title="협력사 목록"
+        :title="title"
         :loading="loading"
         @click-row="clickRow"
         :page="currentPage"
@@ -52,6 +52,8 @@ import PartnersCreatePopup from './PartnersCreatePopup.vue'
 const router = useRouter()
 const route = useRoute()
 const toast = useToast()
+
+const title = ref('협력사 목록')
 
 const createDialog = useDialog()
 const dialog = ref(false)
@@ -126,7 +128,7 @@ const loadItems = async (page = 1, itemsPerPage = size.value, sortBy = []) => {
   if (sortBy.length > 0) {
     params.value.sort = sortBy[0].key + ',' + sortBy[0].order
   } else {
-    params.value.sort = []
+    params.value.sort = ''
   }
 
   size.value = itemsPerPage
@@ -153,6 +155,7 @@ const handleReset = async () => {
   await loadItems()
 }
 
+// 협력사 등록 팝업
 const createDialogs = () => {
   createDialog.openDialog({
     title: '협력사 등록',
@@ -164,6 +167,7 @@ const createDialogs = () => {
   })
 }
 
+// 협력사 등록
 const fetchCreatePartners = async (data) => {
   await createPartners(data)
   await handleReset()
@@ -173,8 +177,20 @@ const fetchCreatePartners = async (data) => {
 // 엑셀 다운로드
 const fetchDownloadPartners = async () => {
   console.log('엑셀 다운로드')
+  setSortToParam()
   await downloadPartners(params.value)
   toast.success('협력사 엑셀 다운로드에 성공하였습니다.')
+}
+
+function setSortToParam() {
+  const storedSort = localStorage.getItem(title.value + ' sort')
+    ? JSON.parse(localStorage.getItem(title.value + ' sort'))
+    : []
+  if (storedSort.length > 0) {
+    params.value.sort = storedSort[0].key + ',' + storedSort[0].order
+  } else {
+    params.value.sort = ''
+  }
 }
 
 // 엑셀 샘플 다운로드
