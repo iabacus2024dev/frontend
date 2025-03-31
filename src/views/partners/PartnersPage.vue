@@ -16,7 +16,7 @@
         :page="currentPage"
         :length="totalElements"
         @loadItems="loadItems"
-        @open-dialog="CreateDialogs"
+        @open-dialog="createDialogs"
       />
       <div class="d-flex justify-end">
         <ExcelActionsComponent
@@ -36,11 +36,11 @@ import { ref, watch } from 'vue'
 import TableComponent from '@/components/table/TableComponent.vue'
 import SearchBarComponent from '@/components/searchbar/SearchBarComponent.vue'
 import {
+  createPartners,
   downloadPartners,
   downloadPartnersSample,
   getPartners,
   uploadPartners,
-  createPartners,
 } from '@/apis/partnerService.js'
 import ExcelActionsComponent from '@/components/common/ExcelActionsComponent.vue'
 
@@ -53,14 +53,16 @@ const router = useRouter()
 const route = useRoute()
 const toast = useToast()
 
-const CreateDialog = useDialog()
+const createDialog = useDialog()
 const dialog = ref(false)
 const loading = ref(false)
 
 const currentPage = ref(1)
 const totalElements = ref(0)
-const size = ref(10)
 const items = ref([])
+
+const size = ref(10)
+const sort = ref('')
 
 const uploadedFile = ref(null)
 
@@ -117,7 +119,7 @@ const searchRows = ref([
 const clickRow = (item) => router.push(`/partners/${item.id}`)
 
 // 데이터 불러오기
-const loadItems = async (page = 1, itemsPerPage = 10, sortBy = []) => {
+const loadItems = async (page = 1, itemsPerPage = size.value, sortBy = []) => {
   loading.value = true
   params.value.page = page
   params.value.size = itemsPerPage
@@ -126,6 +128,9 @@ const loadItems = async (page = 1, itemsPerPage = 10, sortBy = []) => {
   } else {
     params.value.sort = []
   }
+
+  size.value = itemsPerPage
+  sort.value = params.value.sort
 
   const response = await getPartners(params.value)
   items.value = response.content
@@ -143,23 +148,23 @@ const handleSearch = async (filters) => {
 
 // 초기화 이벤트 핸들러
 const handleReset = async () => {
-  params.value = { grade: '', name: '', ceoName: '', salesRepName: '', page: 1, size: 10 }
+  params.value = { grade: '', name: '', ceoName: '', salesRepName: '', page: 1 }
   currentPage.value = 1
   await loadItems()
 }
 
-const CreateDialogs = () => {
-  CreateDialog.openDialog({
+const createDialogs = () => {
+  createDialog.openDialog({
     title: '협력사 등록',
     component: PartnersCreatePopup,
     fnCallback: (data) => {
       console.log('받은 데이터: ', data)
-      fectchCreatePartners(data)
+      fetchCreatePartners(data)
     },
   })
 }
 
-const fectchCreatePartners = async (data) => {
+const fetchCreatePartners = async (data) => {
   await createPartners(data)
   await handleReset()
   toast.success('협력사가 성공적으로 등록되었습니다.')
@@ -211,8 +216,7 @@ const restoreSearchParams = async () => {
     name: query.name || '',
     ceoName: query.ceoName || '',
     salesRepName: query.salesRepName || '',
-    page: query.page ? Number(query.page) : 1,
-    size: query.size ? Number(query.size) : 10,
+    page: query.page ? query.page : 1,
   }
   currentPage.value = query.page ? Number(query.page) : 1
 }
