@@ -6,16 +6,11 @@
     <VCardText>
       <VRow class="v-row--no-gutters">
         <VCol cols="12" md="6" class="pr-4">
-          <VTextField
-            v-model="projectDetail.code"
-            label="프로젝트코드"
-            variant="outlined"
-            density="compact"
-          />
+          <VTextField v-model="code" label="프로젝트코드" variant="outlined" density="compact" />
         </VCol>
         <VCol cols="12" md="6">
           <VSelect
-            v-model="projectDetail.type"
+            v-model="type"
             :items="projectTypeItems"
             label="사업유형"
             variant="outlined"
@@ -23,41 +18,29 @@
           />
         </VCol>
         <VCol cols="12">
-          <VTextField
-            v-model="projectDetail.name"
-            label="프로젝트명"
-            variant="outlined"
-            density="compact"
-          />
+          <VTextField v-model="name" label="프로젝트명" variant="outlined" density="compact" />
         </VCol>
         <VCol cols="12" md="4" class="pr-2">
           <VSelect
-            v-model="projectDetail.ownerTeamName"
+            v-model="ownerTeamId"
             :items="contractTeamItems"
+            :model-value="ownerTeamName"
+            item-title="name"
+            item-value="id"
             label="계약팀"
             variant="outlined"
             density="compact"
           />
         </VCol>
         <VCol cols="12" md="4" class="pr-2">
-          <VTextField
-            v-model="projectDetail.mainCompanyRep"
-            label="PM"
-            variant="outlined"
-            density="compact"
-          />
+          <VTextField v-model="pmName" label="PM" variant="outlined" density="compact" />
         </VCol>
         <VCol cols="12" md="4">
-          <VTextField
-            v-model="projectDetail.mainCompanyRepPhone"
-            label="전화번호"
-            variant="outlined"
-            density="compact"
-          />
+          <VTextField v-model="pmPhone" label="전화번호" variant="outlined" density="compact" />
         </VCol>
         <VCol cols="12" md="4" class="pr-2">
           <VTextField
-            v-model="projectDetail.contractDate"
+            v-model="contractDate"
             label="계약일"
             type="date"
             variant="outlined"
@@ -67,7 +50,7 @@
         </VCol>
         <VCol cols="12" md="4" class="pr-2">
           <VTextField
-            v-model="projectDetail.startDate"
+            v-model="startDate"
             label="계약시작일자"
             type="date"
             variant="outlined"
@@ -77,7 +60,7 @@
         </VCol>
         <VCol cols="12" md="4" class="pr-2">
           <VTextField
-            v-model="projectDetail.endDate"
+            v-model="endDate"
             label="계약종료일자"
             type="date"
             variant="outlined"
@@ -91,13 +74,33 @@
 </template>
 
 <script setup>
-import { defineModel } from 'vue'
+import { defineModel, ref } from 'vue'
+import { getTeamList } from '@/apis/teamService.js' // 추후 팀 목록은 받아와서 추가해야함
 
 // 추후 팀 목록은 받아와서 추가해야함
 const projectTypeItems = ['SI', 'SM']
-const contractTeamItems = ['융합데이터분석팀', 'CRM팀']
+const contractTeamItems = ref([
+  {
+    id: Number,
+    name: String,
+  },
+])
 
-const projectDetail = defineModel()
+const code = defineModel('code')
+const type = defineModel('type')
+const name = defineModel('name')
+const ownerTeamId = defineModel('ownerTeamId')
+const ownerTeamName = defineModel('ownerTeamName')
+const pmName = defineModel('pmName')
+const pmPhone = defineModel('pmPhone')
+const contractDate = defineModel('contractDate')
+const startDate = defineModel('startDate')
+const endDate = defineModel('endDate')
+
+const fetchGetTeams = async () => {
+  contractTeamItems.value = await getTeamList()
+}
+fetchGetTeams()
 </script>
 
 <style scoped></style>

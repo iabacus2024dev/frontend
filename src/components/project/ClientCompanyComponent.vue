@@ -7,7 +7,7 @@
       <VRow class="v-row--no-gutters">
         <VCol cols="12" md="12">
           <VTextField
-            v-model="projectDetail.clientCompany"
+            v-model="clientCompany"
             label="발주사명"
             variant="outlined"
             density="compact"
@@ -16,7 +16,7 @@
 
         <VCol cols="12" md="12">
           <VTextField
-            v-model="projectDetail.clientCompanyRep"
+            v-model="clientCompanyRep"
             label="담당자명"
             variant="outlined"
             density="compact"
@@ -25,7 +25,7 @@
 
         <VCol cols="12" md="12">
           <VTextField
-            v-model="projectDetail.clientCompanyRepPhone"
+            v-model="clientCompanyRepPhone"
             label="연락처"
             variant="outlined"
             density="compact"
@@ -39,7 +39,9 @@
 <script setup>
 import { defineModel } from 'vue'
 
-const projectDetail = defineModel()
+const clientCompany = defineModel('clientCompany')
+const clientCompanyRep = defineModel('clientCompanyRep')
+const clientCompanyRepPhone = defineModel('clientCompanyRepPhone')
 </script>
 
 <style scoped></style>
