@@ -9,12 +9,13 @@
       <TableComponent
         :headers="headers"
         :items="items"
-        title="프로젝트 목록"
+        :title="title"
         :loading="loading"
         @click-row="clickRow"
         :page="currentPage"
         :length="totalElements"
         @loadItems="loadItems"
+        @open-dialog="createDialogs"
       />
       <div class="d-flex justify-end">
         <ExcelActionsComponent
@@ -36,6 +37,7 @@ import TableComponent from '@/components/table/TableComponent.vue'
 import ExcelActionsComponent from '@/components/common/ExcelActionsComponent.vue'
 import { useRoute, useRouter } from 'vue-router'
 import {
+  createProject,
   downloadProjects,
   downloadProjectsSample,
   getProjects,
@@ -43,10 +45,16 @@ import {
 } from '@/apis/projectService.js'
 import { useToast } from 'vue-toastification'
 import { formatPrice } from '@/utils/MoneyUtils.js'
+import { useDialog } from '@/composables/useDialog.js'
+import ProjectCreatePopup from '@/views/project/ProjectCreatePopup.vue'
 
 const router = useRouter()
 const route = useRoute()
+const toast = useToast()
 
+const title = ref('프로젝트 목록')
+
+const createDialog = useDialog()
 const dialog = ref(false)
 const loading = ref(false)
 
@@ -197,26 +205,54 @@ const handleReset = async () => {
   await loadItems()
 }
 
+// 협력사 등록 팝업
+const createDialogs = () => {
+  createDialog.openDialog({
+    title: '프로젝트 등록',
+    component: ProjectCreatePopup,
+    fnCallback: (data) => {
+      console.log('받은 데이터: ', data)
+      fetchCreateProject(data)
+    },
+  })
+}
+
+// 협력사 등록
+const fetchCreateProject = async (data) => {
+  await createProject(data)
+  await handleReset()
+  toast.success('프로젝트가 성공적으로 등록되었습니다.')
+}
+
 // 엑셀 다운로드
 const fetchDownloadProjects = async () => {
   console.log('엑셀 다운로드')
+  setSortToParam()
   await downloadProjects(params.value)
-  const toast = useToast()
-  toast.success('협력사 엑셀 다운로드에 성공하였습니다.')
+  toast.success('프로젝트 엑셀 다운로드에 성공하였습니다.')
+}
+
+function setSortToParam() {
+  const storedSort = localStorage.getItem(title.value + ' sort')
+    ? JSON.parse(localStorage.getItem(title.value + ' sort'))
+    : []
+  if (storedSort.length > 0) {
+    params.value.sort = storedSort[0].key + ',' + storedSort[0].order
+  } else {
+    params.value.sort = ''
+  }
 }
 
 // 엑셀 샘플 다운로드
 const fetchDownloadProjectsSample = async () => {
   console.log('엑셀 샘플 다운로드')
   await downloadProjectsSample()
-  const toast = useToast()
   toast.success('프로젝트 엑셀 샘플 다운로드에 성공하였습니다.')
 }
 
 // 엑셀 업로드
 const fetchUploadProjects = async () => {
   console.log('엑셀 업로드')
-  const toast = useToast()
   if (!uploadedFile.value) {
     toast.error('파일을 선택해주세요.')
     return

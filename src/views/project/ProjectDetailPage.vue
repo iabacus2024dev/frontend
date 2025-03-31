@@ -1,16 +1,38 @@
 <template>
   <v-row>
     <v-col cols="12" md="7">
-      <BasicInfoComponent v-model="projectDetail" class="mb-3" />
-      <AmountComponent v-model="projectDetail" />
+      <BasicInfoComponent
+        v-model:code="projectDetail.code"
+        v-model:type="projectDetail.type"
+        v-model:name="projectDetail.name"
+        v-model:ownerTeamName="projectDetail.ownerTeamName"
+        v-model:pmName="projectDetail.pmName"
+        v-model:pmPhone="projectDetail.pmPhone"
+        v-model:contractDate="projectDetail.contractDate"
+        v-model:startDate="projectDetail.startDate"
+        v-model:endDate="projectDetail.endDate"
+        class="mb-3"
+      />
+      <AmountComponent
+        v-model:expectedAmount="projectDetail.expectedAmount"
+        v-model:contractAmount="projectDetail.contractAmount"
+      />
     </v-col>
     <v-col cols="12" md="5">
       <v-row>
         <v-col cols="12" md="6">
-          <OrderdingCompanyComponent v-model="projectDetail" />
+          <ClientCompanyComponent
+            v-model:clientCompany="projectDetail.clientCompany"
+            v-model:clientCompanyRep="projectDetail.clientCompanyRep"
+            v-model:clientCompanyRepPhone="projectDetail.clientCompanyRepPhone"
+          />
         </v-col>
         <v-col cols="12" md="6">
-          <MainCompanyComponent v-model="projectDetail" />
+          <MainCompanyComponent
+            v-model:mainCompany="projectDetail.mainCompany"
+            v-model:mainCompanyRep="projectDetail.mainCompanyRep"
+            v-model:mainCompanyRepPhone="projectDetail.mainCompanyRepPhone"
+          />
         </v-col>
       </v-row>
       <v-row>
@@ -52,7 +74,7 @@
 <script setup>
 import { defineEmits, onMounted, ref } from 'vue'
 import TableComponent from '@/components/table/TableComponent.vue'
-import OrderdingCompanyComponent from '@/components/project/OrderdingCompanyComponent.vue'
+import ClientCompanyComponent from '@/components/project/ClientCompanyComponent.vue'
 import MainCompanyComponent from '@/components/project/MainCompanyComponent.vue'
 import ProgressInfoComponent from '@/components/project/ProgressInfoComponent.vue'
 import AmountComponent from '@/components/project/AmountComponent.vue'
@@ -64,8 +86,6 @@ import { useRoute } from 'vue-router'
 import { formatPrice } from '@/utils/MoneyUtils.js'
 
 const emits = defineEmits(['project-emit-button-click', 'project-delete-button-click'])
-
-/* todo: api 통신으로 실제 데이터를 가져오기 */
 
 const toast = useToast()
 const projectDetail = ref({
@@ -102,23 +122,24 @@ onMounted(() => {
 
 const fetchGetPartnersDetail = async (projectId) => {
   projectDetail.value = await getProjectDetail(projectId)
+  // TODO: 돈 포맷팅
   projectDetail.value.expectedAmount = formatPrice(projectDetail.value.expectedAmount)
   projectDetail.value.contractAmount = formatPrice(projectDetail.value.contractAmount)
 }
 
 const headers = ref([
-  { title: '프로젝트코드', key: 'projectcode' },
-  { title: '프로젝트명', key: 'projectname' },
-  { title: '사업유형', key: 'businesetype' },
-  { title: '투입시작일자', key: 'projectstartdate' },
-  { title: '투입종료일자', key: 'projectenddate' },
-  { title: '계약시작일자', key: 'contractstartdate' },
-  { title: '계약종료일자', key: 'contractenddate' },
-  { title: '계약금액 (단위:천)', key: 'contractpay' },
-  { title: '총매출금액 (단위:천)', key: 'totalpay' },
-  { title: '발주사', key: 'orderder' },
-  { title: '원청사', key: 'origin' },
-  { title: '진행상태', key: 'progress' },
+  { title: '프로젝트코드', key: 'projectcode', nowrap: true },
+  { title: '프로젝트명', key: 'projectname', nowrap: true },
+  { title: '사업유형', key: 'businesetype', nowrap: true },
+  { title: '투입시작일자', key: 'projectstartdate', nowrap: true },
+  { title: '투입종료일자', key: 'projectenddate', nowrap: true },
+  { title: '계약시작일자', key: 'contractstartdate', nowrap: true },
+  { title: '계약종료일자', key: 'contractenddate', nowrap: true },
+  { title: '계약금액', key: 'contractpay', nowrap: true, align: 'end' },
+  { title: '총매출금액', key: 'totalpay', nowrap: true, align: 'end' },
+  { title: '발주사', key: 'orderder', nowrap: true, align: 'end' },
+  { title: '원청사', key: 'origin', nowrap: true, align: 'end' },
+  { title: '진행상태', key: 'progress', nowrap: true, align: 'end' },
 ])
 
 const tableDataResponse = ref([

@@ -1,6 +1,10 @@
 import RestApiAdapter from '@/adapters/restApiAdapter.js'
 import { download } from '@/apis/common/downloadService.js'
 
+export const createProject = async (data) => {
+  return await RestApiAdapter.post('api/v1/projects', data)
+}
+
 export const getProjects = async (params) => {
   return await RestApiAdapter.get('/api/v1/projects', params)
 }

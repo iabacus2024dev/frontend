@@ -1,39 +1,20 @@
 <template>
-  <v-container fluid style="margin: 0px; padding: 0px; width: 100%" class="mt-5">
-    <v-row>
-      <v-col cols="3">
-        <v-card variant="outlined" class="custom-card">
-          <v-card-text>
-            <LazyTreeViewWrapper :treeDataResponse="treeData" />
-          </v-card-text>
-        </v-card>
-      </v-col>
-      <v-col cols="9">
-        <div class="mt-5">
-          <SearchBarComponent :rows="searchRows" @search="handleSearch" @reset="handleReset" />
-        </div>
-        <v-card-text>
-          <TableComponent :table-title="tableTitleResponse" :table-data="tableDataResponse" />
-          <PaginationComponent
-            :total-items="totalItems"
-            :items-per-page="itemsPerPage"
-            @page-change="handlePageChange"
-          />
-        </v-card-text>
-        <v-card-actions class="justify-end">
-          <v-btn class="add-member-btn" @click="addMember">구성원 추가</v-btn>
-        </v-card-actions>
-      </v-col>
-    </v-row>
-  </v-container>
+  <v-row>
+    <v-col class="mt-3">
+      <SearchBarComponent :rows="searchRows" @search="handleSearch" @reset="handleReset" />
+    </v-col>
+  </v-row>
+  <v-row>
+    <v-col>
+      <TableComponent :table-title="tableTitleResponse" :table-data="tableDataResponse" />
+    </v-col>
+  </v-row>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import TableComponent from '@/components/table/TableComponent.vue'
-import LazyTreeViewWrapper from '@/components/tree/LazyTreeViewWrapper.vue'
 import SearchBarComponent from '@/components/searchbar/SearchBarComponent.vue'
-import PaginationComponent from '@/components/common/PaginationComponent.vue'
 import { getTreeViews } from '@/apis/teamService'
 
 const tableTitleResponse = ref(['이름', '팀명', '직급', '구분', '등급', '가동현황', '입사일자'])

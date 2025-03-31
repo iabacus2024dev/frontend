@@ -7,8 +7,8 @@
       <VRow class="v-row--no-gutters">
         <VCol cols="12" md="6" class="pr-4">
           <VTextField
-            v-model="projectDetail.expectedAmount"
-            label="예상계금액 (단위:천)"
+            v-model="expectedAmount"
+            label="예상계약금액"
             variant="outlined"
             density="compact"
           />
@@ -16,8 +16,8 @@
 
         <VCol cols="12" md="6">
           <VTextField
-            v-model="projectDetail.contractAmount"
-            label="예상계금액 (단위:천)"
+            v-model="contractAmount"
+            label="계약금액"
             variant="outlined"
             density="compact"
           />
@@ -30,7 +30,8 @@
 <script setup>
 import { defineModel } from 'vue'
 
-const projectDetail = defineModel()
+const expectedAmount = defineModel('expectedAmount')
+const contractAmount = defineModel('contractAmount')
 </script>
 
 <style scoped></style>
