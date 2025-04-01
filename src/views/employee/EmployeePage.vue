@@ -15,6 +15,7 @@
         :page="currentPage"
         :length="totalElements"
         @loadItems="loadItems"
+        @open-dialog="createDialogs"
       />
       <div class="d-flex justify-end">
         <ExcelActionsComponent
@@ -37,12 +38,14 @@ import { useRoute, useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
 import { useDialog } from '@/composables/useDialog.js'
 import {
+  createEmployee,
   downloadEmployees,
   downloadEmployeeSample,
   getEmployees,
   uploadEmployee,
 } from '@/apis/employeeService.js'
 import ExcelActionsComponent from '@/components/common/ExcelActionsComponent.vue'
+import EmployeeCreatePopup from '@/views/employee/EmployeeCreatePopup.vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -194,6 +197,25 @@ const handleReset = async () => {
   }
   currentPage.value = 1
   await loadItems()
+}
+
+// 구성원 등록 팝업
+const createDialogs = () => {
+  createDialog.openDialog({
+    title: '프로젝트 등록',
+    component: EmployeeCreatePopup,
+    fnCallback: (data) => {
+      console.log('받은 데이터: ', data)
+      fetchCreateEmployee(data)
+    },
+  })
+}
+
+// 구성원 등록
+const fetchCreateEmployee = async (data) => {
+  await createEmployee(data)
+  await handleReset()
+  toast.success('구성원이 성공적으로 등록되었습니다.')
 }
 
 // 엑셀 다운로드

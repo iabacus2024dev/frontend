@@ -4,7 +4,7 @@
       <VCardTitle>개인정보</VCardTitle>
     </VCardItem>
     <VCardText>
-      <VRow no-gutters="0">
+      <VRow>
         <VCol cols="9" class="mt-3">
           <VRow>
             <VTextField
@@ -14,12 +14,7 @@
               density="compact"
               :rules="[requiredRule]"
             />
-            <VBtn
-              flat="0"
-              v-if="showCheckEmail"
-              @click="handleCheckEmail"
-              class="ml-3 check-mail-btn"
-            >
+            <VBtn v-if="showCheckEmail" @click="handleCheckEmail" class="ml-3 check-mail-btn">
               중복확인
             </VBtn>
           </VRow>

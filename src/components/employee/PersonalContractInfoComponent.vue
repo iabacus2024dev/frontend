@@ -21,7 +21,7 @@
         <VCol cols="9" class="mt-10" v-if="showQuitButton">
           <VRow>
             <VTextField
-              v-model="quitDate"
+              v-model="leaveDate"
               label="퇴사일"
               variant="outlined"
               density="compact"
@@ -57,7 +57,7 @@
 import { defineModel, defineProps } from 'vue'
 
 const joinDate = defineModel('joinDate')
-const quitDate = defineModel('quitDate')
+const leaveDate = defineModel('leaveDate')
 const salary = defineModel('salary')
 const monthlyPay = defineModel('monthlyPay')
 

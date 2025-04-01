@@ -23,7 +23,7 @@ import LoginLayout from '@/layouts/LoginLayout.vue'
 import FindPasswordPage from '@/views/login/FindPasswordPage.vue'
 import EmployeeDetailPage from '@/views/employee/EmployeeDetailPage.vue'
 import ProjectDetailPage from '@/views/project/ProjectDetailPage.vue'
-import MemberCreatePopup from '@/views/employee/MemberCreatePopup.vue'
+import EmployeeCreatePopup from '@/views/employee/EmployeeCreatePopup.vue'
 
 const routes = [
   {
@@ -369,7 +369,7 @@ const routes = [
   {
     path: '/memberCreate',
     name: 'memberCreate',
-    component: MemberCreatePopup,
+    component: EmployeeCreatePopup,
     meta: {
       layout: DefaultLayout,
       activeIndex: 1,

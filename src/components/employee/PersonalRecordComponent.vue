@@ -50,9 +50,11 @@
               variant="outlined"
               density="compact"
               :items="teamOptions"
-              item-title="label"
-              item-value="value"
-            />
+              item-title="name"
+              item-value="id"
+              return-object
+            >
+            </VSelect>
           </VRow>
         </VCol>
       </VRow>

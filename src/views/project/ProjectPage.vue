@@ -204,7 +204,7 @@ const handleReset = async () => {
   await loadItems()
 }
 
-// 협력사 등록 팝업
+// 프로젝트 등록 팝업
 const createDialogs = () => {
   createDialog.openDialog({
     title: '프로젝트 등록',
@@ -216,7 +216,7 @@ const createDialogs = () => {
   })
 }
 
-// 협력사 등록
+// 프로젝트 등록
 const fetchCreateProject = async (data) => {
   await createProject(data)
   await handleReset()
