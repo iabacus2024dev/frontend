@@ -91,7 +91,7 @@ const searchRows = ref([
   {
     fields: [
       {
-        key: 'Type',
+        key: 'type',
         label: '직원유형',
         type: 'select',
         columnCount: 4,
