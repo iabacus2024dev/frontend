@@ -96,7 +96,7 @@ const headers = ref([
   },
   { title: '발주사', key: 'mainCompany' },
   { title: '원청사', key: 'clientCompany' },
-  { title: '상태', key: 'status', 'disable-sort': true },
+  { title: '상태', key: 'status', sortable: false },
 ])
 
 // 검색 조건
@@ -159,27 +159,26 @@ const clickRow = (item) => router.push(`/projects/${item.id}`)
 
 // 데이터 불러오기
 const loadItems = async (page = 1, itemsPerPage = size.value, sortBy = []) => {
-  loading.value = true
-  params.value.page = page
-  params.value.size = itemsPerPage
-  if (sortBy.length > 0) {
-    if (sortBy[0].key === 'status') {
-      loading.value = false
-      return
+  try {
+    loading.value = true
+    params.value.page = page
+    params.value.size = itemsPerPage
+    if (sortBy.length > 0) {
+      params.value.sort = sortBy[0].key + ',' + sortBy[0].order
+    } else {
+      params.value.sort = []
     }
-    params.value.sort = sortBy[0].key + ',' + sortBy[0].order
-  } else {
-    params.value.sort = []
+
+    size.value = itemsPerPage
+    sort.value = params.value.sort
+
+    const response = await getProjects(params.value)
+    items.value = response.content
+    totalElements.value = response.totalElements
+    await router.replace(`/projects?${buildQueryParams(params.value)}`)
+  } finally {
+    loading.value = false
   }
-
-  size.value = itemsPerPage
-  sort.value = params.value.sort
-
-  const response = await getProjects(params.value)
-  items.value = response.content
-  totalElements.value = response.totalElements
-  await router.replace(`/projects?${buildQueryParams(params.value)}`)
-  loading.value = false
 }
 
 // 검색 이벤트 핸들러
