@@ -16,6 +16,15 @@
         :length="totalElements"
         @loadItems="loadItems"
       />
+      <div class="d-flex justify-end">
+        <ExcelActionsComponent
+          @download="fetchDownload"
+          @upload="fetchUpload"
+          @downloadSample="fetchDownloadSample"
+          v-model:file="uploadedFile"
+          v-model:dialog="dialog"
+        />
+      </div>
     </v-col>
   </v-row>
 </template>
@@ -27,7 +36,13 @@ import SearchBarComponent from '@/components/searchbar/SearchBarComponent.vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
 import { useDialog } from '@/composables/useDialog.js'
-import { getEmployees } from '@/apis/employeeService.js'
+import {
+  downloadEmployees,
+  downloadEmployeeSample,
+  getEmployees,
+  uploadEmployee,
+} from '@/apis/employeeService.js'
+import ExcelActionsComponent from '@/components/common/ExcelActionsComponent.vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -63,11 +78,11 @@ const params = ref({
 // 테이블 헤더
 const headers = ref([
   { title: '이름', key: 'name' },
-  { title: '팀명', key: 'teamName' },
+  { title: '팀명', key: 'teamName', sortable: false },
   { title: '직원유형', key: 'type' },
   { title: '등급', key: 'grade' },
   { title: '직급', key: 'rank' },
-  { title: '가동현황', key: 'status' },
+  { title: '가동현황', key: 'status', sortable: false },
   { title: '입사일자', key: 'joinDate' },
 ])
 
@@ -137,23 +152,26 @@ const clickRow = (item) => router.push(`/employees/${item.id}`)
 
 // 데이터 불러오기
 const loadItems = async (page = 1, itemsPerPage = size.value, sortBy = []) => {
-  loading.value = true
-  params.value.page = page
-  params.value.size = itemsPerPage
-  if (sortBy.length > 0) {
-    params.value.sort = sortBy[0].key + ',' + sortBy[0].order
-  } else {
-    params.value.sort = []
+  try {
+    loading.value = true
+    params.value.page = page
+    params.value.size = itemsPerPage
+    if (sortBy.length > 0) {
+      params.value.sort = sortBy[0].key + ',' + sortBy[0].order
+    } else {
+      params.value.sort = []
+    }
+
+    size.value = itemsPerPage
+    sort.value = params.value.sort
+
+    const response = await getEmployees(params.value)
+    items.value = response.content
+    totalElements.value = response.totalElements
+    await router.replace(`/employees?${buildQueryParams(params.value)}`)
+  } finally {
+    loading.value = false
   }
-
-  size.value = itemsPerPage
-  sort.value = params.value.sort
-
-  const response = await getEmployees(params.value)
-  items.value = response.content
-  totalElements.value = response.totalElements
-  await router.replace(`/employees?${buildQueryParams(params.value)}`)
-  loading.value = false
 }
 
 // 검색 이벤트 핸들러
@@ -178,9 +196,59 @@ const handleReset = async () => {
   await loadItems()
 }
 
+// 엑셀 다운로드
+const fetchDownload = async () => {
+  console.log('엑셀 다운로드')
+  setSortToParam()
+  await downloadEmployees(params.value)
+  toast.success('구성원 엑셀 다운로드에 성공하였습니다.')
+}
+
+function setSortToParam() {
+  const storedSort = localStorage.getItem(title.value + ' sort')
+    ? JSON.parse(localStorage.getItem(title.value + ' sort'))
+    : []
+  if (storedSort.length > 0) {
+    params.value.sort = storedSort[0].key + ',' + storedSort[0].order
+  } else {
+    params.value.sort = ''
+  }
+}
+
+// 엑셀 샘플 다운로드
+const fetchDownloadSample = async () => {
+  console.log('엑셀 샘플 다운로드')
+  await downloadEmployeeSample()
+  toast.success('협력사 엑셀 샘플 다운로드에 성공하였습니다.')
+}
+
+// 엑셀 업로드
+const fetchUpload = async () => {
+  console.log('엑셀 업로드')
+  if (!uploadedFile.value) {
+    toast.error('파일을 선택해주세요.')
+    return
+  }
+
+  const formData = new FormData()
+  formData.append('file', uploadedFile.value)
+
+  try {
+    await uploadEmployee(formData)
+    await handleReset()
+    toast.success('협력사 엑셀 업로드에 성공하였습니다.')
+
+    dialog.value = false
+    uploadedFile.value = null
+  } catch (error) {
+    console.error('업로드 실패:', error)
+    throw error
+  }
+}
+
 // 검색 내용 url에 반영
 const restoreSearchParams = async () => {
-  const sortKey = computed(() => props.title + ' sort')
+  const sortKey = computed(() => title.value + ' sort')
 
   const storedSort = localStorage.getItem(sortKey.value)
   const sortArray = ref(storedSort ? JSON.parse(storedSort) : [])
