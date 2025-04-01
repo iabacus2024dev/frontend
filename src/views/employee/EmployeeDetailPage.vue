@@ -93,8 +93,8 @@ const updateMember = () => {
   console.log('수정 버튼 클릭', memberData)
 }
 
-const fetchGetEmployeeDetail = () => {
-  getEmployeeDetail(employeeId)
+const fetchGetEmployeeDetail = async () => {
+  employeeDetail.value = await getEmployeeDetail(employeeId)
 }
 
 fetchGetEmployeeDetail()

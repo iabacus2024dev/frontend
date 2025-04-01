@@ -24,7 +24,6 @@
           <VSelect
             v-model="ownerTeamId"
             :items="contractTeamItems"
-            :model-value="ownerTeamName"
             item-title="name"
             item-value="id"
             label="계약팀"
