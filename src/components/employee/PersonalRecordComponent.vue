@@ -39,8 +39,6 @@
               variant="outlined"
               density="compact"
               :items="gradeOptions"
-              item-title="label"
-              item-value="value"
             />
           </VRow>
         </VCol>
@@ -52,8 +50,8 @@
               variant="outlined"
               density="compact"
               :items="teamOptions"
-              item-title="name"
-              item-value="id"
+              item-title="label"
+              item-value="value"
             />
           </VRow>
         </VCol>

@@ -24,8 +24,7 @@
           <VSelect
             v-model="department"
             :items="contractTeamItems"
-            item-title="name"
-            item-value="id"
+            :item-value="department"
             label="계약팀"
             variant="outlined"
             density="compact"

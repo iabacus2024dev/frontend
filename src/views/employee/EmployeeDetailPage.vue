@@ -67,7 +67,7 @@ const employeeDetail = ref({
   joinDate: '',
   leaveDate: '',
   comment: '',
-  department: {},
+  department: '',
 
   salary: '',
   monthlyPay: '',
@@ -85,7 +85,6 @@ const handleUpdateEmployee = () => {
 
 const fetchUpdateEmployee = async () => {
   try {
-    employeeDetail.value.departmentId = employeeDetail.value.department
     await updateEmployee(employeeId, employeeDetail.value)
     toast.success(
       `${employeeDetail.value.name} ${employeeDetail.value.rank}의 정보가 수정되었습니다.`,
