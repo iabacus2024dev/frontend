@@ -8,7 +8,7 @@
           v-model:type="projectCreate.type"
           v-model:name="projectCreate.name"
           v-model:ownerTeamId="projectCreate.ownerTeamId"
-          v-model:ownerTeamName="projectCreate.ownerTeamName"
+          v-model:department="projectCreate.department"
           v-model:pmName="projectCreate.pmName"
           v-model:pmPhone="projectCreate.pmPhone"
           v-model:contractDate="projectCreate.contractDate"
@@ -69,6 +69,7 @@ const projectCreate = ref({
   pmName: '',
   pmPhone: '',
   startDate: '',
+  department: '',
   endDate: '',
   mainCompany: '',
   mainCompanyRep: '',
@@ -79,7 +80,9 @@ const projectCreate = ref({
 })
 
 const getFormData = () => {
-  return projectCreate.value
+  let response = projectCreate.value
+  response.departmentId = response.department.id
+  return response
 }
 
 defineExpose({

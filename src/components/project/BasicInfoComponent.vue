@@ -24,10 +24,12 @@
           <VSelect
             v-model="department"
             :items="contractTeamItems"
-            :item-value="department"
             label="계약팀"
             variant="outlined"
             density="compact"
+            item-title="name"
+            item-value="id"
+            return-object
           />
         </VCol>
         <VCol cols="12" md="4" class="pr-2">

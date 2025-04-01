@@ -85,7 +85,7 @@ const projectDetail = ref({
   type: '',
   status: '',
   contractDate: '',
-  department: '',
+  department: {},
   startDate: '',
   endDate: '',
   pmName: '',
@@ -208,6 +208,7 @@ const handleProjectEditButtonClick = () => {
 
 const fetchUpdateProject = async () => {
   try {
+    projectDetail.value.departmentId = projectDetail.value.department.id
     await updateProject(projectId, projectDetail.value)
     toast.success(`${projectDetail.value.name}의 정보가 수정되었습니다.`)
   } finally {
