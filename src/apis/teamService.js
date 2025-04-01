@@ -6,3 +6,7 @@ export const getTeamList = async () => {
 export const getTreeViews = async () => {
   return await RestApiAdapter.get('/api/v1/teams/tree')
 }
+
+export const getDepartments = async () => {
+  return await RestApiAdapter.get('api/v1/departments')
+}

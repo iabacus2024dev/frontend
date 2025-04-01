@@ -5,7 +5,7 @@ import TableTestPage from '@/views/test/TableTestPage.vue'
 import SearchBarTestPage from '@/views/test/SearchBarTestPage.vue'
 import ProjectPage from '@/views/project/ProjectPage.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
-import MemberPage from '@/views/member/MemberPage.vue'
+import EmployeePage from '@/views/employee/EmployeePage.vue'
 import PartnersPage from '@/views/partners/PartnersPage.vue'
 import PartnersDetailPage from '@/views/partners/PartnersDetailPage.vue'
 import PermissionPage from '@/views/PermissionPage.vue'
@@ -21,11 +21,9 @@ import LoginPage from '@/views/login/LoginPage.vue'
 import ContractDetailPage from '@/views/project/ContractDetailPage.vue'
 import LoginLayout from '@/layouts/LoginLayout.vue'
 import FindPasswordPage from '@/views/login/FindPasswordPage.vue'
-import MemberDetailPage from '@/views/member/MemberDetailPage.vue'
+import EmployeeDetailPage from '@/views/employee/EmployeeDetailPage.vue'
 import ProjectDetailPage from '@/views/project/ProjectDetailPage.vue'
-import MemberCreatePopup from '@/views/member/MemberCreatePopup.vue'
-import { useMemberStore } from '@/stores/member.js'
-import { useToast } from 'vue-toastification'
+import MemberCreatePopup from '@/views/employee/MemberCreatePopup.vue'
 
 const routes = [
   {
@@ -62,7 +60,7 @@ const routes = [
         },
         {
           title: '프로젝트 관리',
-          disabled: true,
+          disabled: false,
         },
       ],
     },
@@ -99,9 +97,9 @@ const routes = [
     },
   },
   {
-    path: '/members',
-    name: 'members',
-    component: MemberPage,
+    path: '/employees',
+    name: 'employees',
+    component: EmployeePage,
     meta: {
       menu: true,
       layout: DefaultLayout,
@@ -338,9 +336,9 @@ const routes = [
     meta: { layout: DefaultLayout },
   },
   {
-    path: '/memberDetail',
-    name: 'memberDetail',
-    component: MemberDetailPage,
+    path: '/employees/:id',
+    name: 'employeeDetail',
+    component: EmployeeDetailPage,
     meta: {
       layout: DefaultLayout,
       activeIndex: 1,
@@ -357,7 +355,7 @@ const routes = [
           title: '구성원 관리',
           disabled: false,
           to: {
-            name: 'members',
+            name: 'employees',
           },
         },
         {

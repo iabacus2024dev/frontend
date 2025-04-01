@@ -1,5 +1,5 @@
 <template>
-  <VCard variant="outlined" class="mb-3 pt-2 px-2 small-card">
+  <VCard variant="outlined" class="mt-3 pt-2 px-2">
     <VCardItem>
       <VCardTitle>비고</VCardTitle>
     </VCardItem>
@@ -17,6 +17,7 @@
 
 <script setup>
 import { defineModel } from 'vue'
+
 const comment = defineModel('comment')
 </script>
 <style scoped>

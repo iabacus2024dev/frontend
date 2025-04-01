@@ -91,14 +91,14 @@ const fnDeleteBtn = () => {
 const router = useRouter()
 const fetchDeletePartners = async () => {
   await deletePartners(partnersId)
-  toast.success('협력사가 성공적으로 삭제되었습니다.')
+  toast.success(`${partnersDetail.value.name} 협력사가 삭제되었습니다.`)
   await router.push('/partners')
 }
 
 const fnAfterUpdateBtn = async () => {
   try {
     await updatePartners(partnersId, partnersDetail.value)
-    toast.success('협력사가 성공적으로 수정되었습니다.')
+    toast.success(`${partnersDetail.value.name} 협력사의 정보가 수정되었습니다.`)
   } finally {
     await fetchGetPartnersDetail(partnersId)
   }

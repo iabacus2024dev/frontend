@@ -13,6 +13,14 @@ export const getProjectDetail = async (id) => {
   return await RestApiAdapter.get(`/api/v1/projects/${id}`)
 }
 
+export const updateProject = async (id, data) => {
+  return await RestApiAdapter.put(`/api/v1/projects/${id}`, data)
+}
+
+export const deleteProject = async (id) => {
+  return await RestApiAdapter.delete(`/api/v1/projects/${id}`)
+}
+
 export const downloadProjects = async (params) => {
   await download('/api/v1/projects/excel/download', params, '프로젝트 정보 정보')
 }

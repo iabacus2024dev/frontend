@@ -5,7 +5,7 @@
         v-model:code="projectDetail.code"
         v-model:type="projectDetail.type"
         v-model:name="projectDetail.name"
-        v-model:ownerTeamName="projectDetail.ownerTeamName"
+        v-model:department="projectDetail.department"
         v-model:pmName="projectDetail.pmName"
         v-model:pmPhone="projectDetail.pmPhone"
         v-model:contractDate="projectDetail.contractDate"
@@ -46,18 +46,10 @@
       </v-row>
     </v-col>
     <v-col class="d-flex justify-end">
-      <v-btn
-        variant="tonal"
-        density="comfortable"
-        class="btn-color mr-2"
-        @click="handleProjectEditButtonClick"
+      <v-btn variant="tonal" class="btn-color mr-2" @click="handleProjectEditButtonClick"
         >프로젝트 수정</v-btn
       >
-      <v-btn
-        variant="tonal"
-        density="comfortable"
-        class="btn-color"
-        @click="handleProjectDeleteButtonClick"
+      <v-btn variant="tonal" class="btn-color" @click="handleProjectDeleteButtonClick"
         >프로젝트 삭제
       </v-btn>
     </v-col>
@@ -72,7 +64,7 @@
 </template>
 
 <script setup>
-import { defineEmits, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import TableComponent from '@/components/table/TableComponent.vue'
 import ClientCompanyComponent from '@/components/project/ClientCompanyComponent.vue'
 import MainCompanyComponent from '@/components/project/MainCompanyComponent.vue'
@@ -81,21 +73,19 @@ import AmountComponent from '@/components/project/AmountComponent.vue'
 import BasicInfoComponent from '@/components/project/BasicInfoComponent.vue'
 import EmployeeListComponent from '@/components/employee/EmployeeListComponent.vue'
 import { useToast } from 'vue-toastification'
-import { getProjectDetail } from '@/apis/projectService.js'
-import { useRoute } from 'vue-router'
-import { formatPrice } from '@/utils/MoneyUtils.js'
-
-const emits = defineEmits(['project-emit-button-click', 'project-delete-button-click'])
+import { deleteProject, getProjectDetail, updateProject } from '@/apis/projectService.js'
+import { useRoute, useRouter } from 'vue-router'
+import { useDialog } from '@/composables/useDialog.js'
 
 const toast = useToast()
+const router = useRouter()
 const projectDetail = ref({
   name: '',
   code: '',
   type: '',
   status: '',
   contractDate: '',
-  ownerTeamId: Number,
-  ownerTeamName: '',
+  department: {},
   startDate: '',
   endDate: '',
   pmName: '',
@@ -116,15 +106,16 @@ const projectDetail = ref({
 
 const route = useRoute()
 const projectId = route.params.id
+
+const dialog = useDialog()
+
 onMounted(() => {
-  fetchGetPartnersDetail(projectId)
+  fetchGetPartnersDetail()
 })
 
-const fetchGetPartnersDetail = async (projectId) => {
+const fetchGetPartnersDetail = async () => {
   projectDetail.value = await getProjectDetail(projectId)
   // TODO: 돈 포맷팅
-  projectDetail.value.expectedAmount = formatPrice(projectDetail.value.expectedAmount)
-  projectDetail.value.contractAmount = formatPrice(projectDetail.value.contractAmount)
 }
 
 const headers = ref([
@@ -208,20 +199,41 @@ const handlePageChange = (newPage) => {
 
 // 프로젝트 수정 이벤트 핸들러
 const handleProjectEditButtonClick = () => {
-  console.log('handleProjectEditButtonClick >>>', '프로젝트 수정 버튼 클릭!')
-  emits('project-edit-button-click')
+  dialog.openDialog({
+    title: '프로젝트 수정',
+    contents: `${projectDetail.value.name}의 정보를 수정하시겠습니까?`,
+    fnCallback: fetchUpdateProject,
+  })
+}
+
+const fetchUpdateProject = async () => {
+  try {
+    projectDetail.value.departmentId = projectDetail.value.department
+    await updateProject(projectId, projectDetail.value)
+    toast.success(`${projectDetail.value.name}의 정보가 수정되었습니다.`)
+  } finally {
+    await fetchGetPartnersDetail()
+  }
 }
 
 // 프로젝트 삭제 이벤트 핸들러
 const handleProjectDeleteButtonClick = () => {
-  console.log('handleProjectDeleteButtonClick >>>', '프로젝트 삭제 버튼 클릭!')
-  emits('project-delete-button-click')
+  dialog.openDialog({
+    title: '프로젝트 삭제',
+    contents: `${projectDetail.value.name} 프로젝트를 삭제하시겠습니까?`,
+    fnCallback: fetchDeleteProject,
+  })
+}
+
+const fetchDeleteProject = async () => {
+  await deleteProject(projectId)
+  await router.push('/projects')
+  toast.success(`${projectDetail.value.name} 프로젝트가 삭제되었습니다.`)
 }
 
 // 계약 등록 이벤트 핸들러
 const handleContractRegisterButtonClick = () => {
   console.log('handleContractRegisterButtonClick >>>', '계약 등록 버튼 클릭!')
-  emits('contract-register-button-click')
 }
 </script>
 

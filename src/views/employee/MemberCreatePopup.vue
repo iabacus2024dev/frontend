@@ -47,11 +47,11 @@
 </template>
 
 <script setup>
-import { ref, computed, defineEmits } from 'vue'
-import PersonalInfoComponent from '@/components/member/PersonalInfoComponent.vue'
-import PersonalRecordComponent from '@/components/member/PersonalRecordComponent.vue'
-import PersonalContractInfoComponent from '@/components/member/PersonalContractInfoComponent.vue'
-import CommentComponent from '@/components/member/CommentComponent.vue'
+import { computed, defineEmits, ref } from 'vue'
+import PersonalInfoComponent from '@/components/employee/PersonalInfoComponent.vue'
+import PersonalRecordComponent from '@/components/employee/PersonalRecordComponent.vue'
+import PersonalContractInfoComponent from '@/components/employee/PersonalContractInfoComponent.vue'
+import CommentComponent from '@/components/employee/CommentComponent.vue'
 
 const emit = defineEmits(['close'])
 const memberForm = ref(null)

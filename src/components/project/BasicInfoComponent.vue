@@ -22,9 +22,8 @@
         </VCol>
         <VCol cols="12" md="4" class="pr-2">
           <VSelect
-            v-model="ownerTeamId"
+            v-model="department"
             :items="contractTeamItems"
-            :model-value="ownerTeamName"
             item-title="name"
             item-value="id"
             label="계약팀"
@@ -89,8 +88,7 @@ const contractTeamItems = ref([
 const code = defineModel('code')
 const type = defineModel('type')
 const name = defineModel('name')
-const ownerTeamId = defineModel('ownerTeamId')
-const ownerTeamName = defineModel('ownerTeamName')
+const department = defineModel('department')
 const pmName = defineModel('pmName')
 const pmPhone = defineModel('pmPhone')
 const contractDate = defineModel('contractDate')

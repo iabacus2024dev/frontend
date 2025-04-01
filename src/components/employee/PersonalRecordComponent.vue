@@ -1,10 +1,10 @@
 <template>
-  <VCard variant="outlined" class="mt-3 pt-2 px-2 small-card">
+  <VCard variant="outlined" class="mt-3 pt-2 px-2">
     <VCardItem>
       <VCardTitle>인사정보</VCardTitle>
     </VCardItem>
     <VCardText>
-      <VRow no-gutters="0">
+      <VRow>
         <VCol cols="9" class="mt-3">
           <VRow>
             <VSelect
@@ -47,13 +47,13 @@
         <VCol cols="9" class="mt-10">
           <VRow>
             <VSelect
-              v-model="team"
+              v-model="department"
               label="소속팀"
               variant="outlined"
               density="compact"
               :items="teamOptions"
-              item-title="label"
-              item-value="value"
+              item-title="name"
+              item-value="id"
             />
           </VRow>
         </VCol>
@@ -63,37 +63,34 @@
 </template>
 
 <script setup>
-import { defineModel, ref, onMounted } from 'vue'
-import { getTypeList, getRankList, getGradeList } from '@/apis/classificationService'
-import { getTeamList } from '@/apis/teamService'
+import { defineModel, ref } from 'vue'
+import { getDepartments } from '@/apis/teamService.js'
 
 const type = defineModel('type')
 const rank = defineModel('rank')
 const grade = defineModel('grade')
-const team = defineModel('team')
+const department = defineModel('department')
 
-const typeOptions = ref([])
-const rankOptions = ref([])
-const gradeOptions = ref([])
+const typeOptions = ref(['정직원', '프리랜서', '외주'])
+const rankOptions = ref([
+  '사원',
+  '선임',
+  '책임',
+  '팀장',
+  '수석',
+  '이사',
+  '기술이사',
+  '상무',
+  '부사장',
+  '사장',
+])
+const gradeOptions = ref(['초급', '중급', '고급', '특급'])
 const teamOptions = ref([])
 
-onMounted(async () => {
-  try {
-    const fetchedTypeOptions = await getTypeList()
-    typeOptions.value = fetchedTypeOptions.map((item) => ({ label: item, value: item }))
-
-    const fetchedRankOptions = await getRankList()
-    rankOptions.value = fetchedRankOptions.map((item) => ({ label: item, value: item }))
-
-    const fetchedGradeOptions = await getGradeList()
-    gradeOptions.value = fetchedGradeOptions.map((item) => ({ label: item, value: item }))
-
-    const fetchedTeamOptions = await getTeamList()
-    teamOptions.value = fetchedTeamOptions.map((item) => ({ label: item, value: item }))
-  } catch (error) {
-    console.error('옵션 목록 가져오기 실패:', error)
-  }
-})
+const fetchGetDepartments = async () => {
+  teamOptions.value = await getDepartments()
+}
+fetchGetDepartments()
 </script>
 
 <style scoped>
