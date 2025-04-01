@@ -122,23 +122,26 @@ const clickRow = (item) => router.push(`/partners/${item.id}`)
 
 // 데이터 불러오기
 const loadItems = async (page = 1, itemsPerPage = size.value, sortBy = []) => {
-  loading.value = true
-  params.value.page = page
-  params.value.size = itemsPerPage
-  if (sortBy.length > 0) {
-    params.value.sort = sortBy[0].key + ',' + sortBy[0].order
-  } else {
-    params.value.sort = ''
+  try {
+    loading.value = true
+    params.value.page = page
+    params.value.size = itemsPerPage
+    if (sortBy.length > 0) {
+      params.value.sort = sortBy[0].key + ',' + sortBy[0].order
+    } else {
+      params.value.sort = ''
+    }
+
+    size.value = itemsPerPage
+    sort.value = params.value.sort
+
+    const response = await getPartners(params.value)
+    items.value = response.content
+    totalElements.value = response.totalElements
+    await router.replace(`/partners?${buildQueryParams(params.value)}`)
+  } finally {
+    loading.value = false
   }
-
-  size.value = itemsPerPage
-  sort.value = params.value.sort
-
-  const response = await getPartners(params.value)
-  items.value = response.content
-  totalElements.value = response.totalElements
-  await router.replace(`/partners?${buildQueryParams(params.value)}`)
-  loading.value = false
 }
 
 // 검색 이벤트 핸들러
