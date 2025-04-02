@@ -10,10 +10,11 @@
       />
       <PersonalContractInfoComponent
         v-model:joinDate="employeeDetail.joinDate"
-        v-model:quitDate="employeeDetail.leaveDate"
+        v-model:leaveDate="employeeDetail.leaveDate"
         v-model:salary="employeeDetail.salary"
         v-model:monthlyPay="employeeDetail.monthlyPay"
-        :showQuitButton="true"
+        :showLeaveButton="true"
+        @leave="handleLeaveEmployee"
       />
     </v-col>
     <v-col cols="12" md="6">
@@ -40,7 +41,12 @@ import PersonalRecordComponent from '@/components/employee/PersonalRecordCompone
 import PersonalContractInfoComponent from '@/components/employee/PersonalContractInfoComponent.vue'
 import CommentComponent from '@/components/employee/CommentComponent.vue'
 import { useRoute, useRouter } from 'vue-router'
-import { deleteEmployee, getEmployeeDetail, updateEmployee } from '@/apis/employeeService.js'
+import {
+  deleteEmployee,
+  getEmployeeDetail,
+  leaveEmployee,
+  updateEmployee,
+} from '@/apis/employeeService.js'
 import { useDialog } from '@/composables/useDialog.js'
 import { useToast } from 'vue-toastification'
 
@@ -109,6 +115,23 @@ const fetchDeleteEmployee = async () => {
   toast.success(
     `${employeeDetail.value.name} ${employeeDetail.value.rank}의 정보가 삭제되었습니다.`,
   )
+}
+
+const handleLeaveEmployee = () => {
+  dialog.openDialog({
+    title: '구성원 퇴사처리',
+    contents: `${employeeDetail.value.name} ${employeeDetail.value.rank}를 퇴사처리 하시겠습니까?`,
+    fnCallback: fetchLeaveEmployee,
+  })
+}
+
+const fetchLeaveEmployee = async () => {
+  if (!employeeDetail.value.leaveDate) {
+    toast.error('먼저 퇴사일을 지정해주세요')
+    return
+  }
+  await leaveEmployee(employeeId, { leaveDate: employeeDetail.value.leaveDate })
+  toast.success(`${employeeDetail.value.name} ${employeeDetail.value.rank}이 퇴사처리 되었습니다.`)
 }
 
 const fetchGetEmployeeDetail = async () => {

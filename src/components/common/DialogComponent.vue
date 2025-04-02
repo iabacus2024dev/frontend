@@ -1,34 +1,35 @@
 <template>
-  <v-dialog v-model="isDialogOpen" :width="'auto'" :height="'auto'">
-    <v-card>
-      <v-card-title>{{ props.model.title }}</v-card-title>
-      <v-divider />
-      <v-card-text>
-        <component
-          v-if="props.model.component"
-          :is="props.model.component"
-          v-bind="props.model.props"
-          ref="dialogContent"
-        />
-        <div v-else>{{ props.model.contents }}</div>
-      </v-card-text>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn
-          v-if="props.model.component"
-          text="등록"
-          @click="handleConfirm"
-          class="confirm-btn"
-        ></v-btn>
-        <v-btn v-else text="확인" @click="closeDialog" class="confirm-btn"></v-btn>
-        <v-btn text="취소" @click="cancelDialog" class="cancel-btn"></v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+  <v-fade-transition hide-on-leave>
+    <v-dialog v-model="isDialogOpen" width="auto" height="auto">
+      <v-card :title="props.model.title">
+        <v-divider></v-divider>
+        <v-card-text>
+          <component
+            v-if="props.model.component"
+            :is="props.model.component"
+            v-bind="props.model.props"
+            ref="dialogContent"
+          />
+          <div v-else>{{ props.model.contents }}</div>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            v-if="props.model.component"
+            text="등록"
+            @click="handleConfirm"
+            class="confirm-btn"
+          ></v-btn>
+          <v-btn v-else text="확인" @click="closeDialog" class="confirm-btn"></v-btn>
+          <v-btn text="취소" @click="cancelDialog" class="cancel-btn"></v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-fade-transition>
 </template>
 
 <script setup>
-import { defineEmits, defineProps, ref, watch, toRaw } from 'vue'
+import { defineEmits, defineProps, ref, toRaw, watch } from 'vue'
 
 const isDialogOpen = ref(false) // 다이얼로그 열림 여부
 const dialogContent = ref(null)
@@ -46,7 +47,10 @@ watch(
 )
 
 const selectMembers = () => {
-  if (props.model.component?.__name === 'RoleSettingDialog' && dialogContent.value?.getSelectedMembers) {
+  if (
+    props.model.component?.__name === 'RoleSettingDialog' &&
+    dialogContent.value?.getSelectedMembers
+  ) {
     props.model.props.onConfirm(dialogContent.value.getSelectedMembers())
   }
 }
@@ -62,7 +66,6 @@ const handleConfirm = () => {
     // 반응형 객체에서 원본 데이터를 추출하여 콜백으로 전달
     rawData = toRaw(formData)
     console.log('등록 버튼 클릭, 콜백 실행 데이터:', rawData)
-
   }
   closeDialog(rawData)
 }
