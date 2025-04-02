@@ -32,7 +32,8 @@
             density="compact"
             hide-details="auto"
             class="search-input"
-          ></VTextField>
+          >
+          </VTextField>
 
           <!-- 드롭다운 -->
           <VSelect
@@ -86,43 +87,22 @@ const route = useRoute()
 const searchData = reactive({})
 
 onMounted(() => {
-  // rows에 정의된 각 필드의 기본값을 설정
-  props.rows.forEach((row) => {
-    row.fields.forEach((field) => {
-      if (searchData[field.key] === undefined) {
-        if (field.type === 'select' && field.options && field.options.length > 0) {
-          // select 타입은 옵션 배열의 첫 번째 객체를 기본값으로 지정
-          searchData[field.key] = field.options[0]
-        } else {
-          searchData[field.key] = ''
-        }
-      }
-    })
-  })
-
-  // route.query에 값이 있으면 덮어씀
   Object.keys(route.query).forEach((key) => {
     searchData[key] = route.query[key]
   })
 })
 
 const onSearch = () => {
-  router.replace({query: {...searchData, page: 1}})
+  router.replace({ query: { ...searchData, page: 1 } })
   emit('search', searchData)
 }
 
-// 검색 조건 초기화: 각 필드의 기본값으로 다시 설정
+// 검색 조건 초기화
 const onReset = () => {
-  props.rows.forEach((row) => {
-    row.fields.forEach((field) => {
-      if (field.type === 'select' && field.options && field.options.length > 0) {
-        searchData[field.key] = field.options[0]
-      } else {
-        searchData[field.key] = ''
-      }
-    })
+  Object.keys(searchData).forEach((key) => {
+    searchData[key] = ''
   })
-  router.replace({query: {}})
+  router.replace({ query: {} })
   emit('reset')
 }
 </script>
