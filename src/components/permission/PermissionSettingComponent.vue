@@ -32,19 +32,17 @@ const handleAuthRange = (index, authRange) => managements[index].permissions.aut
 const handleSave = async () => {
   try {
     console.log(props.selectRoles)
-    const res = await addRole({
+    await addRole({
       roleName: props.selectRoles.title,
       isDefaultRole: props.isDefault,
       authorityList: managements.map(({title, permissions}) => ({
         authorityName: title,
         authorityPage: title.substring(0, title.lastIndexOf("관") - 1),
         authorityAction: permissions.editAuth ? "편집" : permissions.viewAuth ? "조회" : null,
-        authorityRange: permissions.authRange?.replaceAll(" ", "_")
+        authorityRange: permissions.authRange
       }))
     });
-    if (res === "success") {
-      useToast().success('권한 설정에 성공했습니다.')
-    }
+    useToast().success('권한 설정에 성공했습니다.')
   } catch (err) {
     console.error("fetchRoles error", err);
   }
