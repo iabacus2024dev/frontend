@@ -28,12 +28,15 @@
           v-model:leaveDate="employeeCreate.leaveDate"
           v-model:salary="employeeCreate.salary"
           v-model:monthlyPay="employeeCreate.monthlyPay"
-          :showQuitButton="false"
+          :showLeaveButton="false"
           :rules="{
             joinDate: [rules.required],
           }"
         />
-        <CommentComponent v-model:comment="employeeCreate.comment" />
+        <CommentComponent
+          v-model:comment="employeeCreate.comment"
+          :rules="{ comment: [rules.required] }"
+        />
       </v-col>
     </v-row>
   </VForm>

@@ -25,6 +25,10 @@ export const deleteEmployee = async (id) => {
   return await RestApiAdapter.delete(`/api/v1/employees/${id}`)
 }
 
+export const leaveEmployee = async (id, data) => {
+  return await RestApiAdapter.post(`/api/v1/employees/${id}/leave`, data)
+}
+
 export const downloadEmployees = async (params) => {
   await download('/api/v1/employees/excel/download', params, '구성원 정보')
 }

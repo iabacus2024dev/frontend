@@ -18,7 +18,7 @@
           </VRow>
         </VCol>
 
-        <VCol cols="9" class="mt-10" v-if="showQuitButton">
+        <VCol cols="9" class="mt-10" v-if="showLeaveButton">
           <VRow>
             <VTextField
               v-model="leaveDate"
@@ -27,7 +27,7 @@
               density="compact"
               type="date"
             />
-            <VBtn flat="0" @click="handleQuit" class="ml-3 quit-btn">퇴사처리</VBtn>
+            <VBtn flat="0" @click="handleLeave" class="ml-3 quit-btn">퇴사처리</VBtn>
           </VRow>
         </VCol>
 
@@ -54,7 +54,7 @@
 </template>
 
 <script setup>
-import { defineModel, defineProps } from 'vue'
+import { defineEmits, defineModel, defineProps } from 'vue'
 
 const joinDate = defineModel('joinDate')
 const leaveDate = defineModel('leaveDate')
@@ -62,17 +62,20 @@ const salary = defineModel('salary')
 const monthlyPay = defineModel('monthlyPay')
 
 const props = defineProps({
-  showQuitButton: {
+  showLeaveButton: {
     type: Boolean,
     default: true,
   },
 })
 
+const emits = defineEmits(['leave'])
+
 // 필수 입력 규칙: 값이 없으면 에러 메시지 표시
 const requiredRule = (value) => !!value || '필수 입력 항목입니다.'
 
-const handleQuit = () => {
+const handleLeave = () => {
   console.log('퇴사 처리 버튼 클릭')
+  emits('leave')
 }
 </script>
 
@@ -82,7 +85,7 @@ const handleQuit = () => {
   margin: auto;
 }
 .quit-btn {
-  background-color: gainsboro;
+  background-color: #eb6129;
   color: white;
 }
 </style>
