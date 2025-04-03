@@ -214,7 +214,6 @@ const createDialogs = () => {
 // 구성원 등록
 const fetchCreateEmployee = async (data) => {
   await createEmployee(data)
-  await handleReset()
   toast.success('구성원이 성공적으로 등록되었습니다.')
 }
 
@@ -257,7 +256,6 @@ const fetchUpload = async () => {
 
   try {
     await uploadEmployee(formData)
-    await handleReset()
     toast.success('협력사 엑셀 업로드에 성공하였습니다.')
 
     dialog.value = false

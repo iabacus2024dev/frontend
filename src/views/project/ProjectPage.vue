@@ -219,7 +219,6 @@ const createDialogs = () => {
 // 프로젝트 등록
 const fetchCreateProject = async (data) => {
   await createProject(data)
-  await handleReset()
   toast.success('프로젝트가 성공적으로 등록되었습니다.')
 }
 
@@ -262,7 +261,6 @@ const fetchUploadProjects = async () => {
 
   try {
     await uploadProjects(formData)
-    await handleReset()
     toast.success('프로젝트 엑셀 업로드에 성공하였습니다.')
 
     dialog.value = false
