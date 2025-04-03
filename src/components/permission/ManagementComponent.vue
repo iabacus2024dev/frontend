@@ -1,5 +1,5 @@
 <script setup>
-import {computed, ref, watch} from "vue";
+import {ref, watch} from "vue";
 
 const props = defineProps({
   title: String
@@ -17,6 +17,10 @@ const items = [
   '투입 프로젝트',
   '본인',
 ];
+
+watch(checkView, (check) => {
+  emit('viewAuth', check);
+})
 
 watch(checkEdit, (check) => {
   checkView.value = !!check;

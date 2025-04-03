@@ -1,6 +1,6 @@
 <script setup>
 import {onMounted, ref, shallowRef, watch} from 'vue'
-import {getTreeViews} from "@/apis/teamService.js";
+import {getTreeViewsWithMember} from "@/apis/teamService.js";
 
 const icons = [
   'mdi-beer',
@@ -15,7 +15,7 @@ const items = ref([]);
 
 const fetchTreeData = async () => {
   try {
-    const response = await getTreeViews();
+    const response = await getTreeViewsWithMember();
     items.value = response.map((node) => transForNode(node));
   } catch (err) {
     console.error("fetchTreeData error", err);
