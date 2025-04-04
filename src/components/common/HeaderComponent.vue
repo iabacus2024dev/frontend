@@ -27,12 +27,19 @@
 
       <v-spacer />
 
-      <div class="justify-end">
-        <span>{{ name }}님</span>
+      <div class="justify-end d-flex align-center">
+        <v-switch v-model="isDark" @click="toggleTheme" hide-details class="me-4" inset>
+          <template v-slot:prepend>
+            <v-icon>{{ isDark ? 'mdi-weather-night' : 'mdi-white-balance-sunny' }}</v-icon>
+          </template>
+        </v-switch>
+        <span v-if="$vuetify.display.mdAndUp">{{ name }}님</span>
         <v-btn class="ms-1" icon>
           <v-avatar icon="mdi-account-circle" />
           <v-menu activator="parent" origin="top">
             <v-list>
+              <v-list-item :title="name" :subtitle="email" />
+              <v-divider></v-divider>
               <v-list-item
                 link
                 title="마이페이지"
@@ -68,35 +75,39 @@
 </template>
 
 <script setup>
-import { computed, ref, shallowRef } from 'vue'
+import { computed, onMounted, ref, shallowRef } from 'vue'
 import { useRouter } from 'vue-router'
 import { useMemberStore } from '@/stores/member.js'
 import { fetchLogout } from '@/apis/authService.js'
+import { useTheme } from 'vuetify'
 
 const router = useRouter()
 
 const drawer = shallowRef(false)
 const name = ref(JSON.parse(localStorage.getItem('member'))?.name)
+const email = ref(JSON.parse(localStorage.getItem('member'))?.username)
 const items = router
   .getRoutes()
   .filter((route) => route.meta.menu === true)
-  .map((route) => {
-    return {
-      text: route.meta.title,
-      path: route.path,
-    }
-  })
+  .map((route) => ({ text: route.meta.title, path: route.path }))
 
-const goTo = (path) => {
-  router.push(path)
-}
-
+const goTo = (path) => router.push(path)
 const logout = () => {
   useMemberStore().logout()
   fetchLogout()
 }
+const activeIndex = computed(() => router.currentRoute.value.meta.activeIndex)
 
-const activeIndex = computed(() => {
-  return router.currentRoute.value.meta.activeIndex
+const theme = useTheme()
+const isDark = ref(localStorage.getItem('theme') === 'dark')
+
+const toggleTheme = () => {
+  isDark.value = !isDark.value
+  theme.global.name.value = isDark.value ? 'dark' : 'light'
+  localStorage.setItem('theme', isDark.value ? 'dark' : 'light')
+}
+
+onMounted(() => {
+  theme.global.name.value = isDark.value ? 'dark' : 'light'
 })
 </script>
