@@ -82,21 +82,22 @@ const params = ref({
 
 // 테이블 헤더
 const headers = ref([
-  { title: '프로젝트 코드', key: 'code' },
-  { title: '프로젝트명', key: 'name' },
-  { title: '사업 유형', key: 'type' },
-  { title: '시작 일자', key: 'startDate' },
-  { title: '종료 일자', key: 'endDate' },
-  { title: '계약 일자', key: 'contractDate' },
+  { title: '프로젝트 코드', key: 'code', nowrap: true },
+  { title: '프로젝트명', key: 'name', nowrap: true },
+  { title: '사업 유형', key: 'type', nowrap: true },
+  { title: '시작 일자', key: 'startDate', nowrap: true },
+  { title: '종료 일자', key: 'endDate', nowrap: true },
+  { title: '계약 일자', key: 'contractDate', nowrap: true },
   {
     title: '계약 금액',
     key: 'contractAmount',
     align: 'end',
     value: (item) => formatPrice(item.contractAmount),
+    nowrap: true,
   },
-  { title: '발주사', key: 'mainCompany' },
-  { title: '원청사', key: 'clientCompany' },
-  { title: '상태', key: 'status', sortable: false },
+  { title: '발주사', key: 'mainCompany', nowrap: true },
+  { title: '원청사', key: 'clientCompany', nowrap: true },
+  { title: '상태', key: 'status', sortable: false, nowrap: true },
 ])
 
 // 검색 조건

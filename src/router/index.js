@@ -1,8 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 import HomePage from '@/views/HomePage.vue'
-import TableTestPage from '@/views/test/TableTestPage.vue'
-import SearchBarTestPage from '@/views/test/SearchBarTestPage.vue'
 import ProjectPage from '@/views/project/ProjectPage.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import EmployeePage from '@/views/employee/EmployeePage.vue'
@@ -11,10 +9,6 @@ import PartnersDetailPage from '@/views/partners/PartnersDetailPage.vue'
 import PermissionPage from '@/views/PermissionPage.vue'
 import SalesPage from '@/views/SalesPage.vue'
 import ProfilePage from '@/views/ProfilePage.vue'
-import ProgressBarTestPage from '@/views/test/ProgressBarTestPage.vue'
-import TransferListTestPage from '@/views/test/TransferListTestPage.vue'
-import TreeTestPage from '@/views/test/TreeTestPage.vue'
-import ToolTipTestPage from '@/views/test/ToolTipTestPage.vue'
 import InitializePage from '@/views/login/InitializePage.vue'
 import RegisterPage from '@/views/login/RegisterPage.vue'
 import LoginPage from '@/views/login/LoginPage.vue'
@@ -24,8 +18,8 @@ import FindPasswordPage from '@/views/login/FindPasswordPage.vue'
 import EmployeeDetailPage from '@/views/employee/EmployeeDetailPage.vue'
 import ProjectDetailPage from '@/views/project/ProjectDetailPage.vue'
 import EmployeeCreatePopup from '@/views/employee/EmployeeCreatePopup.vue'
-import {useToast} from "vue-toastification";
-import {useMemberStore} from "@/stores/member.js";
+import { useToast } from 'vue-toastification'
+import { useMemberStore } from '@/stores/member.js'
 
 const routes = [
   {
@@ -299,43 +293,6 @@ const routes = [
     meta: {
       layout: LoginLayout,
     },
-  },
-  /* [추후 삭제 예정] 테이블 컴포넌트 테스트용으로 만든 페이지입니다. */
-  {
-    path: '/table',
-    name: 'table',
-    component: TableTestPage,
-    meta: { layout: DefaultLayout },
-  },
-  {
-    path: '/tooltip',
-    name: 'tooltip',
-    component: ToolTipTestPage,
-    meta: { layout: DefaultLayout },
-  },
-  {
-    path: '/progressbar',
-    name: 'progressbar',
-    component: ProgressBarTestPage,
-    meta: { layout: DefaultLayout },
-  },
-  {
-    path: '/searchbar',
-    name: 'searchbar',
-    component: SearchBarTestPage,
-    meta: { layout: DefaultLayout },
-  },
-  {
-    path: '/transferList',
-    name: 'transferList',
-    component: TransferListTestPage,
-    meta: { layout: DefaultLayout },
-  },
-  {
-    path: '/tree',
-    name: 'tree',
-    component: TreeTestPage,
-    meta: { layout: DefaultLayout },
   },
   {
     path: '/employees/:id',

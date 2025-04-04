@@ -80,13 +80,13 @@ const params = ref({
 
 // 테이블 헤더
 const headers = ref([
-  { title: '협력사명', key: 'name' },
-  { title: '대표자명', key: 'ceoName' },
-  { title: '영업대표명', key: 'salesRepName' },
-  { title: '영업대표 연락처', key: 'salesRepPhone' },
-  { title: '영업대표 이메일', key: 'salesRepEmail' },
-  { title: '평가등급', key: 'grade' },
-  { title: '주소', key: 'address' },
+  { title: '협력사명', key: 'name', nowrap: true },
+  { title: '대표자명', key: 'ceoName', nowrap: true },
+  { title: '영업대표명', key: 'salesRepName', nowrap: true },
+  { title: '영업대표 연락처', key: 'salesRepPhone', nowrap: true },
+  { title: '영업대표 이메일', key: 'salesRepEmail', nowrap: true },
+  { title: '평가등급', key: 'grade', nowrap: true },
+  { title: '주소', key: 'address', nowrap: true },
 ])
 
 // 검색 조건

@@ -69,18 +69,12 @@
       </v-form>
     </v-card-text>
   </v-card>
-  <ModalPopupComponent
-    title="비밀번호 초기화"
-    text="비밀번호 초기화가 완료되었습니다."
-    @confirm="goTo('auth/login')"
-  />
 </template>
 
 <script setup>
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { initializePassword } from '@/apis/authService'
-import ModalPopupComponent from '@/components/common/ModalPopupComponent.vue'
 import { useToast } from 'vue-toastification'
 
 const route = useRoute()

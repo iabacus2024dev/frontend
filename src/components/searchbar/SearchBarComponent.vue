@@ -46,7 +46,6 @@
             density="compact"
             hide-details="auto"
             class="search-input"
-            return-object
           ></VSelect>
         </div>
       </VCol>

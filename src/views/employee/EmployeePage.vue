@@ -80,13 +80,13 @@ const params = ref({
 
 // 테이블 헤더
 const headers = ref([
-  { title: '이름', key: 'name' },
-  { title: '팀명', key: 'teamName', sortable: false },
-  { title: '직원유형', key: 'type' },
-  { title: '등급', key: 'grade' },
-  { title: '직급', key: 'rank' },
-  { title: '가동현황', key: 'status', sortable: false },
-  { title: '입사일자', key: 'joinDate' },
+  { title: '이름', key: 'name', nowrap: true },
+  { title: '팀명', key: 'teamName', sortable: false, nowrap: true },
+  { title: '직원유형', key: 'type', nowrap: true },
+  { title: '등급', key: 'grade', nowrap: true },
+  { title: '직급', key: 'rank', nowrap: true },
+  { title: '가동현황', key: 'status', sortable: false, nowrap: true },
+  { title: '입사일자', key: 'joinDate', nowrap: true },
 ])
 
 // 검색 조건
