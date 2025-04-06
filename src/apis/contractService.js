@@ -4,6 +4,10 @@ export const getContractDetail = async (contractId) => {
   return await RestApiAdapter.get(`api/v1/contracts/${contractId}`)
 }
 
+export const getContractsByProjectCode = async (projectCode) => {
+  return await RestApiAdapter.get(`api/v1/contracts?projectCode=${projectCode}`)
+}
+
 export const deleteContract = async (contractId) => {
   await RestApiAdapter.delete(`api/v1/contracts/${contractId}`)
 }
