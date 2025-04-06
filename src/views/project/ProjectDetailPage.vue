@@ -1,4 +1,5 @@
 <template>
+  <!-- 프로젝트 정보 -->
   <v-row>
     <v-col cols="12" md="7">
       <BasicInfoComponent
@@ -54,10 +55,93 @@
       </v-btn>
     </v-col>
   </v-row>
-  <!-- 테이블 컴포넌트 -->
+
+  <!-- 계약 및 투입인원 정보 -->
   <v-row>
     <v-col>
-      <EmployeeListComponent />
+      <VCard variant="outlined" border="thin" class="pt-2 px-2">
+        <VCardItem>
+          <VCardTitle>계약 정보</VCardTitle>
+        </VCardItem>
+        <VCardText>
+          <!-- 계약번호 선택 영역 -->
+          <VRow class="mb-2" no-gutters>
+            <VCol cols="12" md="3">
+              <VSelect
+                v-model="selectedContract"
+                :items="contractOptions"
+                label="계약번호"
+                item-title="label"
+                item-value="id"
+                variant="outlined"
+                density="compact"
+                return-object
+                @update:modelValue="handleContractSelect"
+              />
+            </VCol>
+          </VRow>
+
+          <VRow no-gutters>
+            <VCol style="flex: 1" class="pr-2">
+              <VTextField
+                :model-value="selectedContract?.startDate"
+                label="계약시작일자"
+                type="date"
+                variant="outlined"
+                density="compact"
+                readonly
+              />
+            </VCol>
+            <VCol style="flex: 1" class="pr-2">
+              <VTextField
+                :model-value="selectedContract?.endDate"
+                label="계약종료일자"
+                type="date"
+                variant="outlined"
+                density="compact"
+                readonly
+              />
+            </VCol>
+            <VCol style="flex: 1" class="pr-2">
+              <VTextField
+                :model-value="selectedContract?.contractType"
+                :items="contractTypeItems"
+                label="계약 유형"
+                type="text"
+                variant="outlined"
+                density="compact"
+                readonly
+              />
+            </VCol>
+            <VCol style="flex: 1" class="pr-2">
+              <VTextField
+                v-model="revenue"
+                label="투입 M/M"
+                type="text"
+                variant="outlined"
+                density="compact"
+                readonly
+              />
+            </VCol>
+            <VCol style="flex: 1" class="pr-2">
+              <VTextField
+                v-model="headcount"
+                label="투입 인원 수"
+                type="text"
+                variant="outlined"
+                density="compact"
+                readonly
+              />
+            </VCol>
+          </VRow>
+        </VCardText>
+      </VCard>
+    </v-col>
+  </v-row>
+
+  <v-row>
+    <v-col>
+      <!-- 투입 인원 표시 영역 -->
       <TableComponent :headers="headers" :items="tableDataResponse" title="투입인원 목록" />
     </v-col>
   </v-row>
@@ -71,11 +155,11 @@ import MainCompanyComponent from '@/components/project/MainCompanyComponent.vue'
 import ProgressInfoComponent from '@/components/project/ProgressInfoComponent.vue'
 import AmountComponent from '@/components/project/AmountComponent.vue'
 import BasicInfoComponent from '@/components/project/BasicInfoComponent.vue'
-import EmployeeListComponent from '@/components/employee/EmployeeListComponent.vue'
 import { useToast } from 'vue-toastification'
 import { deleteProject, getProjectDetail, updateProject } from '@/apis/projectService.js'
 import { useRoute, useRouter } from 'vue-router'
 import { useDialog } from '@/composables/useDialog.js'
+import { getContractsByProjectCode } from '@/apis/contractService'
 
 const toast = useToast()
 const router = useRouter()
@@ -109,92 +193,85 @@ const projectId = route.params.id
 
 const dialog = useDialog()
 
+const contractOptions = ref([])
+const selectedContract = ref(null)
+
+/* 화면 로드 시에, 바로 호출 */
 onMounted(() => {
-  fetchGetPartnersDetail()
+  fetchGetProjectDetail()
 })
 
-const fetchGetPartnersDetail = async () => {
+const fetchGetProjectDetail = async () => {
   projectDetail.value = await getProjectDetail(projectId)
+  await fetchGetContractDetail()
+
   // TODO: 돈 포맷팅
 }
 
+const fetchGetContractDetail = async () => {
+  const response = await getContractsByProjectCode(projectDetail.value.code)
+
+  const contracts = response.map((contract) => ({
+    ...contract,
+    label: `${contract.projectCode}-${contract.index}`,
+  }))
+
+  const sortedContracts = [...contracts].sort(
+    (a, b) => new Date(a.startDate) - new Date(b.startDate),
+  )
+  const startDate = sortedContracts[0]?.startDate ?? ''
+  const endDate = sortedContracts[sortedContracts.length - 1]?.endDate ?? ''
+
+  contractOptions.value = [
+    {
+      id: 0,
+      label: '전체',
+      projectCode: projectDetail.value.code,
+      contractType: '전체',
+      startDate,
+      endDate,
+    },
+    ...contracts,
+  ]
+
+  selectedContract.value = contractOptions.value[0]
+}
+
 const headers = ref([
-  { title: '프로젝트코드', key: 'projectcode', nowrap: true },
-  { title: '프로젝트명', key: 'projectname', nowrap: true },
-  { title: '사업유형', key: 'businesetype', nowrap: true },
-  { title: '투입시작일자', key: 'projectstartdate', nowrap: true },
-  { title: '투입종료일자', key: 'projectenddate', nowrap: true },
-  { title: '계약시작일자', key: 'contractstartdate', nowrap: true },
-  { title: '계약종료일자', key: 'contractenddate', nowrap: true },
-  { title: '계약금액', key: 'contractpay', nowrap: true, align: 'end' },
-  { title: '총매출금액', key: 'totalpay', nowrap: true, align: 'end' },
-  { title: '발주사', key: 'orderder', nowrap: true, align: 'end' },
-  { title: '원청사', key: 'origin', nowrap: true, align: 'end' },
-  { title: '진행상태', key: 'progress', nowrap: true, align: 'end' },
+  { title: '이름', key: 'personnelName', nowrap: true },
+  { title: '부서', key: 'personnelDepartment', nowrap: true },
+  { title: '직원유형', key: 'personnelType', nowrap: true },
+  { title: '투입시작일자', key: 'personnelStartdate', nowrap: true, align: 'end' },
+  { title: '투입종료일자', key: 'personnelEnddate', nowrap: true, align: 'end' },
+  { title: 'M/M', key: 'manMonth', nowrap: true },
+  { title: '단가', key: 'unitPrice', nowrap: true, align: 'end' },
+  { title: '인건비', key: 'monthlyWage', nowrap: true, align: 'end' },
+  { title: '판관비 비율', key: 'sgaeRate', nowrap: true, align: 'end' },
+  { title: '판관비 금액', key: 'sgaePrice', nowrap: true, align: 'end' },
+  { title: '제경비 비율', key: 'ovheRate', nowrap: true, align: 'end' },
+  { title: '제경비 금액', key: 'ovhePrice', nowrap: true, align: 'end' },
+  { title: '총 비용', key: 'cost', nowrap: true, align: 'end' },
 ])
 
-const tableDataResponse = ref([
-  {
-    projectcode: 'C0000123485',
-    projectname: '(주)엘지유플러스_통신 MNO/MVNO 구분',
-    businesetype: 'SI',
-    projectstartdate: '2024.01.01',
-    projectenddate: '2024.01.31',
-    contractstartdate: '2024.01.31',
-    contractenddate: '2024.01.31',
-    contractpay: '8,500',
-    totalpay: '8,500',
-    orderder: '(주)엘지유플러스',
-    origin: '(주)엘지유플러스',
-    progress: '진행중',
-  },
-  {
-    projectcode: 'C0000123485',
-    projectname: '(주)엘지유플러스_통신 MNO/MVNO 구분',
-    businesetype: 'SI',
-    projectstartdate: '2024.01.01',
-    projectenddate: '2024.01.31',
-    contractstartdate: '2024.01.31',
-    contractenddate: '2024.01.31',
-    contractpay: '8,500',
-    totalpay: '8,500',
-    orderder: '(주)엘지유플러스',
-    origin: '(주)엘지유플러스',
-    progress: '진행중',
-  },
-  {
-    projectcode: 'C0000123485',
-    projectname: '(주)엘지유플러스_통신 MNO/MVNO 구분',
-    businesetype: 'SI',
-    projectstartdate: '2024.01.01',
-    projectenddate: '2024.01.31',
-    contractstartdate: '2024.01.31',
-    contractenddate: '2024.01.31',
-    contractpay: '8,500',
-    totalpay: '8,500',
-    orderder: '(주)엘지유플러스',
-    origin: '(주)엘지유플러스',
-    progress: '진행중',
-  },
-  {
-    projectcode: 'C0000123485',
-    projectname: '(주)엘지유플러스_통신 MNO/MVNO 구분',
-    businesetype: 'SI',
-    projectstartdate: '2024.01.01',
-    projectenddate: '2024.01.31',
-    contractstartdate: '2024.01.31',
-    contractenddate: '2024.01.31',
-    contractpay: '8,500',
-    totalpay: '8,500',
-    orderder: '(주)엘지유플러스',
-    origin: '(주)엘지유플러스',
-    progress: '진행중',
-  },
-])
+const tableDataResponse = ref([])
 
-// 페이지 변경 이벤트 핸들러
-const handlePageChange = (newPage) => {
-  console.log(`페이지 변경: ${newPage}`)
+const handleContractSelect = (selected) => {
+  if (selected?.id === 0) {
+    const allContractItems = contractOptions.value.filter((c) => c.id !== 0)
+    const startDate = allContractItems[allContractItems.length - 1]?.startDate ?? ''
+    const endDate = allContractItems[0]?.endDate ?? ''
+
+    const totalOption = contractOptions.value.find((item) => item.id === 0)
+    if (totalOption) {
+      totalOption.projectCode = projectDetail.value.code
+      totalOption.contractType = '전체'
+      totalOption.startDate = startDate
+      totalOption.endDate = endDate
+      selectedContract.value = totalOption
+    }
+  } else {
+    selectedContract.value = selected
+  }
 }
 
 // 프로젝트 수정 이벤트 핸들러
@@ -212,7 +289,7 @@ const fetchUpdateProject = async () => {
     await updateProject(projectId, projectDetail.value)
     toast.success(`${projectDetail.value.name}의 정보가 수정되었습니다.`)
   } finally {
-    await fetchGetPartnersDetail()
+    await fetchGetProjectDetail()
   }
 }
 
