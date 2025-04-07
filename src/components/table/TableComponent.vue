@@ -42,7 +42,13 @@
     >
       <template v-slot:item.status="{ item }">
         <v-chip
-          :color="item.status === '진행중' ? 'success' : 'info'"
+          :color="
+            item.status === '진행중' || item.status === '재직'
+              ? 'info'
+              : item.status === '완료' || item.status === '퇴사'
+                ? 'error'
+                : 'success'
+          "
           size="small"
           text-color="white"
         >

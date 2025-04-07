@@ -1,63 +1,65 @@
 <template>
   <VCard class="pa-4" elevation="0" border="thin">
-    <VRow v-for="(row, rowIndex) in rows" :key="rowIndex">
-      <VCol
-        v-for="(field, index) in row.fields"
-        :key="index"
-        cols="12"
-        class="search-field"
-        md="3"
-        sm="5"
-      >
-        <div class="field-wrapper">
-          <!-- 레이블 (왼쪽 정렬) -->
-          <label class="search-label" :for="field.key">{{ field.label }}</label>
+    <VForm @submit.prevent="onSearch">
+      <VRow v-for="(row, rowIndex) in rows" :key="rowIndex">
+        <VCol
+          v-for="(field, index) in row.fields"
+          :key="index"
+          cols="12"
+          class="search-field"
+          md="3"
+          sm="5"
+        >
+          <div class="field-wrapper">
+            <!-- 레이블 (왼쪽 정렬) -->
+            <label class="search-label" :for="field.key">{{ field.label }}</label>
 
-          <!-- 텍스트 입력 -->
-          <VTextField
-            v-if="field.type === 'text'"
-            v-model="searchData[field.key]"
-            variant="outlined"
-            density="compact"
-            hide-details="auto"
-            class="search-input"
-          ></VTextField>
+            <!-- 텍스트 입력 -->
+            <VTextField
+              v-if="field.type === 'text'"
+              v-model="searchData[field.key]"
+              variant="outlined"
+              density="compact"
+              hide-details="auto"
+              class="search-input"
+            ></VTextField>
 
-          <!-- 날짜 입력 -->
-          <VTextField
-            v-else-if="field.type === 'date'"
-            v-model="searchData[field.key]"
-            type="date"
-            variant="outlined"
-            density="compact"
-            hide-details="auto"
-            class="search-input"
-          >
-          </VTextField>
+            <!-- 날짜 입력 -->
+            <VTextField
+              v-else-if="field.type === 'date'"
+              v-model="searchData[field.key]"
+              type="date"
+              variant="outlined"
+              density="compact"
+              hide-details="auto"
+              class="search-input"
+            >
+            </VTextField>
 
-          <!-- 드롭다운 -->
-          <VSelect
-            v-else-if="field.type === 'select'"
-            v-model="searchData[field.key]"
-            :items="field.options"
-            item-title="title"
-            item-value="value"
-            variant="outlined"
-            density="compact"
-            hide-details="auto"
-            class="search-input"
-          ></VSelect>
-        </div>
-      </VCol>
-    </VRow>
+            <!-- 드롭다운 -->
+            <VSelect
+              v-else-if="field.type === 'select'"
+              v-model="searchData[field.key]"
+              :items="field.options"
+              item-title="title"
+              item-value="value"
+              variant="outlined"
+              density="compact"
+              hide-details="auto"
+              class="search-input"
+            ></VSelect>
+          </div>
+        </VCol>
+      </VRow>
 
-    <!-- 마지막 행에 버튼 포함 -->
-    <VRow class="button-group pa-0">
-      <VCol class="d-flex justify-end">
-        <VBtn @click="onReset" class="reset-btn mr-3" variant="flat">초기화</VBtn>
-        <VBtn @click="onSearch" class="search-btn" variant="flat">검색</VBtn>
-      </VCol>
-    </VRow>
+      <!-- 마지막 행에 버튼 포함 -->
+      <VRow class="button-group pa-0">
+        <VCol class="d-flex justify-end">
+          <VBtn @click="onReset" class="reset-btn mr-3" variant="flat">초기화</VBtn>
+          <VBtn class="search-btn" variant="flat" type="submit">검색</VBtn>
+        </VCol>
+      </VRow>
+    </VForm>
   </VCard>
 </template>
 
