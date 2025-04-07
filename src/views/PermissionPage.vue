@@ -35,7 +35,7 @@ const handleRoleSelected = (selectedRole) => {
 
 const handleRoleAdded = (newRole) => {
   if (!role.custom.some(([title]) => title === newRole.title)) {
-    role.custom.push([newRole.title, 1]);
+    role.custom.push([newRole.title, 0]);
   }
 };
 

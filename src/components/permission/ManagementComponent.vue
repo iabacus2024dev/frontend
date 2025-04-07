@@ -1,15 +1,33 @@
 <script setup>
-import {ref, watch} from "vue";
+import {computed, ref, watch} from "vue";
 
 const props = defineProps({
-  title: String
+  title: String,
+  viewAuth: Boolean,
+  editAuth: Boolean,
+  authRange: String
 });
 const emit = defineEmits(['viewAuth', 'editAuth', 'authRange'])
 
-const checkView = ref(false);
-const checkEdit = ref(false);
+const checkView = computed({
+  get: () => props.viewAuth,
+  set: (val) => emit('viewAuth', val)
+});
+
+const checkEdit = computed({
+  get: () => props.editAuth,
+  set: (val) => {
+    emit('editAuth', val);
+    emit('editAuth', val ? true : props.viewAuth);
+  }
+});
+
 const showEdit = props.title !== '매출 관리';
-const select = ref([]);
+
+const select = computed({
+  get: () => props.authRange ?? null,
+  set: (val) => emit('authRange', val)
+});
 
 const items = [
   '전체',
@@ -17,20 +35,6 @@ const items = [
   '투입 프로젝트',
   '본인',
 ];
-
-watch(checkView, (check) => {
-  emit('viewAuth', check);
-})
-
-watch(checkEdit, (check) => {
-  checkView.value = !!check;
-  emit('viewAuth', checkView.value);
-  emit('editAuth', checkEdit.value);
-});
-
-watch(select, (newVal) => {
-  emit('authRange', newVal);
-})
 </script>
 
 <template>
@@ -51,8 +55,6 @@ watch(select, (newVal) => {
           :items="items"
           label="권한 범위"
           chips
-          item-title="text"
-          item-value="value"
         >
         </v-combobox>
       </v-col>

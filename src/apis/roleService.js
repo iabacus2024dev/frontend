@@ -11,3 +11,7 @@ export const getRoles = async () => {
 export const addRole = async (data) => {
   return await RestApiAdapter.post('/api/v1/roles', data)
 }
+
+export const getActionsByRole = async (name) => {
+  return await RestApiAdapter.get('/api/v1/roles/by-name', {name:name})
+}

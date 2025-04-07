@@ -1,7 +1,7 @@
 <script setup>
 import ManagementComponent from "@/components/permission/ManagementComponent.vue";
-import {reactive} from "vue";
-import {addRole} from "@/apis/roleService.js";
+import {reactive, watch} from "vue";
+import {addRole, getActionsByRole} from "@/apis/roleService.js";
 import {useToast} from "vue-toastification";
 
 const props = defineProps({
@@ -29,6 +29,40 @@ const handleViewAuth = (index, view) => managements[index].permissions.viewAuth 
 const handleEditAuth = (index, edit) => managements[index].permissions.editAuth = edit;
 const handleAuthRange = (index, authRange) => managements[index].permissions.authRange = authRange
 
+const fetchActions = async () => {
+  try {
+    const actions = await getActionsByRole(props.selectRoles.title);
+    actions.forEach(({page, actionName, rangeName}) => {
+      const target = managements.find(m => m.title.startsWith(page));
+      if (target) {
+        if (actionName === "편집") {
+          target.permissions.editAuth = true;
+          target.permissions.viewAuth = true;
+        } else if (actionName === "조회") {
+          target.permissions.viewAuth = true;
+          target.permissions.editAuth = false;
+        }
+        target.permissions.authRange = rangeName;
+      }
+    });
+  } catch (err) {
+    console.error("fetchAction Error")
+  }
+}
+
+watch(
+  () => props.selectRoles,
+  () => {
+    managements.forEach(m => {
+      m.permissions.viewAuth = false;
+      m.permissions.editAuth = false;
+      m.permissions.authRange = null;
+    });
+    fetchActions();
+  },
+  { immediate: true }
+);
+
 const handleSave = async () => {
   try {
     console.log(props.selectRoles)
@@ -45,7 +79,7 @@ const handleSave = async () => {
     });
     useToast().success('권한 설정에 성공했습니다.')
   } catch (err) {
-    console.error("fetchRoles error", err);
+    console.error("addRole error", err);
   }
 }
 </script>
@@ -62,6 +96,9 @@ const handleSave = async () => {
     <template v-for="(section, index) in managements" :key="section.title">
       <ManagementComponent
         :title="section.title"
+        :view-auth="section.permissions.viewAuth"
+        :edit-auth="section.permissions.editAuth"
+        :auth-range="section.permissions.authRange"
         @viewAuth="(view) => handleViewAuth(index, view)"
         @editAuth="(edit) => handleEditAuth(index, edit)"
         @authRange="(authRange) => handleAuthRange(index, authRange)"
