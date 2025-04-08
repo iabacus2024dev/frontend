@@ -1,54 +1,35 @@
 <template>
-  <VCard variant="outlined" class="mt-3 mb-3 pt-2 px-2">
+  <VCard variant="outlined" border="thin" class="mt-3 mb-3 pt-2 px-2">
     <VCardItem>
       <VCardTitle>계약정보</VCardTitle>
     </VCardItem>
     <VCardText>
-      <VRow no-gutters="0">
-        <VCol cols="9" class="mt-3">
-          <VRow>
-            <VTextField
-              v-model="joinDate"
-              label="입사일"
-              variant="outlined"
-              density="compact"
-              type="date"
-              :rules="[requiredRule]"
-            />
-          </VRow>
-        </VCol>
+      <VTextField
+        v-model="joinDate"
+        label="입사일"
+        variant="outlined"
+        density="compact"
+        type="date"
+        :rules="[requiredRule]"
+      />
 
-        <VCol cols="9" class="mt-10" v-if="showLeaveButton">
-          <VRow>
-            <VTextField
-              v-model="leaveDate"
-              label="퇴사일"
-              variant="outlined"
-              density="compact"
-              type="date"
-            />
-            <VBtn flat="0" @click="handleLeave" class="ml-3 quit-btn">퇴사처리</VBtn>
-          </VRow>
-        </VCol>
+      <v-row>
+        <v-col cols="10">
+          <VTextField
+            v-model="leaveDate"
+            label="퇴사일"
+            variant="outlined"
+            density="compact"
+            type="date"
+          />
+        </v-col>
+        <v-col cols="2">
+          <VBtn @click="handleLeave" class="quit-btn">퇴사처리</VBtn>
+        </v-col>
+      </v-row>
 
-        <VCol cols="9" class="mt-10">
-          <VRow>
-            <VTextField v-model="salary" label="연봉" variant="outlined" density="compact" />
-            <VLabel class="ml-3">(단위: 천)</VLabel>
-          </VRow>
-        </VCol>
-        <VCol cols="9" class="mt-10">
-          <VRow>
-            <VTextField
-              v-model="monthlyPay"
-              label="월지급액"
-              variant="outlined"
-              density="compact"
-            />
-            <VLabel class="ml-3">(단위: 천)</VLabel>
-          </VRow>
-        </VCol>
-      </VRow>
+      <VTextField v-model="salary" label="연봉" variant="outlined" density="compact" />
+      <VTextField v-model="monthlyPay" label="월지급액" variant="outlined" density="compact" />
     </VCardText>
   </VCard>
 </template>

@@ -1,63 +1,45 @@
 <template>
-  <VCard variant="outlined" class="mt-3 pt-2 px-2">
+  <VCard variant="outlined" border="thin" class="mt-3 pt-2 px-2">
     <VCardItem>
       <VCardTitle>인사정보</VCardTitle>
     </VCardItem>
     <VCardText>
-      <VRow>
-        <VCol cols="9" class="mt-3">
-          <VRow>
-            <VSelect
-              v-model="type"
-              label="직원유형"
-              variant="outlined"
-              density="compact"
-              :items="typeOptions"
-              item-title="label"
-              item-value="value"
-            />
-          </VRow>
-        </VCol>
-        <VCol cols="9" class="mt-10">
-          <VRow>
-            <VSelect
-              v-model="rank"
-              label="직급"
-              variant="outlined"
-              density="compact"
-              :items="rankOptions"
-              item-title="label"
-              item-value="value"
-            />
-          </VRow>
-        </VCol>
-        <VCol cols="9" class="mt-10">
-          <VRow>
-            <VSelect
-              v-model="grade"
-              label="등급"
-              variant="outlined"
-              density="compact"
-              :items="gradeOptions"
-            />
-          </VRow>
-        </VCol>
-        <VCol cols="9" class="mt-10">
-          <VRow>
-            <VSelect
-              v-model="department"
-              label="소속팀"
-              variant="outlined"
-              density="compact"
-              :items="teamOptions"
-              item-title="name"
-              item-value="id"
-              return-object
-            >
-            </VSelect>
-          </VRow>
-        </VCol>
-      </VRow>
+      <VSelect
+        v-model="type"
+        label="직원유형"
+        variant="outlined"
+        density="compact"
+        :items="typeOptions"
+        item-title="label"
+        item-value="value"
+      />
+      <VSelect
+        v-model="rank"
+        label="직급"
+        variant="outlined"
+        density="compact"
+        :items="rankOptions"
+        item-title="label"
+        item-value="value"
+      />
+      <VSelect
+        v-model="grade"
+        label="등급"
+        variant="outlined"
+        density="compact"
+        :items="gradeOptions"
+      />
+      <VSelect
+        v-model="department"
+        label="소속팀"
+        variant="outlined"
+        density="compact"
+        :items="teamOptions"
+        item-title="name"
+        item-value="id"
+        return-object
+      >
+      </VSelect>
     </VCardText>
   </VCard>
 </template>
