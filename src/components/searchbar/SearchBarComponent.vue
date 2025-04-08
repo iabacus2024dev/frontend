@@ -7,10 +7,10 @@
           :key="index"
           cols="12"
           class="search-field"
-          md="3"
-          sm="5"
+          :md="field.md || 3"
+          :sm="field.sm || 5"
         >
-          <div class="field-wrapper">
+          <div class="field-wrapper" v-if="field.type !== 'daterange'">
             <!-- 레이블 (왼쪽 정렬) -->
             <label class="search-label" :for="field.key">{{ field.label }}</label>
 
@@ -21,7 +21,6 @@
               variant="outlined"
               density="compact"
               hide-details="auto"
-              class="search-input"
             ></VTextField>
 
             <!-- 날짜 입력 -->
@@ -32,7 +31,6 @@
               variant="outlined"
               density="compact"
               hide-details="auto"
-              class="search-input"
             >
             </VTextField>
 
@@ -46,8 +44,30 @@
               variant="outlined"
               density="compact"
               hide-details="auto"
-              class="search-input"
             ></VSelect>
+          </div>
+
+          <!-- daterange 타입 처리 -->
+          <div class="field-wrapper" v-else>
+            <div class="field-wrapper">
+              <VTextField
+                v-model="searchData[field.startKey]"
+                type="date"
+                variant="outlined"
+                density="compact"
+                hide-details="auto"
+                class="search-input"
+              />
+              <span class="daterange-separator">~</span>
+              <VTextField
+                v-model="searchData[field.endKey]"
+                type="date"
+                variant="outlined"
+                density="compact"
+                hide-details="auto"
+                class="search-input"
+              />
+            </div>
           </div>
         </VCol>
       </VRow>
@@ -88,8 +108,18 @@ const route = useRoute()
 const searchData = reactive({})
 
 onMounted(() => {
+  // URL 쿼리에서 검색 데이터 초기화
   Object.keys(route.query).forEach((key) => {
     searchData[key] = route.query[key]
+  })
+
+  // 각 행의 필드를 순회하며 select 타입이면 기본값 할당
+  props.rows.forEach(row => {
+    row.fields.forEach(field => {
+      if (field.type === 'select' && (!searchData[field.key] || searchData[field.key] === '')) {
+        searchData[field.key] = field.options && field.options.length > 0 ? field.options[0].value : ''
+      }
+    })
   })
 })
 
@@ -113,20 +143,18 @@ const onReset = () => {
 .field-wrapper {
   display: flex;
   align-items: center;
+  justify-content: flex-end; /* 내부의 날짜 입력 필드를 오른쪽에 정렬 */
   gap: 8px; /* 레이블과 입력 필드 사이 간격 */
+  width: 100%;
 }
 
 /* 레이블 스타일 */
 .search-label {
-  min-width: 100px; /* 레이블 최소 너비 */
-  text-align: right; /* 텍스트를 오른쪽 정렬 */
+  min-width: 80px; /* 레이블 최소 너비 */
+  margin-left: 20px;
+  text-align: left; /* 텍스트를 오른쪽 정렬 */
   font-weight: bold;
   font-size: clamp(11px, 1.3vw, 14px); /* 최소 12px, 기본 1.2vw, 최대 14px */
-}
-
-/* 입력 필드 스타일 */
-.search-input {
-  flex: 1; /* 남은 공간을 모두 차지하도록 설정 */
 }
 
 /* 검색 버튼 스타일*/
