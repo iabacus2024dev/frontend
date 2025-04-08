@@ -104,31 +104,30 @@ const headers = ref([
 const searchRows = ref([
   {
     // 첫 번째 행: 4개의 날짜 검색 조건
+
     fields: [
       {
         key: 'searchType',
         label: '날짜 검색 조건',
         type: 'select',
-        columnCount: 3,
         options: [
           { title: '시작일자', value: '시작일자' },
           { title: '종료일자', value: '종료일자' },
           { title: '계약일자', value: '계약일자' },
         ],
       },
-      { key: 'startDate', label: '계약 시작일자', type: 'date', columnCount: 4 },
-      { key: 'endDate', label: '계약 종료일자', type: 'date', columnCount: 4 },
-    ],
-  },
-  {
-    // 두 번째 행: 드롭다운 (사업유형, 진행 상태)
-    fields: [
+      {
+        key: 'dateRange',
+        type: 'daterange',
+        startKey: 'startDate',
+        endKey: 'endDate',
+      },
       {
         key: 'type',
         label: '사업유형',
         type: 'select',
-        columnCount: 2,
         options: [
+          { title: '전체', value: '' },
           { title: 'SI', value: 'SI' },
           { title: 'SM', value: 'SM' },
         ],
@@ -137,8 +136,8 @@ const searchRows = ref([
         key: 'status',
         label: '진행 상태',
         type: 'select',
-        columnCount: 3,
         options: [
+          { title: '전체', value: '' },
           { title: '예약', value: '예약' },
           { title: '진행중', value: '진행중' },
           { title: '완료', value: '완료' },
@@ -147,10 +146,10 @@ const searchRows = ref([
     ],
   },
   {
-    // 세 번째 행: 텍스트 검색 (프로젝트명, 프로젝트 코드)
+    // 두 번째 행: 드롭다운 (사업유형, 진행 상태)
     fields: [
-      { key: 'name', label: '프로젝트 이름', type: 'text', columnCount: 2 },
-      { key: 'code', label: '프로젝트 코드', type: 'text', columnCount: 2 },
+      { key: 'name', label: '프로젝트 이름', type: 'text', md: 6},
+      { key: 'code', label: '프로젝트 코드', type: 'text', md: 6},
     ],
   },
 ])
@@ -192,7 +191,7 @@ const handleSearch = async (filters) => {
 // 초기화 이벤트 핸들러
 const handleReset = async () => {
   params.value = {
-    searchType: '',
+    searchType: '시작일자',
     startDate: '',
     endDate: '',
     type: '',

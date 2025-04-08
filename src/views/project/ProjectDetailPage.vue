@@ -3,6 +3,7 @@
   <v-row>
     <v-col cols="12" md="7">
       <BasicInfoComponent
+        v-model:status="projectDetail.status"
         v-model:code="projectDetail.code"
         v-model:type="projectDetail.type"
         v-model:name="projectDetail.name"
@@ -13,10 +14,6 @@
         v-model:startDate="projectDetail.startDate"
         v-model:endDate="projectDetail.endDate"
         class="mb-3"
-      />
-      <AmountComponent
-        v-model:expectedAmount="projectDetail.expectedAmount"
-        v-model:contractAmount="projectDetail.contractAmount"
       />
     </v-col>
     <v-col cols="12" md="5">
@@ -38,10 +35,9 @@
       </v-row>
       <v-row>
         <v-col>
-          <ProgressInfoComponent
-            v-model:status="projectDetail.status"
-            v-model:start-date="projectDetail.startDate"
-            v-model:end-date="projectDetail.endDate"
+          <AmountComponent
+            v-model:expectedAmount="projectDetail.expectedAmount"
+            v-model:contractAmount="projectDetail.contractAmount"
           />
         </v-col>
       </v-row>
@@ -152,7 +148,6 @@ import { onMounted, ref } from 'vue'
 import TableComponent from '@/components/table/TableComponent.vue'
 import ClientCompanyComponent from '@/components/project/ClientCompanyComponent.vue'
 import MainCompanyComponent from '@/components/project/MainCompanyComponent.vue'
-import ProgressInfoComponent from '@/components/project/ProgressInfoComponent.vue'
 import AmountComponent from '@/components/project/AmountComponent.vue'
 import BasicInfoComponent from '@/components/project/BasicInfoComponent.vue'
 import { useToast } from 'vue-toastification'
