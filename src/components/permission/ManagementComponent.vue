@@ -18,7 +18,7 @@ const checkEdit = computed({
   get: () => props.editAuth,
   set: (val) => {
     emit('editAuth', val);
-    emit('editAuth', val ? true : props.viewAuth);
+    emit('viewAuth', val ? true : props.viewAuth);
   }
 });
 
