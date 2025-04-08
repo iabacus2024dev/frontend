@@ -26,11 +26,14 @@
       />
       <CommentComponent v-model:comment="employeeDetail.comment" />
     </v-col>
-    <VCardActions class="mt-3 mb-3">
-      <VBtn class="update-btn" @click="handleUpdateEmployee">수정</VBtn>
-      <VBtn class="delete-btn" @click="handleDeleteEmployee">구성원 삭제</VBtn>
-      <VBtn class="cancel-btn" @click="$router.push('/employees')">취소</VBtn>
-    </VCardActions>
+    <v-row>
+      <v-col class="d-flex justify-end">
+        <VCardActions>
+          <VBtn class="update-btn" @click="handleUpdateEmployee">구성원 수정</VBtn>
+          <VBtn class="delete-btn" @click="handleDeleteEmployee">구성원 삭제</VBtn>
+        </VCardActions>
+      </v-col>
+    </v-row>
   </v-row>
 </template>
 

@@ -11,8 +11,8 @@
             label="메모"
             variant="outlined"
             density="compact"
-            style="height: 400px; width: 100%"
             dense
+            rows="9"
           />
         </v-col>
       </v-row>

@@ -1,16 +1,10 @@
 <template>
-  <VCard variant="outlined" class="mt-3 pt-2 px-2">
+  <VCard variant="outlined" border="thin" class="mt-3 pt-2 px-2">
     <VCardItem>
       <VCardTitle>비고</VCardTitle>
     </VCardItem>
     <VCardText>
-      <VRow no-gutters="0">
-        <VCol cols="12" class="mt-3">
-          <VRow>
-            <VTextarea v-model="comment" label="메모" variant="outlined" dense rows="5" />
-          </VRow>
-        </VCol>
-      </VRow>
+      <VTextarea v-model="comment" label="메모" variant="outlined" dense rows="8" />
     </VCardText>
   </VCard>
 </template>

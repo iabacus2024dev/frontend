@@ -1,59 +1,41 @@
 <template>
-  <VCard variant="outlined" class="mt-3 pt-2 px-2">
+  <VCard variant="outlined" border="thin" class="mt-3 pt-2 px-2">
     <VCardItem>
       <VCardTitle>개인정보</VCardTitle>
     </VCardItem>
     <VCardText>
-      <VRow>
-        <VCol cols="9" class="mt-3">
-          <VRow>
-            <VTextField
-              v-model="email"
-              label="이메일"
-              variant="outlined"
-              density="compact"
-              :rules="[requiredRule]"
-            />
-            <VBtn v-if="showCheckEmail" @click="handleCheckEmail" class="ml-3 check-mail-btn">
-              중복확인
-            </VBtn>
-          </VRow>
-        </VCol>
-        <VCol cols="9" class="mt-10">
-          <VRow>
-            <VTextField
-              v-model="name"
-              label="이름"
-              variant="outlined"
-              density="compact"
-              :rules="[requiredRule]"
-            />
-          </VRow>
-        </VCol>
-        <VCol cols="9" class="mt-10">
-          <VRow>
-            <VTextField
-              v-model="phone"
-              label="전화번호"
-              variant="outlined"
-              density="compact"
-              :rules="[requiredRule]"
-            />
-          </VRow>
-        </VCol>
-        <VCol cols="9" class="mt-10">
-          <VRow>
-            <VTextField
-              v-model="birthDate"
-              label="생년월일"
-              variant="outlined"
-              density="compact"
-              type="date"
-              :rules="[requiredRule]"
-            />
-          </VRow>
-        </VCol>
-      </VRow>
+      <VTextField
+        v-model="email"
+        label="이메일"
+        variant="outlined"
+        density="compact"
+        :rules="[requiredRule]"
+      />
+      <VBtn v-if="showCheckEmail" @click="handleCheckEmail" class="ml-3 check-mail-btn">
+        중복확인
+      </VBtn>
+      <VTextField
+        v-model="name"
+        label="이름"
+        variant="outlined"
+        density="compact"
+        :rules="[requiredRule]"
+      />
+      <VTextField
+        v-model="phone"
+        label="전화번호"
+        variant="outlined"
+        density="compact"
+        :rules="[requiredRule]"
+      />
+      <VTextField
+        v-model="birthDate"
+        label="생년월일"
+        variant="outlined"
+        density="compact"
+        type="date"
+        :rules="[requiredRule]"
+      />
     </VCardText>
   </VCard>
 </template>
@@ -86,6 +68,7 @@ const handleCheckEmail = () => {
   max-width: 600px;
   margin: auto;
 }
+
 .check-mail-btn {
   background-color: #eb6129;
   color: white;

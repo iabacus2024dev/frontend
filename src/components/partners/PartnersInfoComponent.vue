@@ -1,61 +1,46 @@
 <template>
-  <v-card class="pt-2 px-2 small-card" border="thin" variant="outlined">
+  <v-card class="pt-2 px-2" border="thin" variant="outlined">
     <v-card-item>
       <v-card-title>기본 정보</v-card-title>
     </v-card-item>
 
     <v-card-text>
-      <v-row class="gap-4">
-        <v-col cols="12">
-          <v-text-field
-            v-model="name"
-            label="협력사명"
-            variant="outlined"
-            density="compact"
-            :rules="[rules.required]"
-          />
-        </v-col>
-
-        <v-col cols="12">
-          <v-text-field
-            v-model="ceoName"
-            label="대표자명"
-            variant="outlined"
-            density="compact"
-            :rules="[rules.required]"
-          />
-        </v-col>
-
-        <v-col cols="12">
-          <v-text-field
-            v-model="salesRepName"
-            label="영업대표명"
-            variant="outlined"
-            density="compact"
-            :rules="[rules.required]"
-          />
-        </v-col>
-
-        <v-col cols="12">
-          <v-text-field
-            v-model="salesRepPhone"
-            label="영업대표 연락처"
-            variant="outlined"
-            density="compact"
-            placeholder="010-1234-2345"
-            :rules="[rules.required, rules.phone]"
-          />
-        </v-col>
-
-        <v-col cols="12">
-          <v-text-field
-            v-model="salesRepEmail"
-            label="영업대표 이메일"
-            variant="outlined"
-            density="compact"
-          />
-        </v-col>
-
+      <v-text-field
+        v-model="name"
+        label="협력사명"
+        variant="outlined"
+        density="compact"
+        :rules="[rules.required]"
+      />
+      <v-text-field
+        v-model="ceoName"
+        label="대표자명"
+        variant="outlined"
+        density="compact"
+        :rules="[rules.required]"
+      />
+      <v-text-field
+        v-model="salesRepName"
+        label="영업대표명"
+        variant="outlined"
+        density="compact"
+        :rules="[rules.required]"
+      />
+      <v-text-field
+        v-model="salesRepPhone"
+        label="영업대표 연락처"
+        variant="outlined"
+        density="compact"
+        placeholder="010-1234-2345"
+        :rules="[rules.required, rules.phone]"
+      />
+      <v-text-field
+        v-model="salesRepEmail"
+        label="영업대표 이메일"
+        variant="outlined"
+        density="compact"
+      />
+      <v-row>
         <v-col cols="10">
           <v-text-field
             v-model="zipcode"
@@ -66,26 +51,19 @@
             readonly
           />
         </v-col>
-
         <v-col cols="2">
           <v-btn variant="tonal" class="update-btn" @click="openPostcode"> 주소 찾기 </v-btn>
         </v-col>
-
-        <v-col cols="12">
-          <v-text-field
-            v-model="street"
-            label="주소"
-            variant="outlined"
-            density="compact"
-            :disabled="isAddressLocked"
-            readonly
-          />
-        </v-col>
-
-        <v-col cols="12">
-          <v-text-field v-model="detail" label="상세주소" variant="outlined" density="compact" />
-        </v-col>
       </v-row>
+      <v-text-field
+        v-model="street"
+        label="주소"
+        variant="outlined"
+        density="compact"
+        :disabled="isAddressLocked"
+        readonly
+      />
+      <v-text-field v-model="detail" label="상세주소" variant="outlined" density="compact" />
     </v-card-text>
   </v-card>
 </template>
@@ -123,11 +101,6 @@ const openPostcode = () => {
 </script>
 
 <style scoped>
-.small-card {
-  max-width: 600px;
-  margin: auto;
-}
-
 .update-btn {
   background-color: #eb6129;
   color: white;
