@@ -1,5 +1,5 @@
 <template>
-  <VForm ref="employeeForm" v-model="formValid" class="ma-3 pa-3">
+  <v-form v-model="formValid" class="ma-3 pa-3">
     <v-row>
       <v-col>
         <PersonalInfoComponent
@@ -39,7 +39,7 @@
         />
       </v-col>
     </v-row>
-  </VForm>
+  </v-form>
 </template>
 
 <script setup>
@@ -49,7 +49,6 @@ import PersonalRecordComponent from '@/components/employee/PersonalRecordCompone
 import PersonalContractInfoComponent from '@/components/employee/PersonalContractInfoComponent.vue'
 import CommentComponent from '@/components/employee/CommentComponent.vue'
 
-const employeeForm = ref(null)
 const formValid = ref(false)
 
 const employeeCreate = ref({

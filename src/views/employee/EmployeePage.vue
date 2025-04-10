@@ -31,7 +31,7 @@
 </template>
 
 <script setup>
-import { computed, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import TableComponent from '@/components/table/TableComponent.vue'
 import SearchBarComponent from '@/components/searchbar/SearchBarComponent.vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -46,6 +46,7 @@ import {
 } from '@/apis/employeeService.js'
 import ExcelActionsComponent from '@/components/common/ExcelActionsComponent.vue'
 import EmployeeCreatePopup from '@/views/employee/EmployeeCreatePopup.vue'
+import { getDepartments, getTeamList } from '@/apis/teamService.js'
 
 const router = useRouter()
 const route = useRoute()
@@ -63,8 +64,25 @@ const items = ref([])
 
 const size = ref(10)
 const sort = ref('')
+const department = ref([])
 
 const uploadedFile = ref(null)
+
+const departmentOptions = ref([])
+
+const fetchGetTeams = async () => {
+  let response = await getDepartments()
+  response.forEach((d) =>
+    departmentOptions.value.push({
+      title: d.name,
+      value: d.id,
+    }),
+  )
+}
+
+onMounted(() => {
+  fetchGetTeams()
+})
 
 // 검색 조건 및 페이징 조건
 const params = ref({
@@ -74,6 +92,7 @@ const params = ref({
   type: '',
   grade: '',
   status: '',
+  departmentId: null,
   page: 1,
   size: 10,
 })
@@ -90,7 +109,7 @@ const headers = ref([
 ])
 
 // 검색 조건
-const searchRows = ref([
+const searchRows = computed(() => [
   {
     fields: [
       {
@@ -139,14 +158,24 @@ const searchRows = ref([
         columnCount: 4,
         options: [
           { title: '전체', value: '' },
-          { title: '가동', value: '가동' },
-          { title: '비가동', value: '비가동' },
+          { title: '재직', value: '재직' },
+          { title: '휴직', value: '휴직' },
+          { title: '퇴사', value: '퇴사' },
         ],
       },
     ],
   },
   {
-    fields: [{ key: 'name', label: '이름', type: 'text', columnCount: 2 }],
+    fields: [
+      {
+        key: 'departmentId',
+        label: '팀',
+        type: 'select',
+        columnCount: departmentOptions.value.length,
+        options: departmentOptions.value,
+      },
+      { key: 'name', label: '이름', type: 'text', columnCount: 2 },
+    ],
   },
 ])
 
@@ -193,6 +222,7 @@ const handleReset = async () => {
     type: '',
     grade: '',
     status: '',
+    department: '',
     page: 1,
   }
   currentPage.value = 1
@@ -280,6 +310,7 @@ const restoreSearchParams = async () => {
     type: query.type || '',
     grade: query.grade || '',
     status: query.status || '',
+    departmentId: query.departmentId || '',
     page: query.page ? query.page : 1,
   }
   if (sortArray.length > 0) {
@@ -302,7 +333,10 @@ watch(
   },
 )
 
-restoreSearchParams()
+onMounted(async () => {
+  await restoreSearchParams()
+  department.value = await getTeamList()
+})
 </script>
 
 <style scoped></style>

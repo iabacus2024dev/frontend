@@ -1,5 +1,5 @@
 <template>
-  <v-card class="pt-2 px-2" border="thin" variant="outlined">
+  <v-card class="pt-2 px-2" border="thin" variant="outlined" min-width="600">
     <v-card-item>
       <v-card-title>기본 정보</v-card-title>
     </v-card-item>
@@ -85,7 +85,7 @@ const isAddressLocked = ref(false)
 const rules = {
   required: (value) => !!value || '필수 입력 항목입니다.',
   phone: (value) =>
-    /^(010-\d{4}-\d{4})$/.test(value) || '올바른 전화번호 형식(010-1234-1234)을 입력하세요.',
+    /^(010\d{4}\d{4})$/.test(value) || '올바른 전화번호 형식(01012341234)을 입력하세요.',
 }
 
 const openPostcode = () => {

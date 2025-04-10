@@ -1,5 +1,5 @@
 <template>
-  <VCard variant="outlined" border="thin" class="mt-3 pt-2 px-2">
+  <VCard variant="outlined" border="thin" class="mt-3 pt-2 px-2" min-width="400">
     <VCardItem>
       <VCardTitle>인사정보</VCardTitle>
     </VCardItem>
@@ -45,7 +45,7 @@
 </template>
 
 <script setup>
-import { defineModel, ref } from 'vue'
+import { defineModel, onMounted, ref } from 'vue'
 import { getDepartments } from '@/apis/teamService.js'
 
 const type = defineModel('type')
@@ -72,7 +72,10 @@ const teamOptions = ref([])
 const fetchGetDepartments = async () => {
   teamOptions.value = await getDepartments()
 }
-fetchGetDepartments()
+
+onMounted(async () => {
+  await fetchGetDepartments()
+})
 </script>
 
 <style scoped>

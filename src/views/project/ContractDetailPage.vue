@@ -40,11 +40,6 @@
 
   <VContainer>
     <TableComponent :tableTitle="tableTitleResponse" :tableData="tableDataResponse" />
-
-    <TableEventComponent
-      :tableDataEvent="tableDataEventCondition"
-      @create-data-button-click="fnCreateData"
-    />
   </VContainer>
 </template>
 
@@ -52,7 +47,6 @@
 import { onMounted, ref } from 'vue'
 
 import TableComponent from '@/components/table/TableComponent.vue'
-import TableEventComponent from '@/components/table/TableEventComponent.vue'
 import ProjectInfoComponent from '@/components/project/ProjectInfoComponent.vue'
 import ContractInfoComponent from '@/components/project/ContractInfoComponent.vue'
 import ProgressInfoComponent from '@/components/project/ProgressInfoComponent.vue'
@@ -128,7 +122,6 @@ const fetchDeleteContract = async (contractId) => {
 const fetchUpdateContract = async (contractId) => {
   const requestData = {
     startDate: contractInfoData.value.startDate,
-    endDate: contractInfoData.value.endDate,
     endDate: contractInfoData.value.endDate,
     status: 'RESERVED', // todo: Enum
     actualStartDate: progressInfoData.value.startDate,

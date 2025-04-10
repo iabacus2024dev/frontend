@@ -1,5 +1,5 @@
 <template>
-  <VCard variant="outlined" border="thin" class="mt-3 mb-3 pt-2 px-2">
+  <VCard variant="outlined" border="thin" class="mt-3 mb-3 pt-2 px-2" min-width="400">
     <VCardItem>
       <VCardTitle>계약정보</VCardTitle>
     </VCardItem>
@@ -24,7 +24,7 @@
           />
         </v-col>
         <v-col cols="2">
-          <VBtn @click="handleLeave" class="quit-btn">퇴사처리</VBtn>
+          <VBtn @click="handleLeave" v-if="showLeaveButton" class="quit-btn">퇴사처리</VBtn>
         </v-col>
       </v-row>
 
