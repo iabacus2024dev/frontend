@@ -13,7 +13,7 @@
         v-model:contractDate="projectDetail.contractDate"
         v-model:startDate="projectDetail.startDate"
         v-model:endDate="projectDetail.endDate"
-        class="mb-3"
+        class="mb-6"
       />
     </v-col>
     <v-col cols="12" md="5">
@@ -164,7 +164,7 @@ const projectDetail = ref({
   type: '',
   status: '',
   contractDate: '',
-  department: {},
+  department: null,
   startDate: '',
   endDate: '',
   pmName: '',
@@ -177,8 +177,8 @@ const projectDetail = ref({
   clientCompanyRep: '',
   clientCompanyRepPhone: '',
 
-  expectedAmount: Number,
-  contractAmount: Number,
+  expectedAmount: null,
+  contractAmount: null,
 
   modifiedDateTime: '',
 })

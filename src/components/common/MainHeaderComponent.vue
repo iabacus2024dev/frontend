@@ -6,7 +6,6 @@
       </v-breadcrumbs-item>
     </template>
   </v-breadcrumbs>
-  <!--  <h1 class="text-h4 font-weight-bold mt-7">{{ title }}</h1>-->
 </template>
 
 <script setup>
@@ -17,10 +16,6 @@ const router = useRouter()
 
 let breadcrumbs = computed(() => {
   return router.currentRoute.value.meta.breadcrumbs || []
-})
-
-const title = computed(() => {
-  return router.currentRoute.value.meta.title || 'Default Title'
 })
 </script>
 

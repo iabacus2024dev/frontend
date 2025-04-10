@@ -1,5 +1,5 @@
 <template>
-  <VCard variant="outlined" border="thin" class="mt-3 pt-2 px-2">
+  <VCard variant="outlined" border="thin" class="mt-3 pt-2 px-2" min-width="400">
     <VCardItem>
       <VCardTitle>비고</VCardTitle>
     </VCardItem>

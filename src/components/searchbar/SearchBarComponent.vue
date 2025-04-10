@@ -18,6 +18,7 @@
             <VTextField
               v-if="field.type === 'text'"
               v-model="searchData[field.key]"
+              prepend-inner-icon="mdi-magnify"
               variant="outlined"
               density="compact"
               hide-details="auto"
@@ -114,10 +115,11 @@ onMounted(() => {
   })
 
   // 각 행의 필드를 순회하며 select 타입이면 기본값 할당
-  props.rows.forEach(row => {
-    row.fields.forEach(field => {
+  props.rows.forEach((row) => {
+    row.fields.forEach((field) => {
       if (field.type === 'select' && (!searchData[field.key] || searchData[field.key] === '')) {
-        searchData[field.key] = field.options && field.options.length > 0 ? field.options[0].value : ''
+        searchData[field.key] =
+          field.options && field.options.length > 0 ? field.options[0].value : ''
       }
     })
   })

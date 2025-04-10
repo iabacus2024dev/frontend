@@ -1,17 +1,12 @@
 <template>
-  <VCard variant="outlined" border="thin" class="pt-2 px-2 card-responsive">
+  <VCard variant="outlined" border="thin" class="pa-6">
     <VCardItem>
       <VCardTitle>기본 정보</VCardTitle>
     </VCardItem>
     <VCardText>
-      <VRow class="v-row--no-gutters">
-        <VCol cols="12" md="6" class="pr-4 pb-3">
+      <VRow>
+        <VCol cols="12" md="6">
           <VTextField v-model="name" label="프로젝트명" variant="outlined" density="compact" />
-        </VCol>
-        <VCol cols="12" md="6" class="pr-4 pb-3">
-          <VTextField v-model="code" label="프로젝트코드" variant="outlined" density="compact" />
-        </VCol>
-        <VCol cols="12" md="6" class="pr-4 pb-3">
           <VSelect
             v-model="type"
             :items="projectTypeItems"
@@ -19,8 +14,24 @@
             variant="outlined"
             density="compact"
           />
+          <VTextField
+            v-model="contractDate"
+            label="계약일"
+            type="date"
+            variant="outlined"
+            density="compact"
+          />
+          <VTextField
+            v-model="startDate"
+            label="계약시작일자"
+            type="date"
+            variant="outlined"
+            density="compact"
+          />
+          <VTextField v-model="pmName" label="PM" variant="outlined" density="compact" />
         </VCol>
-        <VCol cols="12" md="6" class="pr-4 pb-3">
+        <VCol cols="12" md="6">
+          <VTextField v-model="code" label="프로젝트코드" variant="outlined" density="compact" />
           <VSelect
             v-model="status"
             :items="progressStatusItems"
@@ -28,18 +39,6 @@
             variant="outlined"
             density="compact"
           />
-        </VCol>
-        <VCol cols="12" md="6" class="pr-4 pb-3">
-          <VTextField
-            v-model="contractDate"
-            label="계약일"
-            type="date"
-            variant="outlined"
-            density="compact"
-          >
-          </VTextField>
-        </VCol>
-        <VCol cols="12" md="6" class="pr-4 pb-3">
           <VSelect
             v-model="department"
             :items="contractTeamItems"
@@ -50,18 +49,6 @@
             item-value="id"
             return-object
           />
-        </VCol>
-        <VCol cols="12" md="6" class="pr-4 pb-3">
-          <VTextField
-            v-model="startDate"
-            label="계약시작일자"
-            type="date"
-            variant="outlined"
-            density="compact"
-          >
-          </VTextField>
-        </VCol>
-        <VCol cols="12" md="6" class="pr-4 pb-3">
           <VTextField
             v-model="endDate"
             label="계약종료일자"
@@ -70,11 +57,6 @@
             density="compact"
           >
           </VTextField>
-        </VCol>
-        <VCol cols="12" md="6" class="pr-4">
-          <VTextField v-model="pmName" label="PM" variant="outlined" density="compact" />
-        </VCol>
-        <VCol cols="12" md="6" class="pr-4">
           <VTextField v-model="pmPhone" label="PM 연락처" variant="outlined" density="compact" />
         </VCol>
       </VRow>
@@ -86,14 +68,12 @@
 import { defineModel, ref, watch } from 'vue'
 import { getTeamList } from '@/apis/teamService.js' // 추후 팀 목록은 받아와서 추가해야함
 
-
-
 // 추후 팀 목록은 받아와서 추가해야함
 const projectTypeItems = ['SI', 'SM']
 const contractTeamItems = ref([
   {
-    id: Number,
-    name: String,
+    title: String,
+    value: Number,
   },
 ])
 
