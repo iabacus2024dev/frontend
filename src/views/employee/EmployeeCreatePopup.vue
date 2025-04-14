@@ -1,5 +1,5 @@
 <template>
-  <v-form v-model="formValid" class="ma-3 pa-3">
+  <v-form v-model="formValid">
     <v-row>
       <v-col>
         <PersonalInfoComponent
@@ -22,7 +22,7 @@
           v-model:department="employeeCreate.department"
         />
       </v-col>
-      <v-col cols="6">
+      <v-col>
         <PersonalContractInfoComponent
           v-model:joinDate="employeeCreate.joinDate"
           v-model:leaveDate="employeeCreate.leaveDate"
