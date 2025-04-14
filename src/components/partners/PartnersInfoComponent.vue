@@ -32,7 +32,7 @@
         variant="outlined"
         density="compact"
         placeholder="010-1234-2345"
-        :rules="[rules.required, rules.phone]"
+        :rules="[rules.required]"
       />
       <v-text-field
         v-model="salesRepEmail"

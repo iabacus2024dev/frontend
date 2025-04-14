@@ -1,5 +1,5 @@
 <template>
-  <v-form class="ma-3 pa-3">
+  <v-form>
     <v-row>
       <v-col>
         <BasicInfoComponent
@@ -21,7 +21,7 @@
           v-model:contractAmount="projectCreate.contractAmount"
         />
         <v-row>
-          <v-col cols="6">
+          <v-col>
             <ClientCompanyComponent
               class="ma-3 pa-3"
               v-model:clientCompany="projectCreate.clientCompany"
@@ -29,7 +29,7 @@
               v-model:clientCompanyRepPhone="projectCreate.clientCompanyRepPhone"
             />
           </v-col>
-          <v-col cols="6">
+          <v-col>
             <MainCompanyComponent
               class="ma-3 pa-3"
               v-model:mainCompany="projectCreate.mainCompany"

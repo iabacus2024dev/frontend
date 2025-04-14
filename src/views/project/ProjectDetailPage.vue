@@ -13,7 +13,6 @@
         v-model:contractDate="projectDetail.contractDate"
         v-model:startDate="projectDetail.startDate"
         v-model:endDate="projectDetail.endDate"
-        class="mb-6"
       />
     </v-col>
     <v-col cols="12" md="5">

@@ -1,11 +1,11 @@
 <template>
-  <VCard variant="outlined" border="thin" class="pa-6">
+  <VCard variant="outlined" border="thin" class="pa-6" min-width="800">
     <VCardItem>
       <VCardTitle>기본 정보</VCardTitle>
     </VCardItem>
     <VCardText>
       <VRow>
-        <VCol cols="12" md="6">
+        <VCol>
           <VTextField v-model="name" label="프로젝트명" variant="outlined" density="compact" />
           <VSelect
             v-model="type"
@@ -30,7 +30,7 @@
           />
           <VTextField v-model="pmName" label="PM" variant="outlined" density="compact" />
         </VCol>
-        <VCol cols="12" md="6">
+        <VCol>
           <VTextField v-model="code" label="프로젝트코드" variant="outlined" density="compact" />
           <VSelect
             v-model="status"

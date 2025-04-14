@@ -80,10 +80,6 @@ const fetchGetTeams = async () => {
   )
 }
 
-onMounted(() => {
-  fetchGetTeams()
-})
-
 // 검색 조건 및 페이징 조건
 const params = ref({
   name: '',
@@ -92,7 +88,7 @@ const params = ref({
   type: '',
   grade: '',
   status: '',
-  departmentId: null,
+  department: '',
   page: 1,
   size: 10,
 })
@@ -232,7 +228,7 @@ const handleReset = async () => {
 // 구성원 등록 팝업
 const createDialogs = () => {
   createDialog.openDialog({
-    title: '프로젝트 등록',
+    title: '구성원 등록',
     component: EmployeeCreatePopup,
     fnCallback: (data) => {
       console.log('받은 데이터: ', data)
@@ -310,11 +306,11 @@ const restoreSearchParams = async () => {
     type: query.type || '',
     grade: query.grade || '',
     status: query.status || '',
-    departmentId: query.departmentId || '',
+    department: query.department || '',
     page: query.page ? query.page : 1,
   }
-  if (sortArray.length > 0) {
-    params.value.sort = sortArray[0].key + ',' + sortArray[0].order
+  if (sortArray.value.length > 0) {
+    params.value.sort = sortArray.value[0].key + ',' + sortArray.value[0].order
   }
   currentPage.value = query.page ? Number(query.page) : 1
 }
@@ -334,6 +330,7 @@ watch(
 )
 
 onMounted(async () => {
+  await fetchGetTeams()
   await restoreSearchParams()
   department.value = await getTeamList()
 })
