@@ -10,30 +10,19 @@
         :headers="headers"
         :items="items"
         :title="title"
-        @click-row="clickRow"
         :loading="loading"
         :page="currentPage"
         :length="totalElements"
         @loadItems="loadItems"
-        @open-dialog="createDialogs"
+        :showButton="false"
       />
-      <div class="d-flex justify-end align-end">
-        <!-- 임시로 구성원 편집 권한 유뮤로 버튼 활성/비활성-->
-        <v-btn
-          v-if="hasPermission('구성원 편집')"
-          @click="goToSalaryUpdate"
-          class="mr-3"
-          color="#eb6129"
-          elevation="1"
-        >
-          연봉 수정
-        </v-btn>
+      <div class="d-flex justify-end">
         <ExcelActionsComponent
           @download="fetchDownload"
           @upload="fetchUpload"
-          @downloadSample="fetchDownloadSample"
           v-model:file="uploadedFile"
           v-model:dialog="dialog"
+          :showButton="false"
         />
       </div>
     </v-col>
@@ -42,22 +31,13 @@
 
 <script setup>
 import { computed, onMounted, ref, watch } from 'vue'
-import TableComponent from '@/components/table/TableComponent.vue'
-import SearchBarComponent from '@/components/searchbar/SearchBarComponent.vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
-import { useDialog } from '@/composables/useDialog.js'
-import {
-  createEmployee,
-  downloadEmployees,
-  downloadEmployeeSample,
-  getEmployees,
-  uploadEmployee,
-} from '@/apis/employeeService.js'
+import TableComponent from '@/components/table/TableComponent.vue'
+import SearchBarComponent from '@/components/searchbar/SearchBarComponent.vue'
 import ExcelActionsComponent from '@/components/common/ExcelActionsComponent.vue'
-import EmployeeCreatePopup from '@/views/employee/EmployeeCreatePopup.vue'
-import { getDepartments, getTeamList } from '@/apis/teamService.js'
-import { getMyAuthorities } from '@/apis/roleService'
+import { downloadEmployees, getEmployees, uploadEmployeeSales } from '@/apis/employeeService.js'
+import { getDepartments, getTeamList } from '@/apis/teamService'
 
 const router = useRouter()
 const route = useRoute()
@@ -65,7 +45,6 @@ const toast = useToast()
 
 const title = ref('구성원 목록')
 
-const createDialog = useDialog()
 const dialog = ref(false)
 const loading = ref(false)
 
@@ -75,22 +54,11 @@ const items = ref([])
 
 const size = ref(10)
 const sort = ref('')
-const department = ref([])
 
 const uploadedFile = ref(null)
 
+const department = ref([])
 const departmentOptions = ref([])
-
-const authorities = ref([])
-
-const fetchGetAuthorities = async () => {
-  authorities.value = await getMyAuthorities()
-  console.log('내 권한 목록:', authorities.value)
-}
-
-const hasPermission = (name) => {
-  return authorities.value.some((auth) => auth.name === name)
-}
 
 const fetchGetTeams = async () => {
   let response = await getDepartments()
@@ -109,7 +77,6 @@ const params = ref({
   rank: '',
   type: '',
   grade: '',
-  status: '',
   department: '',
   page: 1,
   size: 10,
@@ -122,8 +89,7 @@ const headers = ref([
   { title: '직원유형', key: 'type', nowrap: true },
   { title: '등급', key: 'grade', nowrap: true },
   { title: '직급', key: 'rank', nowrap: true },
-  { title: '가동현황', key: 'status', sortable: false, nowrap: true },
-  { title: '입사일자', key: 'joinDate', nowrap: true },
+  { title: '연봉', key: 'annualSalary', nowrap: true },
 ])
 
 // 검색 조건
@@ -169,18 +135,6 @@ const searchRows = computed(() => [
           { title: '사원', value: '사원' },
         ],
       },
-      {
-        key: 'status',
-        label: '가동현황',
-        type: 'select',
-        columnCount: 4,
-        options: [
-          { title: '전체', value: '' },
-          { title: '재직', value: '재직' },
-          { title: '휴직', value: '휴직' },
-          { title: '퇴사', value: '퇴사' },
-        ],
-      },
     ],
   },
   {
@@ -196,14 +150,6 @@ const searchRows = computed(() => [
     ],
   },
 ])
-
-// 테이블 row 클릭
-const clickRow = (item) => router.push(`/employees/${item.id}`)
-
-//연봉 수정 페이지로 이동
-const goToSalaryUpdate = () => {
-  router.push({ name: 'employeeSalaryUpdate' })
-}
 
 // 데이터 불러오기
 const loadItems = async (page = 1, itemsPerPage = size.value, sortBy = []) => {
@@ -223,7 +169,7 @@ const loadItems = async (page = 1, itemsPerPage = size.value, sortBy = []) => {
     const response = await getEmployees(params.value)
     items.value = response.content
     totalElements.value = response.totalElements
-    await router.replace(`/employees?${buildQueryParams(params.value)}`)
+    await router.replace(`/employeeSalaryUpdate?${buildQueryParams(params.value)}`)
   } finally {
     loading.value = false
   }
@@ -244,30 +190,11 @@ const handleReset = async () => {
     rank: '',
     type: '',
     grade: '',
-    status: '',
     department: '',
     page: 1,
   }
   currentPage.value = 1
   await loadItems()
-}
-
-// 구성원 등록 팝업
-const createDialogs = () => {
-  createDialog.openDialog({
-    title: '구성원 등록',
-    component: EmployeeCreatePopup,
-    fnCallback: (data) => {
-      console.log('받은 데이터: ', data)
-      fetchCreateEmployee(data)
-    },
-  })
-}
-
-// 구성원 등록
-const fetchCreateEmployee = async (data) => {
-  await createEmployee(data)
-  toast.success('구성원이 성공적으로 등록되었습니다.')
 }
 
 // 엑셀 다운로드
@@ -289,13 +216,6 @@ function setSortToParam() {
   }
 }
 
-// 엑셀 샘플 다운로드
-const fetchDownloadSample = async () => {
-  console.log('엑셀 샘플 다운로드')
-  await downloadEmployeeSample()
-  toast.success('협력사 엑셀 샘플 다운로드에 성공하였습니다.')
-}
-
 // 엑셀 업로드
 const fetchUpload = async () => {
   console.log('엑셀 업로드')
@@ -308,8 +228,10 @@ const fetchUpload = async () => {
   formData.append('file', uploadedFile.value)
 
   try {
-    await uploadEmployee(formData)
+    await uploadEmployeeSales(formData)
     toast.success('협력사 엑셀 업로드에 성공하였습니다.')
+
+    await loadItems()
 
     dialog.value = false
     uploadedFile.value = null
@@ -332,7 +254,6 @@ const restoreSearchParams = async () => {
     rank: query.rank || '',
     type: query.type || '',
     grade: query.grade || '',
-    status: query.status || '',
     department: query.department || '',
     page: query.page ? query.page : 1,
   }
@@ -355,9 +276,7 @@ watch(
     await restoreSearchParams()
   },
 )
-
 onMounted(async () => {
-  await fetchGetAuthorities()
   await fetchGetTeams()
   await restoreSearchParams()
   department.value = await getTeamList()

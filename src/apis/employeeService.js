@@ -42,3 +42,9 @@ export const uploadEmployee = async (formData) => {
     'Content-Type': 'multipart/form-data',
   })
 }
+
+export const uploadEmployeeSales = async (formData) => {
+  return await RestApiAdapter.post('/api/v1/employees/excel/upload/sales', formData, null, {
+    'Content-Type': 'multipart/form-data',
+  })
+}
