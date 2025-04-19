@@ -6,6 +6,7 @@
         <span class="text-lg-h6">{{ title }}</span>
       </v-toolbar-title>
       <v-btn
+        v-if="showButton"
         class="me-5"
         text="신규 등록"
         color="#EB6129"
@@ -70,6 +71,10 @@ const props = defineProps({
   title: String,
   loading: Boolean,
   size: Number,
+  showButton: {
+    type: Boolean,
+    default: true, // 기본은 버튼을 보이도록
+  },
 })
 
 const size = ref(

@@ -13,6 +13,7 @@
 
     <!-- 엑셀 샘플 다운로드 버튼 -->
     <v-btn
+      v-if="showButton"
       class="mr-3"
       @click="emitDownloadSample"
       prepend-icon="mdi-microsoft-excel"
@@ -52,9 +53,15 @@
 </template>
 
 <script setup>
-import { defineEmits, defineModel } from 'vue'
+import { defineEmits, defineProps, defineModel } from 'vue'
 
 const emits = defineEmits(['download', 'upload', 'downloadSample'])
+const props = defineProps({
+  showButton: {
+    type: Boolean,
+    default: true, // 기본은 버튼을 보이도록
+  },
+})
 const file = defineModel('file')
 const dialog = defineModel('dialog')
 

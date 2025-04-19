@@ -19,6 +19,7 @@ import EmployeeDetailPage from '@/views/employee/EmployeeDetailPage.vue'
 import ProjectDetailPage from '@/views/project/ProjectDetailPage.vue'
 import EmployeeCreatePopup from '@/views/employee/EmployeeCreatePopup.vue'
 import { useToast } from 'vue-toastification'
+import EmployeeSalayPage from '@/views/employee/EmployeeSalaryPage.vue'
 import { useMemberStore } from '@/stores/member.js'
 
 const routes = [
@@ -345,11 +346,41 @@ const routes = [
           title: '구성원 관리',
           disabled: false,
           to: {
-            name: 'members',
+            name: 'employees',
           },
         },
         {
           title: '구성원 추가',
+          disabled: true,
+        },
+      ],
+    },
+  },
+  {
+    path: '/employeeSalaryUpdate',
+    name: 'employeeSalaryUpdate',
+    component: EmployeeSalayPage,
+    meta: {
+      layout: DefaultLayout,
+      activeIndex: 1,
+      title: '구성원 연봉 관리',
+      breadcrumbs: [
+        {
+          title: '홈',
+          disabled: false,
+          to: {
+            name: 'home',
+          },
+        },
+        {
+          title: '구성원 관리',
+          disabled: false,
+          to: {
+            name: 'employees',
+          },
+        },
+        {
+          title: '구성원 연봉 관리',
           disabled: true,
         },
       ],
