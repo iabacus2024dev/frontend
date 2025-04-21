@@ -24,7 +24,7 @@
     </v-btn>
 
     <!-- 엑셀 업로드 버튼 -->
-    <v-btn @click="openDialog" prepend-icon="mdi-microsoft-excel" color="#eb6129" elevation="1">
+    <v-btn v-if="btnUpVisible" @click="openDialog" prepend-icon="mdi-microsoft-excel" color="#eb6129" elevation="1">
       엑셀 업로드
     </v-btn>
   </v-card>
@@ -53,7 +53,7 @@
 </template>
 
 <script setup>
-import { defineEmits, defineProps, defineModel } from 'vue'
+import {defineEmits, defineProps, defineModel} from 'vue'
 
 const emits = defineEmits(['download', 'upload', 'downloadSample'])
 const props = defineProps({
@@ -61,6 +61,10 @@ const props = defineProps({
     type: Boolean,
     default: true, // 기본은 버튼을 보이도록
   },
+  btnUpVisible:{
+    type: Boolean,
+    default: true, // 기본은 버튼을 보이도록
+  }
 })
 const file = defineModel('file')
 const dialog = defineModel('dialog')
