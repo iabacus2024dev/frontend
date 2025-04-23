@@ -28,25 +28,51 @@
       <v-spacer />
 
       <div class="justify-end d-flex align-center">
-        <v-switch v-model="isDark" @click="toggleTheme" hide-details class="me-4" inset>
+        <v-switch
+          v-model="isDark"
+          @click="toggleTheme"
+          hide-details
+          class="me-4"
+          inset
+          color="#eb6129"
+        >
           <template v-slot:prepend>
-            <v-icon>{{ isDark ? 'mdi-weather-night' : 'mdi-white-balance-sunny' }}</v-icon>
+            <v-icon :color="isDark ? '#eb6129' : '#eb6129'">{{
+              isDark ? 'mdi-weather-night' : 'mdi-white-balance-sunny'
+            }}</v-icon>
           </template>
         </v-switch>
         <span v-if="$vuetify.display.mdAndUp">{{ name }}님</span>
         <v-btn class="ms-1" icon>
-          <v-avatar icon="mdi-account-circle" />
+          <v-avatar icon="mdi-account" size="36" color="#eb6129" />
           <v-menu activator="parent" origin="top">
             <v-list>
-              <v-list-item :title="name" :subtitle="email" />
+              <v-list-item :title="name" :subtitle="email">
+                <template v-slot:prepend>
+                  <v-avatar size="36" color="#eb6129">
+                    <v-icon>mdi-account</v-icon>
+                  </v-avatar>
+                </template>
+              </v-list-item>
               <v-divider></v-divider>
               <v-list-item
                 link
                 title="마이페이지"
                 @click="goTo('/profiles')"
                 :active="activeIndex === 5"
-              />
-              <v-list-item link title="로그아웃" @click="logout" />
+                :color="activeIndex === 5 ? '#eb6129' : undefined"
+              >
+                <template v-slot:prepend>
+                  <v-icon :color="activeIndex === 5 ? '#eb6129' : undefined"
+                    >mdi-account-circle</v-icon
+                  >
+                </template>
+              </v-list-item>
+              <v-list-item link title="로그아웃" @click="confirmLogout">
+                <template v-slot:prepend>
+                  <v-icon>mdi-logout</v-icon>
+                </template>
+              </v-list-item>
             </v-list>
           </v-menu>
         </v-btn>
@@ -57,21 +83,55 @@
   <v-navigation-drawer
     v-if="$vuetify.display.smAndDown"
     v-model="drawer"
-    location="top"
+    location="left"
     temporary
-    width="355"
+    width="280"
   >
-    <v-list class="py-0" slim v-for="(item, i) in items" :key="i">
+    <v-list-item class="pa-4">
+      <v-img
+        max-width="120"
+        @click="goTo('/')"
+        src="https://ezportal.bizmeka.com/companyImage/T31366/T31366_100_69bd36e2ee32422087c5d4203224b81a.png"
+      />
+    </v-list-item>
+    <v-divider></v-divider>
+    <v-list>
       <v-list-item
-        link
+        v-for="(item, i) in items"
+        :key="i"
         :title="item.text"
         :active="i === activeIndex"
+        :color="i === activeIndex ? '#eb6129' : undefined"
         @click="goTo(item.path)"
-        class="me-2 text-none"
-        slim
-      />
+        class="mb-1"
+        link
+      >
+        <template v-slot:prepend>
+          <v-icon :color="i === activeIndex ? '#eb6129' : undefined">{{
+            getIconForRoute(item.text)
+          }}</v-icon>
+        </template>
+      </v-list-item>
+      <v-divider class="my-2"></v-divider>
+      <v-list-item title="마이페이지" @click="goTo('/profiles')" :active="activeIndex === 5" link>
+        <template v-slot:prepend>
+          <v-icon>mdi-account-circle</v-icon>
+        </template>
+      </v-list-item>
+      <v-list-item title="로그아웃" @click="confirmLogout" link>
+        <template v-slot:prepend>
+          <v-icon>mdi-logout</v-icon>
+        </template>
+      </v-list-item>
     </v-list>
   </v-navigation-drawer>
+
+  <!-- 로그아웃 확인 다이얼로그 -->
+  <DialogComponent
+    :model="logoutDialogModel"
+    @close-dialog="handleDialogClose"
+    @cancel-dialog="handleDialogCancel"
+  />
 </template>
 
 <script setup>
@@ -80,6 +140,7 @@ import { useRouter } from 'vue-router'
 import { useMemberStore } from '@/stores/member.js'
 import { fetchLogout } from '@/apis/authService.js'
 import { useTheme } from 'vuetify'
+import DialogComponent from '@/components/common/DialogComponent.vue'
 
 const router = useRouter()
 
@@ -92,6 +153,41 @@ const items = router
   .map((route) => ({ text: route.meta.title, path: route.path }))
 
 const goTo = (path) => router.push(path)
+const getIconForRoute = (routeName) => {
+  const icons = {
+    대시보드: 'mdi-view-dashboard',
+    프로젝트: 'mdi-briefcase',
+    구성원: 'mdi-account-group',
+    협력사: 'mdi-handshake',
+    매출: 'mdi-chart-line',
+    권한: 'mdi-shield-account',
+  }
+  return icons[routeName] || 'mdi-circle-small'
+}
+
+const logoutDialogModel = ref(null)
+
+const confirmLogout = () => {
+  logoutDialogModel.value = {
+    id: 'logout-dialog',
+    title: '로그아웃 확인',
+    contents: '정말 로그아웃 하시겠습니까?'
+  }
+}
+
+const handleDialogClose = (event) => {
+  if (event.dialogId === 'logout-dialog') {
+    logout()
+  }
+  logoutDialogModel.value = null
+}
+
+const handleDialogCancel = (dialogId) => {
+  if (dialogId === 'logout-dialog') {
+    logoutDialogModel.value = null
+  }
+}
+
 const logout = () => {
   useMemberStore().logout()
   fetchLogout()
