@@ -45,7 +45,7 @@
       <v-btn variant="tonal" class="btn-color mr-2" @click="handleProjectEditButtonClick"
         >프로젝트 수정</v-btn
       >
-      <v-btn variant="tonal" class="btn-color" @click="handleProjectDeleteButtonClick"
+      <v-btn color="#eb6129" variant="outlined" @click="handleProjectDeleteButtonClick"
         >프로젝트 삭제
       </v-btn>
     </v-col>

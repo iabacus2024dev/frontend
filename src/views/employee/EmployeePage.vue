@@ -259,6 +259,10 @@ const createDialogs = () => {
     component: EmployeeCreatePopup,
     fnCallback: (data) => {
       console.log('받은 데이터: ', data)
+      if (data === null) {
+        toast.error('입력 값을 확인해주세요.')
+        return
+      }
       fetchCreateEmployee(data)
     },
   })

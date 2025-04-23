@@ -6,7 +6,11 @@
     <VCardText>
       <VRow class="v-row--no-gutters">
         <VCol cols="12" md="12">
-          <VTextField v-model="mainCompany" label="원청사" variant="outlined" density="compact" />
+          <VTextField v-model="mainCompany" variant="outlined" density="compact" :rules="[requiredRule]">
+            <template v-slot:label>
+              원청사 <span class="required-field">*</span>
+            </template>
+          </VTextField>
         </VCol>
 
         <VCol cols="12" md="12">
@@ -67,9 +71,16 @@ const handlePhoneInput = (event) => {
   formattedMainCompanyRepPhone.value = formatPhoneNumberInput(standardized)
 }
 
+// 필수 입력 규칙: 값이 없으면 에러 메시지 출력
+const requiredRule = (value) => !!value || '필수 입력 항목입니다.'
+
 // 전화번호 유효성 검사 규칙
 const phoneRule = (value) =>
   !value || isValidPhoneNumber(value) || '유효한 전화번호를 입력해주세요.'
 </script>
 
-<style scoped></style>
+<style scoped>
+.required-field {
+  color: red;
+}
+</style>

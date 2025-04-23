@@ -171,7 +171,11 @@ const createDialogs = () => {
     component: PartnersCreatePopup,
     fnCallback: (data) => {
       console.log('받은 데이터: ', data)
-      fetchCreatePartners(data)
+      if (data) {
+        fetchCreatePartners(data)
+      } else {
+        toast.error('입력 값을 확인해주세요. 필수 항목을 모두 입력해야 합니다.')
+      }
     },
   })
 }

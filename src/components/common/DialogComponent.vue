@@ -19,6 +19,7 @@
             text="등록"
             @click="handleConfirm"
             class="confirm-btn"
+            :disabled="!isFormValid"
           ></v-btn>
           <v-btn v-else text="확인" @click="closeDialog" class="confirm-btn"></v-btn>
           <v-btn text="취소" @click="cancelDialog" class="cancel-btn"></v-btn>
@@ -29,10 +30,21 @@
 </template>
 
 <script setup>
-import { defineEmits, defineProps, ref, toRaw, watch } from 'vue'
+import { computed, defineEmits, defineProps, ref, toRaw, watch } from 'vue'
 
 const isDialogOpen = ref(false) // 다이얼로그 열림 여부
 const dialogContent = ref(null)
+
+// 폼 유효성 상태 확인
+const isFormValid = computed(() => {
+  // dialogContent가 존재하고 formValid 속성이 있는 경우 해당 값 반환
+  // 없는 경우 true 반환 (버튼 활성화)
+  return (
+    !dialogContent.value ||
+    dialogContent.value.formValid === undefined ||
+    dialogContent.value.formValid
+  )
+})
 
 const props = defineProps({ model: Object })
 const emits = defineEmits(['close-dialog', 'cancel-dialog'])
@@ -83,12 +95,12 @@ const cancelDialog = () => {
 </script>
 
 <style scoped>
-.confirm-btn {
+.cancel-btn {
   background-color: lightgray;
   color: white;
 }
 
-.cancel-btn {
+.confirm-btn {
   background-color: #eb6129;
   color: white;
 }

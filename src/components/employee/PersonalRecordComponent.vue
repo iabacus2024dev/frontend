@@ -6,52 +6,74 @@
     <VCardText>
       <VSelect
         v-model="type"
-        label="직원유형"
         variant="outlined"
         density="compact"
         :items="typeOptions"
         item-title="label"
         item-value="value"
-      />
+        :rules="getRules('type')"
+      >
+        <template v-slot:label> 직원유형 <span class="required-field">*</span> </template>
+      </VSelect>
       <VSelect
         v-model="rank"
-        label="직급"
         variant="outlined"
         density="compact"
         :items="rankOptions"
         item-title="label"
         item-value="value"
-      />
+        :rules="getRules('rank')"
+      >
+        <template v-slot:label> 직급 <span class="required-field">*</span> </template>
+      </VSelect>
       <VSelect
         v-model="grade"
-        label="등급"
         variant="outlined"
         density="compact"
         :items="gradeOptions"
-      />
+        :rules="getRules('grade')"
+      >
+        <template v-slot:label> 등급 <span class="required-field">*</span> </template>
+      </VSelect>
       <VSelect
         v-model="department"
-        label="소속팀"
         variant="outlined"
         density="compact"
         :items="teamOptions"
         item-title="name"
         item-value="id"
         return-object
+        :rules="[requiredRule]"
       >
+        <template v-slot:label> 소속팀 <span class="required-field">*</span> </template>
       </VSelect>
     </VCardText>
   </VCard>
 </template>
 
 <script setup>
-import { defineModel, onMounted, ref } from 'vue'
+import { defineModel, defineProps, onMounted, ref } from 'vue'
 import { getDepartments } from '@/apis/teamService.js'
 
 const type = defineModel('type')
 const rank = defineModel('rank')
 const grade = defineModel('grade')
 const department = defineModel('department')
+
+const props = defineProps({
+  rules: {
+    type: Object,
+    default: () => ({}),
+  },
+})
+
+// 필수 입력 규칙: 값이 없으면 에러 메시지 출력
+const requiredRule = (value) => !!value || '필수 입력 항목입니다.'
+
+// 필드별 규칙 가져오기
+const getRules = (field) => {
+  return props.rules && props.rules[field] ? props.rules[field] : [requiredRule]
+}
 
 const typeOptions = ref(['정직원', '프리랜서', '외주'])
 const rankOptions = ref([
@@ -82,5 +104,9 @@ onMounted(async () => {
 .small-card {
   max-width: 600px;
   margin: auto;
+}
+
+.required-field {
+  color: red;
 }
 </style>

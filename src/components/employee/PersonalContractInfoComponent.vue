@@ -6,12 +6,13 @@
     <VCardText>
       <VTextField
         v-model="joinDate"
-        label="입사일"
         variant="outlined"
         density="compact"
         type="date"
         :rules="[requiredRule]"
-      />
+      >
+        <template v-slot:label> 입사일 <span class="required-field">*</span> </template>
+      </VTextField>
 
       <v-row>
         <v-col cols="10">
@@ -24,7 +25,9 @@
           />
         </v-col>
         <v-col cols="2">
-          <VBtn @click="handleLeave" v-if="showLeaveButton" class="quit-btn">퇴사처리</VBtn>
+          <VBtn @click="handleLeave" v-if="showLeaveButton" elevation="0" class="quit-btn"
+            >퇴사 처리</VBtn
+          >
         </v-col>
       </v-row>
 
@@ -137,5 +140,9 @@ const handleLeave = () => {
 .quit-btn {
   background-color: #eb6129;
   color: white;
+}
+
+.required-field {
+  color: red;
 }
 </style>

@@ -14,6 +14,7 @@
             density="compact"
             hint="숫자만 입력하세요"
             persistent-hint
+            :rules="[numberRule]"
           >
             <template v-slot:prepend>
               <v-icon>mdi-currency-krw</v-icon>
@@ -30,6 +31,7 @@
             density="compact"
             hint="숫자만 입력하세요"
             persistent-hint
+            :rules="[numberRule]"
           >
             <template v-slot:prepend>
               <v-icon>mdi-currency-krw</v-icon>
@@ -53,17 +55,25 @@ const formattedExpectedAmount = ref('')
 const formattedContractAmount = ref('')
 
 // Format the input values when they change
-watch(expectedAmount, (newValue) => {
-  if (newValue) {
-    formattedExpectedAmount.value = formatPrice(newValue, { showCurrency: false })
-  }
-}, { immediate: true })
+watch(
+  expectedAmount,
+  (newValue) => {
+    if (newValue) {
+      formattedExpectedAmount.value = formatPrice(newValue, { showCurrency: false })
+    }
+  },
+  { immediate: true },
+)
 
-watch(contractAmount, (newValue) => {
-  if (newValue) {
-    formattedContractAmount.value = formatPrice(newValue, { showCurrency: false })
-  }
-}, { immediate: true })
+watch(
+  contractAmount,
+  (newValue) => {
+    if (newValue) {
+      formattedContractAmount.value = formatPrice(newValue, { showCurrency: false })
+    }
+  },
+  { immediate: true },
+)
 
 // Parse the formatted input back to a number
 const parseFormattedValue = (formattedValue) => {
@@ -91,6 +101,14 @@ const handleContractAmountInput = (event) => {
   } else {
     formattedContractAmount.value = ''
   }
+}
+
+// 숫자 유효성 검사 규칙
+const numberRule = (value) => {
+  if (!value) return true // 값이 없으면 통과 (필수 항목이 아님)
+  // 콤마(,)를 제거하고 숫자 검증
+  const cleanValue = value.toString().replace(/,/g, '')
+  return (!isNaN(parseFloat(cleanValue)) && isFinite(cleanValue)) || '유효한 숫자를 입력해주세요.'
 }
 </script>
 
