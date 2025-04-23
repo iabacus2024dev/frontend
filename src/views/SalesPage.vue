@@ -29,6 +29,7 @@ import TableComponent from "@/components/table/TableComponent.vue"
 import ExcelActionsComponent from "@/components/common/ExcelActionsComponent.vue"
 import {getAggregate} from "@/apis/salesService.js";
 import {useRouter} from "vue-router";
+import { formatPrice, formatWithUnit } from '@/utils/MoneyUtils.js';
 
 const title = ref('장표 조회')
 const dialog = ref(false)
@@ -114,16 +115,16 @@ const searchRows = ref([
   },
 ])
 
-// 숫자 포맷터
+// 숫자 포맷터 - 금액 단위로 표시
 const formatNumber = (num) => {
   if (num == null) return ''
-  return Number(num).toLocaleString()
+  return formatPrice(num, { showCurrency: false })
 }
 
 // 인건비(명) 통합
 const personnelCost = (num, count) => {
   if (num === 0) return '0'
-  return `${Number(num).toLocaleString()} (${count})`
+  return `${formatPrice(num, { showCurrency: false })} (${count})`
 }
 
 // handleSearch: SearchBarComponent에서 필터가 전달되면 저장

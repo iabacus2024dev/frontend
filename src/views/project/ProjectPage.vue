@@ -44,7 +44,7 @@ import {
   uploadProjects,
 } from '@/apis/projectService.js'
 import { useToast } from 'vue-toastification'
-import { formatPrice } from '@/utils/MoneyUtils.js'
+import { formatPrice, formatWithUnit } from '@/utils/MoneyUtils.js'
 import { useDialog } from '@/composables/useDialog.js'
 import ProjectCreatePopup from '@/views/project/ProjectCreatePopup.vue'
 
@@ -92,7 +92,7 @@ const headers = ref([
     title: '계약 금액',
     key: 'contractAmount',
     align: 'end',
-    value: (item) => formatPrice(item.contractAmount),
+    value: (item) => formatWithUnit(item.contractAmount),
     nowrap: true,
   },
   { title: '발주사', key: 'mainCompany', nowrap: true },
