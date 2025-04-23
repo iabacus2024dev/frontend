@@ -34,7 +34,6 @@
         label="연봉"
         variant="outlined"
         density="compact"
-        persistent-hint
       >
       </VTextField>
       <VTextField

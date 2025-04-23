@@ -28,12 +28,13 @@
         :rules="[requiredRule]"
       />
       <VTextField
-        v-model="phone"
+        :model-value="formattedPhone"
+        @input="handlePhoneInput"
         label="전화번호"
         variant="outlined"
         density="compact"
-        :rules="[requiredRule]"
-      />
+        :rules="[requiredRule, phoneRule]"
+      ></VTextField>
       <VTextField
         v-model="birthDate"
         label="생년월일"
@@ -47,12 +48,39 @@
 </template>
 
 <script setup>
-import { defineModel, defineProps } from 'vue'
+import { defineModel, defineProps, ref, watch } from 'vue'
+import {
+  formatPhoneNumberInput,
+  isValidPhoneNumber,
+  standardizePhoneNumber,
+} from '@/utils/PhoneUtils.js'
 
 const email = defineModel('email')
 const name = defineModel('name')
 const phone = defineModel('phone')
 const birthDate = defineModel('birthDate')
+
+// Formatted display value for phone
+const formattedPhone = ref('')
+
+// Format the phone value when it changes
+watch(
+  phone,
+  (newValue) => {
+    if (newValue) {
+      formattedPhone.value = formatPhoneNumberInput(newValue)
+    }
+  },
+  { immediate: true },
+)
+
+// Handle phone input changes
+const handlePhoneInput = (event) => {
+  const inputValue = event.target.value
+  const standardized = standardizePhoneNumber(inputValue)
+  phone.value = standardized
+  formattedPhone.value = formatPhoneNumberInput(standardized)
+}
 
 const props = defineProps({
   showCheckEmail: {
@@ -63,6 +91,9 @@ const props = defineProps({
 
 // 필수 입력 규칙: 값이 없으면 에러 메시지 출력
 const requiredRule = (value) => !!value || '필수 입력 항목입니다.'
+
+// 전화번호 유효성 검사 규칙
+const phoneRule = (value) => isValidPhoneNumber(value) || '유효한 전화번호를 입력해주세요.'
 
 const handleCheckEmail = () => {
   console.log('중복 확인 버튼 클릭')

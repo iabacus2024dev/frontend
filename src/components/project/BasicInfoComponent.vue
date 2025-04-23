@@ -57,7 +57,14 @@
             density="compact"
           >
           </VTextField>
-          <VTextField v-model="pmPhone" label="PM 연락처" variant="outlined" density="compact" />
+          <VTextField
+            :model-value="formattedPmPhone"
+            @input="handlePhoneInput"
+            label="PM 연락처"
+            variant="outlined"
+            density="compact"
+            :rules="[phoneRule]"
+          ></VTextField>
         </VCol>
       </VRow>
     </VCardText>
@@ -67,6 +74,11 @@
 <script setup>
 import { defineModel, ref, watch } from 'vue'
 import { getTeamList } from '@/apis/teamService.js' // 추후 팀 목록은 받아와서 추가해야함
+import {
+  formatPhoneNumberInput,
+  isValidPhoneNumber,
+  standardizePhoneNumber,
+} from '@/utils/PhoneUtils.js'
 
 // 추후 팀 목록은 받아와서 추가해야함
 const projectTypeItems = ['SI', 'SM']
@@ -84,6 +96,32 @@ const name = defineModel('name')
 const department = defineModel('department')
 const pmName = defineModel('pmName')
 const pmPhone = defineModel('pmPhone')
+
+// Formatted display value for phone
+const formattedPmPhone = ref('')
+
+// Format the phone value when it changes
+watch(
+  pmPhone,
+  (newValue) => {
+    if (newValue) {
+      formattedPmPhone.value = formatPhoneNumberInput(newValue)
+    }
+  },
+  { immediate: true },
+)
+
+// Handle phone input changes
+const handlePhoneInput = (event) => {
+  const inputValue = event.target.value
+  const standardized = standardizePhoneNumber(inputValue)
+  pmPhone.value = standardized
+  formattedPmPhone.value = formatPhoneNumberInput(standardized)
+}
+
+// 전화번호 유효성 검사 규칙
+const phoneRule = (value) =>
+  !value || isValidPhoneNumber(value) || '유효한 전화번호를 입력해주세요.'
 const contractDate = defineModel('contractDate')
 const startDate = defineModel('startDate')
 const endDate = defineModel('endDate')

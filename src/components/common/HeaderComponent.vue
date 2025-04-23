@@ -68,7 +68,7 @@
                   >
                 </template>
               </v-list-item>
-              <v-list-item link title="로그아웃" @click="confirmLogout">
+              <v-list-item link title="로그아웃" @click="logout">
                 <template v-slot:prepend>
                   <v-icon>mdi-logout</v-icon>
                 </template>
@@ -125,22 +125,13 @@
       </v-list-item>
     </v-list>
   </v-navigation-drawer>
-
-  <!-- 로그아웃 확인 다이얼로그 -->
-  <DialogComponent
-    :model="logoutDialogModel"
-    @close-dialog="handleDialogClose"
-    @cancel-dialog="handleDialogCancel"
-  />
 </template>
 
 <script setup>
 import { computed, onMounted, ref, shallowRef } from 'vue'
 import { useRouter } from 'vue-router'
-import { useMemberStore } from '@/stores/member.js'
 import { fetchLogout } from '@/apis/authService.js'
 import { useTheme } from 'vuetify'
-import DialogComponent from '@/components/common/DialogComponent.vue'
 
 const router = useRouter()
 
@@ -164,33 +155,9 @@ const getIconForRoute = (routeName) => {
   }
   return icons[routeName] || 'mdi-circle-small'
 }
-
-const logoutDialogModel = ref(null)
-
-const confirmLogout = () => {
-  logoutDialogModel.value = {
-    id: 'logout-dialog',
-    title: '로그아웃 확인',
-    contents: '정말 로그아웃 하시겠습니까?'
-  }
-}
-
-const handleDialogClose = (event) => {
-  if (event.dialogId === 'logout-dialog') {
-    logout()
-  }
-  logoutDialogModel.value = null
-}
-
-const handleDialogCancel = (dialogId) => {
-  if (dialogId === 'logout-dialog') {
-    logoutDialogModel.value = null
-  }
-}
-
-const logout = () => {
-  useMemberStore().logout()
-  fetchLogout()
+const logout = async () => {
+  await fetchLogout()
+  await router.push('/')
 }
 const activeIndex = computed(() => router.currentRoute.value.meta.activeIndex)
 
