@@ -1,7 +1,6 @@
 <template>
   <div>
     <div class="d-flex align-center mb-4">
-      <v-icon size="large" color="#eb6129" class="mr-2">mdi-account-circle</v-icon>
       <h1 class="text-h4 font-weight-bold">마이페이지</h1>
     </div>
 
