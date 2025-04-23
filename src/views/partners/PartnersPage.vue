@@ -43,6 +43,7 @@ import {
   uploadPartners,
 } from '@/apis/partnerService.js'
 import ExcelActionsComponent from '@/components/common/ExcelActionsComponent.vue'
+import { formatPhoneNumber } from '@/utils/PhoneUtils.js'
 
 import { useRoute, useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
@@ -83,7 +84,12 @@ const headers = ref([
   { title: '협력사명', key: 'name', nowrap: true },
   { title: '대표자명', key: 'ceoName', nowrap: true },
   { title: '영업대표명', key: 'salesRepName', nowrap: true },
-  { title: '영업대표 연락처', key: 'salesRepPhone', nowrap: true },
+  {
+    title: '영업대표 연락처',
+    key: 'salesRepPhone',
+    nowrap: true,
+    value: item => formatPhoneNumber(item.salesRepPhone)
+  },
   { title: '영업대표 이메일', key: 'salesRepEmail', nowrap: true },
   { title: '평가등급', key: 'grade', nowrap: true },
   { title: '주소', key: 'address', nowrap: true },

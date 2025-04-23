@@ -183,9 +183,9 @@ const getScopeText = (authority) => {
   // 현재는 임의로 설정
   if (authority.name.includes('전체')) return '전체'
   if (authority.name.includes('프로젝트')) return '프로젝트'
-  if (authority.name.includes('구성원')) return '팀'
-  if (authority.name.includes('협력사')) return '팀'
-  return '개인'
+  if (authority.name.includes('팀')) return '팀'
+  if (authority.name.includes('본인')) return '본인'
+  return '본인'
 }
 
 const getScopeColor = (authority) => {
@@ -194,7 +194,7 @@ const getScopeColor = (authority) => {
     전체: 'purple',
     프로젝트: 'indigo',
     팀: 'blue',
-    개인: 'teal',
+    본인: 'teal',
   }
 
   return colors[scope] || 'grey'

@@ -60,6 +60,7 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import { getMyProjects } from '@/apis/projectService.js'
+import { formatCurrency, formatWithUnit } from '@/utils/MoneyUtils.js'
 
 const projects = ref([])
 const loading = ref(true)
@@ -102,9 +103,9 @@ const formatDateRange = (startDate, endDate) => {
   return `${startDate} ~ ${endDate}`
 }
 
+// Use the formatWithUnit function from MoneyUtils.js
 const formatAmount = (amount) => {
-  if (!amount) return '금액 정보 없음'
-  return new Intl.NumberFormat('ko-KR', { style: 'currency', currency: 'KRW' }).format(amount)
+  return formatWithUnit(amount)
 }
 
 onMounted(() => {

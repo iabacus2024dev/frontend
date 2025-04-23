@@ -27,13 +27,13 @@
         :rules="[rules.required]"
       />
       <v-text-field
-        v-model="salesRepPhone"
+        :model-value="formattedSalesRepPhone"
+        @input="handlePhoneInput"
         label="영업대표 연락처"
         variant="outlined"
         density="compact"
-        placeholder="010-1234-2345"
-        :rules="[rules.required]"
-      />
+        :rules="[rules.required, phoneRule]"
+      ></v-text-field>
       <v-text-field
         v-model="salesRepEmail"
         label="영업대표 이메일"
@@ -69,12 +69,39 @@
 </template>
 
 <script setup>
-import { defineModel, ref } from 'vue'
+import { defineModel, ref, watch } from 'vue'
+import {
+  formatPhoneNumberInput,
+  isValidPhoneNumber,
+  standardizePhoneNumber,
+} from '@/utils/PhoneUtils.js'
 
 const name = defineModel('name')
 const ceoName = defineModel('ceoName')
 const salesRepName = defineModel('salesRepName')
 const salesRepPhone = defineModel('salesRepPhone')
+
+// Formatted display value for phone
+const formattedSalesRepPhone = ref('')
+
+// Format the phone value when it changes
+watch(
+  salesRepPhone,
+  (newValue) => {
+    if (newValue) {
+      formattedSalesRepPhone.value = formatPhoneNumberInput(newValue)
+    }
+  },
+  { immediate: true },
+)
+
+// Handle phone input changes
+const handlePhoneInput = (event) => {
+  const inputValue = event.target.value
+  const standardized = standardizePhoneNumber(inputValue)
+  salesRepPhone.value = standardized
+  formattedSalesRepPhone.value = formatPhoneNumberInput(standardized)
+}
 const salesRepEmail = defineModel('salesRepEmail')
 const zipcode = defineModel('zipcode')
 const street = defineModel('street')
@@ -82,10 +109,12 @@ const detail = defineModel('detail')
 
 const isAddressLocked = ref(false)
 
+// 전화번호 유효성 검사 규칙
+const phoneRule = (value) =>
+  !value || isValidPhoneNumber(value) || '유효한 전화번호를 입력해주세요.'
+
 const rules = {
   required: (value) => !!value || '필수 입력 항목입니다.',
-  phone: (value) =>
-    /^(010\d{4}\d{4})$/.test(value) || '올바른 전화번호 형식(01012341234)을 입력하세요.',
 }
 
 const openPostcode = () => {

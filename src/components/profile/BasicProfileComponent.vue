@@ -64,6 +64,7 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import { getMyEmployeeDetail } from '@/apis/employeeService.js'
+import { formatPhoneNumber } from '@/utils/PhoneUtils.js'
 
 const user = ref({})
 const loading = ref(true)
@@ -85,10 +86,10 @@ const formatDate = (dateString) => {
   return date.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })
 }
 
+// Use the imported formatPhoneNumber function
 const formatPhone = (phone) => {
   if (!phone) return null
-  // Format phone number as XXX-XXXX-XXXX
-  return phone.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3')
+  return formatPhoneNumber(phone)
 }
 
 onMounted(() => {

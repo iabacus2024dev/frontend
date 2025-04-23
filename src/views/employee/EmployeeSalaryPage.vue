@@ -38,6 +38,7 @@ import SearchBarComponent from '@/components/searchbar/SearchBarComponent.vue'
 import ExcelActionsComponent from '@/components/common/ExcelActionsComponent.vue'
 import { downloadEmployees, getEmployees, uploadEmployeeSales } from '@/apis/employeeService.js'
 import { getDepartments, getTeamList } from '@/apis/teamService'
+import { formatPrice } from '@/utils/MoneyUtils.js'
 
 const router = useRouter()
 const route = useRoute()
@@ -89,7 +90,12 @@ const headers = ref([
   { title: '직원유형', key: 'type', nowrap: true },
   { title: '등급', key: 'grade', nowrap: true },
   { title: '직급', key: 'rank', nowrap: true },
-  { title: '연봉', key: 'annualSalary', nowrap: true },
+  {
+    title: '연봉',
+    key: 'annualSalary',
+    nowrap: true,
+    value: item => formatPrice(item.annualSalary)
+  },
 ])
 
 // 검색 조건
