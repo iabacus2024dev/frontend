@@ -1,16 +1,23 @@
 <template>
-  <v-row>
-    <!-- Sidebar Profile Card -->
-    <v-col cols="12" md="4">
-      <BasicProfileComponent />
-      <PasswordChangeComponent />
-      <DeleteMemberComponent />
-    </v-col>
-    <v-col cols="12" md="8">
-      <ProjectListComponent />
-      <RoleListComponent />
-    </v-col>
-  </v-row>
+  <div>
+    <div class="d-flex align-center mb-4">
+      <v-icon size="large" color="#eb6129" class="mr-2">mdi-account-circle</v-icon>
+      <h1 class="text-h4 font-weight-bold">마이페이지</h1>
+    </div>
+
+    <v-row>
+      <!-- Sidebar Profile Card -->
+      <v-col cols="12" md="4">
+        <BasicProfileComponent />
+        <PasswordChangeComponent />
+        <DeleteMemberComponent />
+      </v-col>
+      <v-col cols="12" md="8">
+        <ProjectListComponent />
+        <RoleListComponent />
+      </v-col>
+    </v-row>
+  </div>
 </template>
 
 <script setup>
