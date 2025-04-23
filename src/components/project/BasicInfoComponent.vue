@@ -6,21 +6,33 @@
     <VCardText>
       <VRow>
         <VCol>
-          <VTextField v-model="name" label="프로젝트명" variant="outlined" density="compact" />
+          <VTextField v-model="name" variant="outlined" density="compact" :rules="[requiredRule]">
+            <template v-slot:label>
+              프로젝트명 <span class="required-field">*</span>
+            </template>
+          </VTextField>
           <VSelect
             v-model="type"
             :items="projectTypeItems"
-            label="사업유형"
             variant="outlined"
             density="compact"
-          />
+            :rules="[requiredRule]"
+          >
+            <template v-slot:label>
+              사업유형 <span class="required-field">*</span>
+            </template>
+          </VSelect>
           <VTextField
             v-model="contractDate"
-            label="계약일"
             type="date"
             variant="outlined"
             density="compact"
-          />
+            :rules="[requiredRule]"
+          >
+            <template v-slot:label>
+              계약일 <span class="required-field">*</span>
+            </template>
+          </VTextField>
           <VTextField
             v-model="startDate"
             label="계약시작일자"
@@ -31,7 +43,11 @@
           <VTextField v-model="pmName" label="PM" variant="outlined" density="compact" />
         </VCol>
         <VCol>
-          <VTextField v-model="code" label="프로젝트코드" variant="outlined" density="compact" />
+          <VTextField v-model="code" variant="outlined" density="compact" :rules="[requiredRule]">
+            <template v-slot:label>
+              프로젝트코드 <span class="required-field">*</span>
+            </template>
+          </VTextField>
           <VSelect
             v-model="status"
             :items="progressStatusItems"
@@ -42,13 +58,17 @@
           <VSelect
             v-model="department"
             :items="contractTeamItems"
-            label="프로젝트 계약 팀"
             variant="outlined"
             density="compact"
             item-title="name"
             item-value="id"
             return-object
-          />
+            :rules="[requiredRule]"
+          >
+            <template v-slot:label>
+              프로젝트 계약 팀 <span class="required-field">*</span>
+            </template>
+          </VSelect>
           <VTextField
             v-model="endDate"
             label="계약종료일자"
@@ -119,6 +139,9 @@ const handlePhoneInput = (event) => {
   formattedPmPhone.value = formatPhoneNumberInput(standardized)
 }
 
+// 필수 입력 규칙: 값이 없으면 에러 메시지 출력
+const requiredRule = (value) => !!value || '필수 입력 항목입니다.'
+
 // 전화번호 유효성 검사 규칙
 const phoneRule = (value) =>
   !value || isValidPhoneNumber(value) || '유효한 전화번호를 입력해주세요.'
@@ -154,5 +177,9 @@ fetchGetTeams()
 /* 기본적으로 카드의 높이는 auto로 설정하여 내용에 맞게 자동 조절 */
 .card-responsive {
   height: 95%;
+}
+
+.required-field {
+  color: red;
 }
 </style>

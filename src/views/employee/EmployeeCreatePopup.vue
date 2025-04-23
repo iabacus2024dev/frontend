@@ -20,6 +20,12 @@
           v-model:rank="employeeCreate.rank"
           v-model:grade="employeeCreate.grade"
           v-model:department="employeeCreate.department"
+          :rules="{
+            type: [rules.required],
+            rank: [rules.required],
+            grade: [rules.required],
+            department: [rules.required],
+          }"
         />
       </v-col>
       <v-col>
@@ -35,7 +41,6 @@
         />
         <CommentComponent
           v-model:comment="employeeCreate.comment"
-          :rules="{ comment: [rules.required] }"
         />
       </v-col>
     </v-row>
@@ -72,13 +77,35 @@ const rules = {
 }
 
 const getFormData = () => {
-  let response = employeeCreate.value
-  response.departmentId = response.department.id
-  return response
+  if (!formValid.value) {
+    // 폼이 유효하지 않으면 null 반환
+    return null
+  }
+
+  // 빈 값을 제외한 새 객체 생성
+  const filteredData = {}
+
+  // 모든 필드를 순회하며 빈 값이 아닌 경우만 새 객체에 추가
+  Object.entries(employeeCreate.value).forEach(([key, value]) => {
+    // 빈 문자열이 아닌 경우에만 추가
+    if (value !== '') {
+      filteredData[key] = value
+    }
+  })
+
+  // department 객체에서 departmentId 추출
+  if (filteredData.department && filteredData.department.id) {
+    filteredData.departmentId = filteredData.department.id
+  }
+
+  return filteredData
 }
 
 defineExpose({
   getFormData,
+  get formValid() {
+    return formValid.value
+  }
 })
 </script>
 

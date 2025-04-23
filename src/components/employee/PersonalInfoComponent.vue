@@ -6,43 +6,42 @@
     <VCardText>
       <v-row>
         <v-col cols="9">
-          <VTextField
-            v-model="email"
-            label="이메일"
-            variant="outlined"
-            density="compact"
-            :rules="[requiredRule]"
-          />
+          <VTextField v-model="email" variant="outlined" density="compact" :rules="[requiredRule]">
+            <template v-slot:label> 이메일 <span class="required-field">*</span> </template>
+          </VTextField>
         </v-col>
         <v-col cols="3">
-          <VBtn v-if="showCheckEmail" @click="handleCheckEmail" class="check-mail-btn">
+          <VBtn
+            v-if="showCheckEmail"
+            @click="handleCheckEmail"
+            class="check-mail-btn"
+            elevation="0"
+          >
             중복확인
           </VBtn>
         </v-col>
       </v-row>
-      <VTextField
-        v-model="name"
-        label="이름"
-        variant="outlined"
-        density="compact"
-        :rules="[requiredRule]"
-      />
+      <VTextField v-model="name" variant="outlined" density="compact" :rules="[requiredRule]">
+        <template v-slot:label> 이름 <span class="required-field">*</span> </template>
+      </VTextField>
       <VTextField
         :model-value="formattedPhone"
         @input="handlePhoneInput"
-        label="전화번호"
         variant="outlined"
         density="compact"
         :rules="[requiredRule, phoneRule]"
-      ></VTextField>
+      >
+        <template v-slot:label> 전화번호 <span class="required-field">*</span> </template>
+      </VTextField>
       <VTextField
         v-model="birthDate"
-        label="생년월일"
         variant="outlined"
         density="compact"
         type="date"
         :rules="[requiredRule]"
-      />
+      >
+        <template v-slot:label> 생년월일 <span class="required-field">*</span> </template>
+      </VTextField>
     </VCardText>
   </VCard>
 </template>
@@ -109,5 +108,9 @@ const handleCheckEmail = () => {
 .check-mail-btn {
   background-color: #eb6129;
   color: white;
+}
+
+.required-field {
+  color: red;
 }
 </style>

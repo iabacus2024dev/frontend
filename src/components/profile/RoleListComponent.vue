@@ -6,18 +6,18 @@
     </v-card-title>
     <v-divider class="my-3"></v-divider>
 
-    <div v-if="loading" class="d-flex justify-center align-center pa-4">
+    <div v-if="loading" class="d-flex justify-center align-center">
       <v-progress-circular indeterminate color="#eb6129"></v-progress-circular>
     </div>
 
-    <div v-else-if="authorities.length === 0" class="text-center pa-4">
+    <div v-else-if="authorities.length === 0" class="text-center">
       <v-icon size="64" color="grey lighten-1">mdi-shield-off-outline</v-icon>
       <div class="text-subtitle-1 mt-2 text-grey">권한이 없습니다.</div>
     </div>
 
     <v-card-text v-else>
       <!-- 권한 카테고리별 그룹화 -->
-      <v-expansion-panels variant="accordion" class="mb-4">
+      <v-expansion-panels variant="accordion" class="mb-4" elevation="0">
         <v-expansion-panel
           v-for="(group, category) in groupedAuthorities"
           :key="category"
@@ -179,13 +179,7 @@ const getActionColor = (authority) => {
 
 // 권한 범위 관련 함수들
 const getScopeText = (authority) => {
-  // 실제로는 authority 객체에서 범위 정보를 추출해야 함
-  // 현재는 임의로 설정
-  if (authority.name.includes('전체')) return '전체'
-  if (authority.name.includes('프로젝트')) return '프로젝트'
-  if (authority.name.includes('팀')) return '팀'
-  if (authority.name.includes('본인')) return '본인'
-  return '본인'
+  return authority.range
 }
 
 const getScopeColor = (authority) => {

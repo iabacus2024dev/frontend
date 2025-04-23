@@ -30,7 +30,9 @@
       <v-col class="d-flex justify-end">
         <VCardActions>
           <VBtn class="update-btn" @click="handleUpdateEmployee">구성원 수정</VBtn>
-          <VBtn class="delete-btn" @click="handleDeleteEmployee">구성원 삭제</VBtn>
+          <VBtn class="delete-btn" color="#eb6129" variant="outlined" @click="handleDeleteEmployee"
+            >구성원 삭제</VBtn
+          >
         </VCardActions>
       </v-col>
     </v-row>
@@ -154,10 +156,6 @@ const cancel = () => {
   color: white;
 }
 .update-btn {
-  background-color: #eb6129;
-  color: white;
-}
-.delete-btn {
   background-color: #eb6129;
   color: white;
 }

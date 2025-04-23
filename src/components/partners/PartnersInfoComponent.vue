@@ -7,33 +7,45 @@
     <v-card-text>
       <v-text-field
         v-model="name"
-        label="협력사명"
         variant="outlined"
         density="compact"
         :rules="[rules.required]"
-      />
+      >
+        <template v-slot:label>
+          협력사명 <span class="required-field">*</span>
+        </template>
+      </v-text-field>
       <v-text-field
         v-model="ceoName"
-        label="대표자명"
         variant="outlined"
         density="compact"
         :rules="[rules.required]"
-      />
+      >
+        <template v-slot:label>
+          대표자명 <span class="required-field">*</span>
+        </template>
+      </v-text-field>
       <v-text-field
         v-model="salesRepName"
-        label="영업대표명"
         variant="outlined"
         density="compact"
         :rules="[rules.required]"
-      />
+      >
+        <template v-slot:label>
+          영업대표명 <span class="required-field">*</span>
+        </template>
+      </v-text-field>
       <v-text-field
         :model-value="formattedSalesRepPhone"
         @input="handlePhoneInput"
-        label="영업대표 연락처"
         variant="outlined"
         density="compact"
         :rules="[rules.required, phoneRule]"
-      ></v-text-field>
+      >
+        <template v-slot:label>
+          영업대표 연락처 <span class="required-field">*</span>
+        </template>
+      </v-text-field>
       <v-text-field
         v-model="salesRepEmail"
         label="영업대표 이메일"
@@ -133,5 +145,9 @@ const openPostcode = () => {
 .update-btn {
   background-color: #eb6129;
   color: white;
+}
+
+.required-field {
+  color: red;
 }
 </style>
