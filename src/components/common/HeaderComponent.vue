@@ -3,13 +3,12 @@
     <v-container class="mx-auto d-flex align-center justify-center" max-width="1440">
       <v-app-bar-nav-icon v-if="$vuetify.display.smAndDown" @click="drawer = !drawer" />
 
-      <v-img
-        class="me-sm-8"
-        max-width="120"
-        style="cursor: pointer"
+      <img
+        class="me-sm-8 logo-image"
+        style="cursor: pointer; height: 30px; object-fit: contain;"
         v-if="!$vuetify.display.smAndDown"
         @click="goTo('/')"
-        src="https://ezportal.bizmeka.com/companyImage/T31366/T31366_100_69bd36e2ee32422087c5d4203224b81a.png"
+        src="@/assets/ABACUS_CI_1.png"
       />
 
       <div v-if="$vuetify.display.mdAndUp">
@@ -88,10 +87,11 @@
     width="280"
   >
     <v-list-item class="pa-4">
-      <v-img
-        max-width="120"
+      <img
+        class="logo-image"
+        style="height: 30px; object-fit: contain;"
         @click="goTo('/')"
-        src="https://ezportal.bizmeka.com/companyImage/T31366/T31366_100_69bd36e2ee32422087c5d4203224b81a.png"
+        src="@/assets/ABACUS_CI_1.png"
       />
     </v-list-item>
     <v-divider></v-divider>
@@ -174,3 +174,9 @@ onMounted(() => {
   theme.global.name.value = isDark.value ? 'dark' : 'light'
 })
 </script>
+
+<style scoped>
+.logo-image {
+  padding: 4px;
+}
+</style>
