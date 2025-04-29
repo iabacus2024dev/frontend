@@ -25,7 +25,7 @@
   <v-row>
     <v-col class="btns-container">
       <v-btn variant="tonal" class="update-btn ml-2" @click="fnSaveBtn"> 협력사 수정 </v-btn>
-      <v-btn color="#eb6129" variant="outlined" class="ml-2" @click="fnDeleteBtn">
+      <v-btn color="primary" variant="outlined" class="ml-2" @click="fnDeleteBtn">
         협력사 삭제
       </v-btn>
     </v-col>
@@ -114,5 +114,11 @@ const fnAfterUpdateBtn = async () => {
 .update-btn {
   background-color: #eb6129;
   color: white;
+}
+
+.dialog-header {
+  background-color: rgb(var(--v-theme-primary));
+  color: white;
+  padding: 16px;
 }
 </style>

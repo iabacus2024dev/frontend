@@ -45,7 +45,7 @@
       <v-btn variant="tonal" class="btn-color mr-2" @click="handleProjectEditButtonClick"
         >프로젝트 수정</v-btn
       >
-      <v-btn color="#eb6129" variant="outlined" @click="handleProjectDeleteButtonClick"
+      <v-btn color="primary" variant="outlined" @click="handleProjectDeleteButtonClick"
         >프로젝트 삭제
       </v-btn>
     </v-col>
@@ -351,5 +351,11 @@ const handleContractRegisterButtonClick = () => {
 .btn-color {
   background-color: #eb6129;
   color: white;
+}
+
+.dialog-header {
+  background-color: rgb(var(--v-theme-primary));
+  color: white;
+  padding: 16px;
 }
 </style>

@@ -1,13 +1,13 @@
 <template xmlns="http://www.w3.org/1999/html">
   <v-card border="thin" class="mt-4 pa-4" variant="outlined">
     <v-card-title class="d-flex align-center">
-      <v-icon color="#eb6129" class="mr-2">mdi-shield-account</v-icon>
+      <v-icon color="primary" class="mr-2">mdi-shield-account</v-icon>
       <span class="text-h5 font-weight-bold">내 권한 목록</span>
     </v-card-title>
     <v-divider class="my-3"></v-divider>
 
     <div v-if="loading" class="d-flex justify-center align-center">
-      <v-progress-circular indeterminate color="#eb6129"></v-progress-circular>
+      <v-progress-circular indeterminate color="primary"></v-progress-circular>
     </div>
 
     <div v-else-if="authorities.length === 0" class="text-center">

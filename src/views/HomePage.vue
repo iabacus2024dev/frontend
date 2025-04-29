@@ -134,8 +134,6 @@ use([
   VisualMapComponent
 ])
 
-const theme = useTheme()
-
 // 데이터 상태
 const salesData = ref([])
 const lastYearSalesData = ref([])  // 전년도 데이터 추가
@@ -149,6 +147,13 @@ const summary = ref({
   costEfficiency: 0
 })
 
+const theme = useTheme()
+
+// 차트 텍스트 색상 계산
+const getTextColor = computed(() => {
+  return theme.global.current.value.dark ? '#FFFFFF' : '#333333'
+})
+
 // 부서별 매출 데이터
 const departmentSales = computed(() => {
   return salesData.value.map(dept => ({
@@ -158,11 +163,6 @@ const departmentSales = computed(() => {
     profit: dept.영업이익,
     achievementRate: dept.달성률
   }))
-})
-
-// 차트 텍스트 색상 계산
-const getTextColor = computed(() => {
-  return theme.global.current.value.dark ? '#FFFFFF' : '#333333'
 })
 
 // 부서별 차트 옵션
@@ -572,5 +572,9 @@ onMounted(() => {
 <style scoped>
 .chart {
   height: 300px;
+}
+
+.v-img {
+  background-color: white;
 }
 </style>

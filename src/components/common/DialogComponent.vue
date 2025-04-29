@@ -104,4 +104,12 @@ const cancelDialog = () => {
   background-color: #eb6129;
   color: white;
 }
+
+.dialog-header {
+  background-color: rgb(var(--v-theme-primary));
+  color: white;
+  padding: 16px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
 </style>

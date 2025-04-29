@@ -5,7 +5,7 @@
       class="mr-3"
       @click="emitDownload"
       prepend-icon="mdi-microsoft-excel"
-      color="#eb6129"
+      color="primary"
       elevation="1"
     >
       엑셀 다운로드
@@ -17,14 +17,14 @@
       class="mr-3"
       @click="emitDownloadSample"
       prepend-icon="mdi-microsoft-excel"
-      color="#eb6129"
+      color="primary"
       elevation="1"
     >
       엑셀 샘플 다운로드
     </v-btn>
 
     <!-- 엑셀 업로드 버튼 -->
-    <v-btn v-if="btnUpVisible" @click="openDialog" prepend-icon="mdi-microsoft-excel" color="#eb6129" elevation="1">
+    <v-btn v-if="btnUpVisible" @click="openDialog" prepend-icon="mdi-microsoft-excel" color="primary" elevation="1">
       엑셀 업로드
     </v-btn>
   </v-card>
@@ -92,5 +92,15 @@ const closeDialog = () => {
 .cancel-btn {
   background-color: lightgray;
   color: white;
+}
+
+.excel-actions {
+  margin-bottom: 16px;
+}
+
+.dialog-header {
+  background-color: rgb(var(--v-theme-primary));
+  color: white;
+  padding: 16px;
 }
 </style>

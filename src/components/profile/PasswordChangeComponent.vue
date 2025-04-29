@@ -1,7 +1,7 @@
 <template>
   <v-card border="thin" class="mt-4 pa-4" variant="outlined">
     <v-card-title class="d-flex align-center">
-      <v-icon color="#eb6129" class="mr-2">mdi-lock-reset</v-icon>
+      <v-icon color="primary" class="mr-2">mdi-lock-reset</v-icon>
       <span class="text-h5 font-weight-bold">비밀번호 변경</span>
     </v-card-title>
     <v-divider class="my-3"></v-divider>
@@ -57,7 +57,7 @@
             />
 
             <v-btn
-              color="#EB6129"
+              color="primary"
               size="large"
               block
               type="submit"
@@ -81,7 +81,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="grey-darken-1" variant="text" @click="dialog = false">취소</v-btn>
-          <v-btn color="#eb6129" variant="outlined" border="thin" @click="confirmChangePassword"
+          <v-btn color="primary" variant="outlined" border="thin" @click="confirmChangePassword"
             >확인</v-btn
           >
         </v-card-actions>

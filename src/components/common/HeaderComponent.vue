@@ -19,7 +19,7 @@
           @click="goTo(item.path)"
           class="me-2 text-none"
           slim
-          v-bind="i === activeIndex && { color: '#EB6129' }"
+          v-bind="i === activeIndex && { color: 'primary' }"
           :text="item.text"
         />
       </div>
@@ -33,22 +33,22 @@
           hide-details
           class="me-4"
           inset
-          color="#eb6129"
+          color="primary"
         >
           <template v-slot:prepend>
-            <v-icon :color="isDark ? '#eb6129' : '#eb6129'">{{
+            <v-icon :color="isDark ? 'primary' : 'primary'">{{
               isDark ? 'mdi-weather-night' : 'mdi-white-balance-sunny'
             }}</v-icon>
           </template>
         </v-switch>
         <span v-if="$vuetify.display.mdAndUp">{{ name }}님</span>
         <v-btn class="ms-1" icon>
-          <v-avatar icon="mdi-account" size="36" color="#eb6129" />
+          <v-avatar icon="mdi-account" size="36" color="primary" />
           <v-menu activator="parent" origin="top">
             <v-list>
               <v-list-item :title="name" :subtitle="email">
                 <template v-slot:prepend>
-                  <v-avatar size="36" color="#eb6129">
+                  <v-avatar size="36" color="primary">
                     <v-icon>mdi-account</v-icon>
                   </v-avatar>
                 </template>
@@ -59,10 +59,10 @@
                 title="마이페이지"
                 @click="goTo('/profiles')"
                 :active="activeIndex === 5"
-                :color="activeIndex === 5 ? '#eb6129' : undefined"
+                :color="activeIndex === 5 ? 'primary' : undefined"
               >
                 <template v-slot:prepend>
-                  <v-icon :color="activeIndex === 5 ? '#eb6129' : undefined"
+                  <v-icon :color="activeIndex === 5 ? 'primary' : undefined"
                     >mdi-account-circle</v-icon
                   >
                 </template>
@@ -101,13 +101,13 @@
         :key="i"
         :title="item.text"
         :active="i === activeIndex"
-        :color="i === activeIndex ? '#eb6129' : undefined"
+        :color="i === activeIndex ? 'primary' : undefined"
         @click="goTo(item.path)"
         class="mb-1"
         link
       >
         <template v-slot:prepend>
-          <v-icon :color="i === activeIndex ? '#eb6129' : undefined">{{
+          <v-icon :color="i === activeIndex ? 'primary' : undefined">{{
             getIconForRoute(item.text)
           }}</v-icon>
         </template>
