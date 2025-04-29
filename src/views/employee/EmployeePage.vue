@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <v-col class="mt-3">
-      <SearchBarComponent :rows="searchRows" @search="handleSearch" @reset="handleReset" />
+      <SearchBarComponent :rows="searchRows" @search="handleSearch" @reset="handleReset" :key="resetKey"/>
     </v-col>
   </v-row>
   <v-row>
@@ -58,6 +58,8 @@ import ExcelActionsComponent from '@/components/common/ExcelActionsComponent.vue
 import EmployeeCreatePopup from '@/views/employee/EmployeeCreatePopup.vue'
 import { getDepartments, getTeamList } from '@/apis/teamService.js'
 import { getMyAuthorities } from '@/apis/roleService'
+
+const resetKey = ref(0)
 
 const router = useRouter()
 const route = useRoute()
@@ -248,6 +250,7 @@ const handleReset = async () => {
     department: '',
     page: 1,
   }
+  resetKey.value++
   currentPage.value = 1
   await loadItems()
 }

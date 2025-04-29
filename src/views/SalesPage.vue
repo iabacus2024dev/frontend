@@ -1,6 +1,6 @@
 <template>
   <v-col class="mt-3">
-    <SearchBarComponent :rows="searchRows" :immediateCheckboxEmit="true" @search="handleSearch" @reset="handleReset" />
+    <SearchBarComponent :rows="searchRows" :immediateCheckboxEmit="true" @search="handleSearch" @reset="handleReset" :key="resetKey"/>
   </v-col>
   <v-col>
     <TableComponent
@@ -32,6 +32,8 @@ import {getAggregate, downloadAggregate} from "@/apis/salesService.js";
 import {useRouter} from "vue-router";
 import { formatPrice } from '@/utils/MoneyUtils.js';
 import { useToast } from 'vue-toastification'
+
+const resetKey = ref(0)
 
 const title = ref('장표 조회')
 const dialog = ref(false)
@@ -149,6 +151,7 @@ const handleReset = async () => {
     year: new Date().getFullYear(),
     page: 1,
   }
+  resetKey.value++
   currentPage.value = 1
   await loadItems()
 }

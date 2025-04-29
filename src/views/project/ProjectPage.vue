@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <v-col class="mt-3">
-      <SearchBarComponent :rows="searchRows" @search="handleSearch" @reset="handleReset" />
+      <SearchBarComponent :rows="searchRows" @search="handleSearch" @reset="handleReset" :key="resetKey"/>
     </v-col>
   </v-row>
   <v-row>
@@ -47,6 +47,8 @@ import { useToast } from 'vue-toastification'
 import { formatPrice, formatWithUnit } from '@/utils/MoneyUtils.js'
 import { useDialog } from '@/composables/useDialog.js'
 import ProjectCreatePopup from '@/views/project/ProjectCreatePopup.vue'
+
+const resetKey = ref(0)
 
 const router = useRouter()
 const route = useRoute()
@@ -201,6 +203,7 @@ const handleReset = async () => {
     page: 1,
   }
   currentPage.value = 1
+  resetKey.value++
   await loadItems()
 }
 
