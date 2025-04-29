@@ -24,7 +24,7 @@
         <v-row>
           <v-col cols="12">
             <div class="d-flex align-center mb-2">
-              <v-icon size="small" color="#eb6129" class="mr-3">mdi-email-outline</v-icon>
+              <v-icon size="small" color="primary" class="mr-3">mdi-email-outline</v-icon>
               <div>
                 <div class="text-caption text-grey">이메일</div>
                 <div>{{ user.email || '정보 없음' }}</div>
@@ -32,7 +32,7 @@
             </div>
 
             <div class="d-flex align-center mb-2">
-              <v-icon size="small" color="#eb6129" class="mr-3">mdi-phone</v-icon>
+              <v-icon size="small" color="primary" class="mr-3">mdi-phone</v-icon>
               <div>
                 <div class="text-caption text-grey">핸드폰 번호</div>
                 <div>{{ formatPhone(user.phone) || '정보 없음' }}</div>
@@ -40,7 +40,7 @@
             </div>
 
             <div class="d-flex align-center mb-2">
-              <v-icon size="small" color="#eb6129" class="mr-3">mdi-cake-variant</v-icon>
+              <v-icon size="small" color="primary" class="mr-3">mdi-cake-variant</v-icon>
               <div>
                 <div class="text-caption text-grey">생년월일</div>
                 <div>{{ formatDate(user.birthDate) || '정보 없음' }}</div>
@@ -48,7 +48,7 @@
             </div>
 
             <div class="d-flex align-center">
-              <v-icon size="small" color="#eb6129" class="mr-3">mdi-calendar-check</v-icon>
+              <v-icon size="small" color="primary" class="mr-3">mdi-calendar-check</v-icon>
               <div>
                 <div class="text-caption text-grey">입사일</div>
                 <div>{{ formatDate(user.joinDate) || '정보 없음' }}</div>
