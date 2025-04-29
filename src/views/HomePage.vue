@@ -118,6 +118,7 @@ import {
 import VChart from 'vue-echarts'
 import { formatPrice } from '@/utils/MoneyUtils.js'
 import { getAggregate } from '@/apis/salesService.js'
+import { useTheme } from 'vuetify'
 
 use([
   CanvasRenderer,
@@ -132,6 +133,8 @@ use([
   DataZoomComponent,
   VisualMapComponent
 ])
+
+const theme = useTheme()
 
 // 데이터 상태
 const salesData = ref([])
@@ -157,6 +160,11 @@ const departmentSales = computed(() => {
   }))
 })
 
+// 차트 텍스트 색상 계산
+const getTextColor = computed(() => {
+  return theme.global.current.value.dark ? '#FFFFFF' : '#333333'
+})
+
 // 부서별 차트 옵션
 const departmentChartOption = computed(() => ({
   tooltip: {
@@ -173,7 +181,10 @@ const departmentChartOption = computed(() => ({
     }
   },
   legend: {
-    data: ['매출', '목표']
+    data: ['매출', '목표'],
+    textStyle: {
+      color: getTextColor.value
+    }
   },
   grid: {
     left: '3%',
@@ -186,13 +197,30 @@ const departmentChartOption = computed(() => ({
     data: departmentSales.value.map(item => item.department),
     axisLabel: {
       interval: 0,
-      rotate: 30
+      rotate: 30,
+      color: getTextColor.value
+    },
+    axisLine: {
+      lineStyle: {
+        color: getTextColor.value
+      }
     }
   },
   yAxis: {
     type: 'value',
     axisLabel: {
-      formatter: value => formatPrice(value)
+      formatter: value => formatPrice(value),
+      color: getTextColor.value
+    },
+    axisLine: {
+      lineStyle: {
+        color: getTextColor.value
+      }
+    },
+    splitLine: {
+      lineStyle: {
+        color: theme.global.current.value.dark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'
+      }
     }
   },
   series: [
@@ -242,7 +270,10 @@ const monthlyChartOption = computed(() => ({
   },
   legend: {
     data: ['올해', '전년'],
-    bottom: '0'
+    bottom: '0',
+    textStyle: {
+      color: getTextColor.value
+    }
   },
   grid: {
     left: '3%',
@@ -252,12 +283,31 @@ const monthlyChartOption = computed(() => ({
   },
   xAxis: {
     type: 'category',
-    data: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월']
+    data: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+    axisLabel: {
+      color: getTextColor.value
+    },
+    axisLine: {
+      lineStyle: {
+        color: getTextColor.value
+      }
+    }
   },
   yAxis: {
     type: 'value',
     axisLabel: {
-      formatter: value => formatPrice(value)
+      formatter: value => formatPrice(value),
+      color: getTextColor.value
+    },
+    axisLine: {
+      lineStyle: {
+        color: getTextColor.value
+      }
+    },
+    splitLine: {
+      lineStyle: {
+        color: theme.global.current.value.dark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'
+      }
     }
   },
   series: [
@@ -327,7 +377,10 @@ const businessTypeChartOption = computed(() => ({
   },
   legend: {
     orient: 'vertical',
-    left: 'left'
+    left: 'left',
+    textStyle: {
+      color: getTextColor.value
+    }
   },
   series: [{
     type: 'pie',
@@ -385,14 +438,34 @@ const profitMarginChartOption = computed(() => ({
     data: departmentSales.value.map(item => item.department),
     axisLabel: {
       interval: 0,
-      rotate: 30
+      rotate: 30,
+      color: getTextColor.value
+    },
+    axisLine: {
+      lineStyle: {
+        color: getTextColor.value
+      }
     }
   },
   yAxis: {
     type: 'value',
     name: '영업이익률 (%)',
+    nameTextStyle: {
+      color: getTextColor.value
+    },
     axisLabel: {
-      formatter: value => `${value}%`
+      formatter: value => `${value}%`,
+      color: getTextColor.value
+    },
+    axisLine: {
+      lineStyle: {
+        color: getTextColor.value
+      }
+    },
+    splitLine: {
+      lineStyle: {
+        color: theme.global.current.value.dark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'
+      }
     }
   },
   series: [{
