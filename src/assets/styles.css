@@ -1,0 +1,15 @@
+/* Import Pretendard font */
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+/* Apply Pretendard font to all elements */
+* {
+  font-family: 'Pretendard', monospace;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Ensure fixed-width characteristics */
+body {
+  font-feature-settings: 'tnum';
+  font-variant-numeric: tabular-nums;
+}
