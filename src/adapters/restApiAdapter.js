@@ -49,7 +49,7 @@ class RestApiAdapter {
       return response.data
     } catch (error) {
       if (error.response?.data.code === '403') {
-        await router.push('/')
+        await router.push('/profiles')
       } else if (error.response?.data.code === '401') {
         useMemberStore().logout()
         await router.push('/auths/login')
