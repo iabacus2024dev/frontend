@@ -135,6 +135,7 @@ use([
 
 // 데이터 상태
 const salesData = ref([])
+const lastYearSalesData = ref([])  // 전년도 데이터 추가
 const summary = ref({
   totalSales: 0,
   operatingProfit: 0,
@@ -148,7 +149,7 @@ const summary = ref({
 // 부서별 매출 데이터
 const departmentSales = computed(() => {
   return salesData.value.map(dept => ({
-    department: dept.부서범위,
+    department: dept.부서이름,
     sales: dept.매출합계,
     target: dept.매출목표,
     profit: dept.영업이익,
@@ -228,19 +229,25 @@ const monthlyChartOption = computed(() => ({
   tooltip: {
     trigger: 'axis',
     formatter: params => {
-      const data = params[0].data
-      return `${params[0].name}<br/>
-              매출: ${formatPrice(data.value)}<br/>
-              목표: ${formatPrice(data.target)}`
+      let result = `${params[0].name}<br/>`
+      params.forEach(param => {
+        if (param.seriesName === '올해') {
+          result += `${param.seriesName}: ${formatPrice(param.data)}<br/>`
+        } else {
+          result += `${param.seriesName}: ${formatPrice(param.data)}<br/>`
+        }
+      })
+      return result
     }
   },
   legend: {
-    data: ['매출', '목표']
+    data: ['올해', '전년'],
+    bottom: '0'
   },
   grid: {
     left: '3%',
     right: '4%',
-    bottom: '3%',
+    bottom: '10%',
     containLabel: true
   },
   xAxis: {
@@ -255,22 +262,22 @@ const monthlyChartOption = computed(() => ({
   },
   series: [
     {
-      name: '매출',
+      name: '올해',
       type: 'line',
       smooth: true,
       data: salesData.value.length > 0 ? [
-        { value: salesData.value[0].sales_01, target: salesData.value[0].target_01 },
-        { value: salesData.value[0].sales_02, target: salesData.value[0].target_02 },
-        { value: salesData.value[0].sales_03, target: salesData.value[0].target_03 },
-        { value: salesData.value[0].sales_04, target: salesData.value[0].target_04 },
-        { value: salesData.value[0].sales_05, target: salesData.value[0].target_05 },
-        { value: salesData.value[0].sales_06, target: salesData.value[0].target_06 },
-        { value: salesData.value[0].sales_07, target: salesData.value[0].target_07 },
-        { value: salesData.value[0].sales_08, target: salesData.value[0].target_08 },
-        { value: salesData.value[0].sales_09, target: salesData.value[0].target_09 },
-        { value: salesData.value[0].sales_10, target: salesData.value[0].target_10 },
-        { value: salesData.value[0].sales_11, target: salesData.value[0].target_11 },
-        { value: salesData.value[0].sales_12, target: salesData.value[0].target_12 }
+        salesData.value[0].sales_01,
+        salesData.value[0].sales_02,
+        salesData.value[0].sales_03,
+        salesData.value[0].sales_04,
+        salesData.value[0].sales_05,
+        salesData.value[0].sales_06,
+        salesData.value[0].sales_07,
+        salesData.value[0].sales_08,
+        salesData.value[0].sales_09,
+        salesData.value[0].sales_10,
+        salesData.value[0].sales_11,
+        salesData.value[0].sales_12
       ] : [],
       itemStyle: {
         color: '#4CAF50'
@@ -278,40 +285,36 @@ const monthlyChartOption = computed(() => ({
       lineStyle: {
         width: 3
       },
-      symbolSize: 8,
-      animationDelay: idx => idx * 100
+      symbolSize: 8
     },
     {
-      name: '목표',
+      name: '전년',
       type: 'line',
       smooth: true,
-      data: salesData.value.length > 0 ? [
-        salesData.value[0].target_01,
-        salesData.value[0].target_02,
-        salesData.value[0].target_03,
-        salesData.value[0].target_04,
-        salesData.value[0].target_05,
-        salesData.value[0].target_06,
-        salesData.value[0].target_07,
-        salesData.value[0].target_08,
-        salesData.value[0].target_09,
-        salesData.value[0].target_10,
-        salesData.value[0].target_11,
-        salesData.value[0].target_12
+      data: lastYearSalesData.value.length > 0 ? [
+        lastYearSalesData.value[0].sales_01,
+        lastYearSalesData.value[0].sales_02,
+        lastYearSalesData.value[0].sales_03,
+        lastYearSalesData.value[0].sales_04,
+        lastYearSalesData.value[0].sales_05,
+        lastYearSalesData.value[0].sales_06,
+        lastYearSalesData.value[0].sales_07,
+        lastYearSalesData.value[0].sales_08,
+        lastYearSalesData.value[0].sales_09,
+        lastYearSalesData.value[0].sales_10,
+        lastYearSalesData.value[0].sales_11,
+        lastYearSalesData.value[0].sales_12
       ] : [],
       itemStyle: {
-        color: '#FFC107'
+        color: '#9E9E9E'
       },
       lineStyle: {
         width: 2,
         type: 'dashed'
       },
-      symbolSize: 0,
-      animationDelay: idx => idx * 100 + 100
+      symbolSize: 6
     }
-  ],
-  animationEasing: 'elasticOut',
-  animationDelayUpdate: idx => idx * 5
+  ]
 }))
 
 // 사업 유형 차트 옵션
@@ -449,20 +452,35 @@ const getEfficiencyClass = (rate) => {
 const loadData = async () => {
   try {
     const currentYear = new Date().getFullYear()
-    salesData.value = await getAggregate(currentYear)
+    const lastYear = currentYear - 1
+    
+    // 현재 연도와 전년도 데이터를 동시에 로드
+    const [currentData, lastYearData] = await Promise.all([
+      getAggregate(currentYear),
+      getAggregate(lastYear)
+    ])
+    
+    salesData.value = currentData
+    lastYearSalesData.value = lastYearData
     
     // 요약 데이터 계산
-    if (salesData.value.length > 0) {
+    if (salesData.value.length > 0 && lastYearSalesData.value.length > 0) {
       const total = salesData.value.reduce((sum, dept) => sum + dept.매출합계, 0)
+      const lastYearTotal = lastYearSalesData.value.reduce((sum, dept) => sum + dept.매출합계, 0)
       const profit = salesData.value.reduce((sum, dept) => sum + dept.영업이익, 0)
       const target = salesData.value.reduce((sum, dept) => sum + dept.매출목표, 0)
       const cost = salesData.value.reduce((sum, dept) => sum + dept.인건비, 0)
+      
+      // 전년 대비 성장률 계산
+      const growthRate = lastYearTotal > 0 
+        ? Math.round(((total - lastYearTotal) / lastYearTotal) * 100) 
+        : 0
       
       summary.value = {
         totalSales: total,
         operatingProfit: profit,
         profitMargin: total > 0 ? Math.round((profit / total) * 100) : 0,
-        salesGrowth: 0, // 전년 대비 데이터가 필요
+        salesGrowth: growthRate,
         achievementRate: target > 0 ? Math.round((total / target) * 100) : 0,
         targetSales: target,
         costEfficiency: cost > 0 ? Math.round((total / cost) * 100) : 0
