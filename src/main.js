@@ -7,6 +7,7 @@ import router from '@/router'
 import vuetify from '@/plugins/vuetify'
 import Toast from 'vue-toastification'
 import 'vue-toastification/dist/index.css'
+import VChart from 'vue-echarts'
 
 //import { openErrorPopUp } from '@/core/utils/errorPopup'
 import RestApiAdapter from '@/adapters/restApiAdapter'
@@ -15,6 +16,8 @@ import { registerLayouts } from './layouts/register'
 const app = createApp(App)
 
 registerLayouts(app)
+
+app.component('v-chart', VChart)
 
 app.use(pinia)
 app.use(router)
