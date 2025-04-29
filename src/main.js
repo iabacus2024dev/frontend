@@ -8,6 +8,7 @@ import vuetify from '@/plugins/vuetify'
 import Toast from 'vue-toastification'
 import 'vue-toastification/dist/index.css'
 import VChart from 'vue-echarts'
+import '@/assets/styles.css'
 
 //import { openErrorPopUp } from '@/core/utils/errorPopup'
 import RestApiAdapter from '@/adapters/restApiAdapter'
