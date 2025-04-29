@@ -24,6 +24,7 @@
       :items-length="length"
       :items-per-page="size"
       :sort-by="sort"
+      :hide-default-footer="showFooter"
       @update:items-per-page="(newSize) => (size = newSize)"
       @click:row="(event, { item }) => $emit('clickRow', item)"
       @update:options="
@@ -71,6 +72,10 @@ const props = defineProps({
   title: String,
   loading: Boolean,
   size: Number,
+  showFooter: {
+    type: Boolean,
+    default: false, // 기본은 footer을 보이도록
+  },
   showButton: {
     type: Boolean,
     default: true, // 기본은 버튼을 보이도록
