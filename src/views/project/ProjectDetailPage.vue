@@ -45,7 +45,7 @@
       <v-btn variant="tonal" class="btn-color mr-2" @click="handleProjectEditButtonClick"
         >프로젝트 수정</v-btn
       >
-      <v-btn variant="tonal" class="btn-color" @click="handleProjectDeleteButtonClick"
+      <v-btn color="#eb6129" variant="outlined" @click="handleProjectDeleteButtonClick"
         >프로젝트 삭제
       </v-btn>
     </v-col>
@@ -154,6 +154,7 @@ import { deleteProject, getProjectDetail, updateProject } from '@/apis/projectSe
 import { useRoute, useRouter } from 'vue-router'
 import { useDialog } from '@/composables/useDialog.js'
 import { getContractsByProjectCode } from '@/apis/contractService'
+import { getPersonnelByContractId } from '@/apis/inputService'
 
 const toast = useToast()
 const router = useRouter()
@@ -232,11 +233,11 @@ const fetchGetContractDetail = async () => {
 }
 
 const headers = ref([
-  { title: '이름', key: 'personnelName', nowrap: true },
-  { title: '부서', key: 'personnelDepartment', nowrap: true },
-  { title: '직원유형', key: 'personnelType', nowrap: true },
-  { title: '투입시작일자', key: 'personnelStartdate', nowrap: true, align: 'end' },
-  { title: '투입종료일자', key: 'personnelEnddate', nowrap: true, align: 'end' },
+  { title: '이름', key: 'employeeName', nowrap: true },
+  { title: '부서', key: 'department', nowrap: true },
+  { title: '직원 유형', key: 'type', nowrap: true },
+  { title: '투입 시작 일자', key: 'startDate', nowrap: true, align: 'end' },
+  { title: '투입 종료 일자', key: 'endDate', nowrap: true, align: 'end' },
   { title: 'M/M', key: 'manMonth', nowrap: true },
   { title: '단가', key: 'unitPrice', nowrap: true, align: 'end' },
   { title: '인건비', key: 'monthlyWage', nowrap: true, align: 'end' },
@@ -248,8 +249,28 @@ const headers = ref([
 ])
 
 const tableDataResponse = ref([])
+const revenue = ref(0)
+const headcount = ref(0)
 
-const handleContractSelect = (selected) => {
+const mapPersonnelToTableRow = (personnel) => {
+  return {
+    employeeName: personnel.employeeName || '',
+    department: '', // 데이터 없음
+    type: personnel.type || '',
+    startDate: personnel.startDate || '',
+    endDate: personnel.endDate || '',
+    manMonth: '', // 데이터 없음
+    unitPrice: '', // 데이터 없음
+    monthlyWage: '', // 데이터 없음
+    sgaeRate: '', // 데이터 없음
+    sgaePrice: '', // 데이터 없음
+    ovheRate: '', // 데이터 없음
+    ovhePrice: '', // 데이터 없음
+    cost: '', // 데이터 없음
+  }
+}
+
+const handleContractSelect = async (selected) => {
   if (selected?.id === 0) {
     const allContractItems = contractOptions.value.filter((c) => c.id !== 0)
     const startDate = allContractItems[allContractItems.length - 1]?.startDate ?? ''
@@ -263,8 +284,21 @@ const handleContractSelect = (selected) => {
       totalOption.endDate = endDate
       selectedContract.value = totalOption
     }
+
+    // Fetch personnel data for all contracts
+    const allPersonnel = []
+    for (const contract of allContractItems) {
+      const personnel = await getPersonnelByContractId(contract.id)
+      allPersonnel.push(...personnel)
+    }
+    tableDataResponse.value = allPersonnel.map(mapPersonnelToTableRow)
+    headcount.value = allPersonnel.length
   } else {
     selectedContract.value = selected
+    // Fetch personnel data for selected contract
+    const personnel = await getPersonnelByContractId(selected.id)
+    tableDataResponse.value = personnel.map(mapPersonnelToTableRow)
+    headcount.value = personnel.length
   }
 }
 

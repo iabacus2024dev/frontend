@@ -21,6 +21,7 @@
             type="date"
             variant="outlined"
             density="compact"
+            :rules="[dateRangeRule]"
           >
           </VTextField>
         </VCol>
@@ -31,6 +32,7 @@
             type="date"
             variant="outlined"
             density="compact"
+            :rules="[dateRangeRule]"
           >
           </VTextField>
         </VCol>
@@ -63,6 +65,24 @@ watch(
     }
   },
 )
+
+// 날짜 범위 유효성 검사 규칙
+const dateRangeRule = (value) => {
+  if (!value) return true // 값이 없으면 통과 (필수 항목이 아님)
+
+  // 시작일과 종료일이 모두 있는 경우에만 검사
+  if (startDate.value && endDate.value) {
+    const start = new Date(startDate.value)
+    const end = new Date(endDate.value)
+
+    // 시작일이 종료일보다 늦으면 에러
+    if (start > end) {
+      return '시작일은 종료일보다 빨라야 합니다.'
+    }
+  }
+
+  return true
+}
 </script>
 
 <style scoped></style>

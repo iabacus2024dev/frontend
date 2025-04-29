@@ -44,7 +44,7 @@ import {
   uploadProjects,
 } from '@/apis/projectService.js'
 import { useToast } from 'vue-toastification'
-import { formatPrice } from '@/utils/MoneyUtils.js'
+import { formatPrice, formatWithUnit } from '@/utils/MoneyUtils.js'
 import { useDialog } from '@/composables/useDialog.js'
 import ProjectCreatePopup from '@/views/project/ProjectCreatePopup.vue'
 
@@ -92,7 +92,7 @@ const headers = ref([
     title: '계약 금액',
     key: 'contractAmount',
     align: 'end',
-    value: (item) => formatPrice(item.contractAmount),
+    value: (item) => formatWithUnit(item.contractAmount),
     nowrap: true,
   },
   { title: '발주사', key: 'mainCompany', nowrap: true },
@@ -211,7 +211,11 @@ const createDialogs = () => {
     component: ProjectCreatePopup,
     fnCallback: (data) => {
       console.log('받은 데이터: ', data)
-      fetchCreateProject(data)
+      if (data) {
+        fetchCreateProject(data)
+      } else {
+        toast.error('입력 값을 확인해주세요. 필수 항목을 모두 입력해야 합니다.')
+      }
     },
   })
 }

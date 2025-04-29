@@ -6,53 +6,80 @@
     <VCardText>
       <v-row>
         <v-col cols="9">
-          <VTextField
-            v-model="email"
-            label="이메일"
-            variant="outlined"
-            density="compact"
-            :rules="[requiredRule]"
-          />
+          <VTextField v-model="email" variant="outlined" density="compact" :rules="[requiredRule]">
+            <template v-slot:label> 이메일 <span class="required-field">*</span> </template>
+          </VTextField>
         </v-col>
         <v-col cols="3">
-          <VBtn v-if="showCheckEmail" @click="handleCheckEmail" class="check-mail-btn">
+          <VBtn
+            v-if="showCheckEmail"
+            @click="handleCheckEmail"
+            class="check-mail-btn"
+            elevation="0"
+          >
             중복확인
           </VBtn>
         </v-col>
       </v-row>
+      <VTextField v-model="name" variant="outlined" density="compact" :rules="[requiredRule]">
+        <template v-slot:label> 이름 <span class="required-field">*</span> </template>
+      </VTextField>
       <VTextField
-        v-model="name"
-        label="이름"
+        :model-value="formattedPhone"
+        @input="handlePhoneInput"
         variant="outlined"
         density="compact"
-        :rules="[requiredRule]"
-      />
-      <VTextField
-        v-model="phone"
-        label="전화번호"
-        variant="outlined"
-        density="compact"
-        :rules="[requiredRule]"
-      />
+        :rules="[requiredRule, phoneRule]"
+      >
+        <template v-slot:label> 전화번호 <span class="required-field">*</span> </template>
+      </VTextField>
       <VTextField
         v-model="birthDate"
-        label="생년월일"
         variant="outlined"
         density="compact"
         type="date"
         :rules="[requiredRule]"
-      />
+      >
+        <template v-slot:label> 생년월일 <span class="required-field">*</span> </template>
+      </VTextField>
     </VCardText>
   </VCard>
 </template>
 
 <script setup>
-import { defineModel, defineProps } from 'vue'
+import { defineModel, defineProps, ref, watch } from 'vue'
+import {
+  formatPhoneNumberInput,
+  isValidPhoneNumber,
+  standardizePhoneNumber,
+} from '@/utils/PhoneUtils.js'
 
 const email = defineModel('email')
 const name = defineModel('name')
 const phone = defineModel('phone')
 const birthDate = defineModel('birthDate')
+
+// Formatted display value for phone
+const formattedPhone = ref('')
+
+// Format the phone value when it changes
+watch(
+  phone,
+  (newValue) => {
+    if (newValue) {
+      formattedPhone.value = formatPhoneNumberInput(newValue)
+    }
+  },
+  { immediate: true },
+)
+
+// Handle phone input changes
+const handlePhoneInput = (event) => {
+  const inputValue = event.target.value
+  const standardized = standardizePhoneNumber(inputValue)
+  phone.value = standardized
+  formattedPhone.value = formatPhoneNumberInput(standardized)
+}
 
 const props = defineProps({
   showCheckEmail: {
@@ -63,6 +90,9 @@ const props = defineProps({
 
 // 필수 입력 규칙: 값이 없으면 에러 메시지 출력
 const requiredRule = (value) => !!value || '필수 입력 항목입니다.'
+
+// 전화번호 유효성 검사 규칙
+const phoneRule = (value) => isValidPhoneNumber(value) || '유효한 전화번호를 입력해주세요.'
 
 const handleCheckEmail = () => {
   console.log('중복 확인 버튼 클릭')
@@ -78,5 +108,9 @@ const handleCheckEmail = () => {
 .check-mail-btn {
   background-color: #eb6129;
   color: white;
+}
+
+.required-field {
+  color: red;
 }
 </style>

@@ -7,20 +7,36 @@
       <VRow class="v-row--no-gutters">
         <VCol cols="12" md="6" class="pr-4">
           <VTextField
-            v-model="expectedAmount"
+            :model-value="formattedExpectedAmount"
+            @input="handleExpectedAmountInput"
             label="예상계약금액"
             variant="outlined"
             density="compact"
-          />
+            hint="숫자만 입력하세요"
+            persistent-hint
+            :rules="[numberRule]"
+          >
+            <template v-slot:prepend>
+              <v-icon>mdi-currency-krw</v-icon>
+            </template>
+          </VTextField>
         </VCol>
 
         <VCol cols="12" md="6">
           <VTextField
-            v-model="contractAmount"
+            :model-value="formattedContractAmount"
+            @input="handleContractAmountInput"
             label="계약금액"
             variant="outlined"
             density="compact"
-          />
+            hint="숫자만 입력하세요"
+            persistent-hint
+            :rules="[numberRule]"
+          >
+            <template v-slot:prepend>
+              <v-icon>mdi-currency-krw</v-icon>
+            </template>
+          </VTextField>
         </VCol>
       </VRow>
     </VCardText>
@@ -28,10 +44,72 @@
 </template>
 
 <script setup>
-import { defineModel } from 'vue'
+import { defineModel, ref, watch } from 'vue'
+import { formatPrice } from '@/utils/MoneyUtils.js'
 
 const expectedAmount = defineModel('expectedAmount')
 const contractAmount = defineModel('contractAmount')
+
+// Formatted display values
+const formattedExpectedAmount = ref('')
+const formattedContractAmount = ref('')
+
+// Format the input values when they change
+watch(
+  expectedAmount,
+  (newValue) => {
+    if (newValue) {
+      formattedExpectedAmount.value = formatPrice(newValue, { showCurrency: false })
+    }
+  },
+  { immediate: true },
+)
+
+watch(
+  contractAmount,
+  (newValue) => {
+    if (newValue) {
+      formattedContractAmount.value = formatPrice(newValue, { showCurrency: false })
+    }
+  },
+  { immediate: true },
+)
+
+// Parse the formatted input back to a number
+const parseFormattedValue = (formattedValue) => {
+  if (!formattedValue) return ''
+  // Remove all non-numeric characters except decimal point
+  return formattedValue.replace(/[^\d.]/g, '')
+}
+
+// Handle input changes
+const handleExpectedAmountInput = (event) => {
+  const parsed = parseFormattedValue(event.target.value)
+  expectedAmount.value = parsed
+  if (parsed) {
+    formattedExpectedAmount.value = formatPrice(parsed, { showCurrency: false })
+  } else {
+    formattedExpectedAmount.value = ''
+  }
+}
+
+const handleContractAmountInput = (event) => {
+  const parsed = parseFormattedValue(event.target.value)
+  contractAmount.value = parsed
+  if (parsed) {
+    formattedContractAmount.value = formatPrice(parsed, { showCurrency: false })
+  } else {
+    formattedContractAmount.value = ''
+  }
+}
+
+// 숫자 유효성 검사 규칙
+const numberRule = (value) => {
+  if (!value) return true // 값이 없으면 통과 (필수 항목이 아님)
+  // 콤마(,)를 제거하고 숫자 검증
+  const cleanValue = value.toString().replace(/,/g, '')
+  return (!isNaN(parseFloat(cleanValue)) && isFinite(cleanValue)) || '유효한 숫자를 입력해주세요.'
+}
 </script>
 
 <style scoped></style>
