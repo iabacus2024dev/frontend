@@ -1,6 +1,6 @@
 <template>
   <v-col class="mt-3">
-    <SearchBarComponent :rows="searchRows" @search="handleSearch" @reset="handleReset" />
+    <SearchBarComponent :rows="searchRows" :immediateCheckboxEmit="true" @search="handleSearch" @reset="handleReset" />
   </v-col>
   <v-col>
     <TableComponent
@@ -9,13 +9,14 @@
       :items="items"
       :title="title"
       :loading="loading"
+      :showFooter="true"
       @loadItems="loadItems"
     />
     <div class="d-flex justify-end">
       <ExcelActionsComponent
         :showButton="false"
         :btnUpVisible="false"
-        @download="fetchDownloadProjects"
+        @download="fetchDownloadAggregate"
         v-model:dialog="dialog"
       />
     </div>
@@ -27,8 +28,10 @@ import { ref, computed } from 'vue'
 import SearchBarComponent from '@/components/searchbar/SearchBarComponent.vue'
 import TableComponent from "@/components/table/TableComponent.vue"
 import ExcelActionsComponent from "@/components/common/ExcelActionsComponent.vue"
-import {getAggregate} from "@/apis/salesService.js";
+import {getAggregate, downloadAggregate} from "@/apis/salesService.js";
 import {useRouter} from "vue-router";
+import { formatPrice } from '@/utils/MoneyUtils.js';
+import { useToast } from 'vue-toastification'
 
 const title = ref('장표 조회')
 const dialog = ref(false)
@@ -39,18 +42,18 @@ const items = ref([])
 const size = ref(10)
 const sort = ref('')
 const router = useRouter()
+const toast = useToast()
 
 // 검색 조건 및 페이징 조건
 const params = ref({
   year: '',
-  page: 1,    // 추후 삭제 해도 될 것 같음
-  size: 10,    // 추후 삭제 해도 될 것 같음
+  page: 1,
+  size: 10,
 })
 
 // SearchBarComponent에서 전달받은 필터를 저장할 reactive 변수
 const searchFilters = ref({})
 
-// 예시: 검색 조건(체크박스 등)
 const searchRows = ref([
   {
     fields: [
@@ -96,55 +99,78 @@ const searchRows = ref([
         label: '인력유형별 인건비',
         title: '추가 정보',
         type: 'checkbox',
+        value: false,
         md: 3,
       },
       {
         key: 'checkTypeAmount',
         label: '사업 유형별 매출',
         type: 'checkbox',
+        value: false,
         md: 2,
       },
       {
         key: 'checkMonthlyAmount',
         label: '월별 상세 매출',
         type: 'checkbox',
+        value: false,
         md: 3,
       },
     ]
   },
 ])
 
-// 숫자 포맷터
+// 숫자 포맷터 - 금액 단위로 표시
 const formatNumber = (num) => {
   if (num == null) return ''
-  return Number(num).toLocaleString()
+  return formatPrice(num, { showCurrency: false })
 }
 
 // 인건비(명) 통합
 const personnelCost = (num, count) => {
   if (num === 0) return '0'
-  return `${Number(num).toLocaleString()} (${count})`
+  return `${formatPrice(num, { showCurrency: false })} (${count})`
 }
 
 // handleSearch: SearchBarComponent에서 필터가 전달되면 저장
 const handleSearch = async (filters) => {
   // 기존 params 업데이트
   params.value = {...filters, page: 1}
-  console.log(filters)
-  currentPage.value = 1    // 삭제해도 될 거 같음
+  currentPage.value = 1
   // 체크박스 등 검색 필터 저장
-  searchFilters.value = filters
+  searchFilters.value = { ...filters }
   await loadItems()
 }
 
 // 초기화 이벤트 핸들러
 const handleReset = async () => {
   params.value = {
-    dateRangeType: '연도별',
+    dateRangeType: '',
+    year: new Date().getFullYear(),
     page: 1,
   }
   currentPage.value = 1
   await loadItems()
+}
+
+// 엑셀 다운로드
+const fetchDownloadAggregate = async () => {
+  console.log('엑셀 다운로드')
+  setSortToParam()
+  console.log(params)
+  await downloadAggregate(params.value)
+  toast.success('매출정보 엑셀 다운로드에 성공하였습니다.')
+}
+
+function setSortToParam() {
+  const storedSort = localStorage.getItem(title.value + ' sort')
+    ? JSON.parse(localStorage.getItem(title.value + ' sort'))
+    : []
+  if (storedSort.length > 0) {
+    params.value.sort = storedSort[0].key + ',' + storedSort[0].order
+  } else {
+    params.value.sort = ''
+  }
 }
 
 // 데이터 불러오기
@@ -162,18 +188,22 @@ const loadItems = async (page = 1, itemsPerPage = size.value, sortBy = []) => {
     size.value = itemsPerPage
     sort.value = params.value.sort
 
-    //const response = await getAggregate(params.value.date)
-    //items.value = response
-
     items.value = await getAggregate(params.value.year)
+    await router.replace(`/sales?${buildQueryParams(params.value)}`)
 
-    //totalElements.value = response.totalElements
-    //await router.replace(`/sales`)
+    if (sortBy.length) {
+      const sortKey = sortBy[0].key
+      const sortOrder = sortBy[0].order
+      items.value.sort((a, b) => {
+        const aValue = a[sortKey]
+        const bValue = b[sortKey]
+        return sortOrder === 'desc' ? bValue - aValue : aValue - bValue
+      })
+    }
   } finally {
     loading.value = false
   }
 }
-
 
 const buildQueryParams = (params) => {
   return Object.keys(params)
