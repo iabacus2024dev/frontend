@@ -253,6 +253,10 @@ const revenue = ref(0)
 const headcount = ref(0)
 
 const mapPersonnelToTableRow = (personnel) => {
+  const sgaePrice = personnel.wage * (personnel.sgaeRate / 100)
+  const ovhePrice = personnel.wage * (personnel.ovheRate / 100)
+  const cost = personnel.wage + sgaePrice + ovhePrice
+
   return {
     employeeName: personnel.employeeName || '',
     department: '', // 데이터 없음
@@ -260,13 +264,13 @@ const mapPersonnelToTableRow = (personnel) => {
     startDate: personnel.startDate || '',
     endDate: personnel.endDate || '',
     manMonth: '', // 데이터 없음
-    unitPrice: '', // 데이터 없음
-    monthlyWage: '', // 데이터 없음
-    sgaeRate: '', // 데이터 없음
-    sgaePrice: '', // 데이터 없음
-    ovheRate: '', // 데이터 없음
-    ovhePrice: '', // 데이터 없음
-    cost: '', // 데이터 없음
+    unitPrice: personnel.unitprice?.toLocaleString() || '',
+    monthlyWage: personnel.wage?.toLocaleString() || '',
+    sgaeRate: personnel.sgaeRate ? `${personnel.sgaeRate.toFixed(2)}%` : '',
+    sgaePrice: sgaePrice ? sgaePrice.toLocaleString() : '',
+    ovheRate: personnel.ovheRate ? `${personnel.ovheRate.toFixed(2)}%` : '',
+    ovhePrice: ovhePrice ? ovhePrice.toLocaleString() : '',
+    cost: cost ? cost.toLocaleString() : '',
   }
 }
 
