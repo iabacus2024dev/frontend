@@ -1,7 +1,12 @@
 <template>
   <v-row>
     <v-col class="mt-3">
-      <SearchBarComponent :rows="searchRows" @search="handleSearch" @reset="handleReset" :key="resetKey"/>
+      <SearchBarComponent
+        :rows="searchRows"
+        @search="handleSearch"
+        @reset="handleReset"
+        :key="resetKey"
+      />
     </v-col>
   </v-row>
   <v-row>
@@ -112,7 +117,7 @@ const params = ref({
   type: '',
   grade: '',
   status: '',
-  department: '',
+  departmentId: '',
   page: 1,
   size: 10,
 })
@@ -191,8 +196,8 @@ const searchRows = computed(() => [
         key: 'departmentId',
         label: '팀',
         type: 'select',
-        columnCount: departmentOptions.value.length,
-        options: departmentOptions.value,
+        columnCount: departmentOptions.value.length + 1,
+        options: [{ title: '전체', value: '' }, ...departmentOptions.value],
       },
       { key: 'name', label: '이름', type: 'text', columnCount: 2 },
     ],
@@ -247,10 +252,9 @@ const handleReset = async () => {
     type: '',
     grade: '',
     status: '',
-    department: '',
+    departmentId: '',
     page: 1,
   }
-  resetKey.value++
   currentPage.value = 1
   await loadItems()
 }
@@ -328,10 +332,6 @@ const fetchUpload = async () => {
 
 // 검색 내용 url에 반영
 const restoreSearchParams = async () => {
-  const sortKey = computed(() => title.value + ' sort')
-
-  const storedSort = localStorage.getItem(sortKey.value)
-  const sortArray = ref(storedSort ? JSON.parse(storedSort) : [])
   let query = route.query
   params.value = {
     name: query.name || '',
@@ -340,11 +340,8 @@ const restoreSearchParams = async () => {
     type: query.type || '',
     grade: query.grade || '',
     status: query.status || '',
-    department: query.department || '',
+    departmentId: query.departmentId || '',
     page: query.page ? query.page : 1,
-  }
-  if (sortArray.value.length > 0) {
-    params.value.sort = sortArray.value[0].key + ',' + sortArray.value[0].order
   }
   currentPage.value = query.page ? Number(query.page) : 1
 }
@@ -365,10 +362,10 @@ watch(
 
 onMounted(async () => {
   await fetchGetAuthorities()
-  await fetchGetTeams()
-  await restoreSearchParams()
   department.value = await getTeamList()
 })
+restoreSearchParams()
+fetchGetTeams()
 </script>
 
 <style scoped></style>
