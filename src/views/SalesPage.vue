@@ -140,8 +140,16 @@ const personnelCost = (num, count) => {
 
 // handleSearch: SearchBarComponent에서 필터가 전달되면 저장
 const handleSearch = async (filters) => {
+  const selectedTypes = []
+  if (filters.checkTeam) selectedTypes.push('팀')
+  if (filters.checkDepartment) selectedTypes.push('담당')
+  if (filters.checkDivision) selectedTypes.push('본부')
   // 기존 params 업데이트
-  params.value = { ...filters, page: 1 }
+  params.value = {
+    ...filters,
+    departmentType: selectedTypes.join(','),
+    page: 1
+  }
   currentPage.value = 1
   // 체크박스 등 검색 필터 저장
   searchFilters.value = { ...filters }
@@ -195,7 +203,7 @@ const loadItems = async (page = 1, itemsPerPage = size.value, sortBy = []) => {
     size.value = itemsPerPage
     sort.value = params.value.sort
 
-    items.value = await getAggregate(params.value.year)
+    items.value = await getAggregate(params.value.year, params.value.departmentType)
     await router.replace(`/sales?${buildQueryParams(params.value)}`)
 
     if (sortBy.length) {
