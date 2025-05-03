@@ -5,10 +5,11 @@
 
       <img
         class="me-sm-8 logo-image"
-        style="cursor: pointer; height: 30px; object-fit: contain;"
+        style="cursor: pointer; height: 30px; object-fit: contain"
         v-if="!$vuetify.display.smAndDown"
         @click="goTo('/')"
         src="@/assets/ABACUS_CI_1.png"
+        alt="회사 로고"
       />
 
       <div v-if="$vuetify.display.mdAndUp">
@@ -89,7 +90,7 @@
     <v-list-item class="pa-4">
       <img
         class="logo-image"
-        style="height: 30px; object-fit: contain;"
+        style="height: 30px; object-fit: contain"
         @click="goTo('/')"
         src="@/assets/ABACUS_CI_1.png"
       />
