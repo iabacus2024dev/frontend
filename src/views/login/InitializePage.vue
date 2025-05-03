@@ -1,9 +1,11 @@
 <template>
   <v-card class="mx-auto pa-8 pt-7" max-width="448" elevation="0" rounded="lg">
     <div class="d-flex justify-center">
-      <v-img
-        max-width="200"
-        src="https://ezportal.bizmeka.com/companyImage/T31366/T31366_100_69bd36e2ee32422087c5d4203224b81a.png"
+      <img
+        class="me-sm-8 logo-image"
+        style="cursor: pointer; height: 30px; object-fit: contain"
+        src="@/assets/ABACUS_CI_1.png"
+        alt="회사 로고"
       />
     </div>
 
